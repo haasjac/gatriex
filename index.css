@@ -1,0 +1,136 @@
+#content {
+    display: flex;
+    flex-direction: column;
+	flex: 2;
+}
+
+.content {
+	padding-left: 25px;
+}
+
+.iconRight {
+    color: #1F3853;
+    float: right;
+}
+
+    .iconRight:hover {
+        color: #D0904C;
+        cursor: pointer;
+    }
+    
+.errorIcon {
+    padding-right: 15px;
+    color: #8b0000;
+}
+
+#SummonerName {
+    font-size: 26px;
+    font-weight: bold;
+    color: #1F3853;
+}
+
+#SummonerStats {
+    flex: 1;
+    font-size: 24px;
+    max-height: max-content;
+}
+
+#ServerStatus {
+    flex: 2;
+}
+
+#nav a {
+	color: #1F3853;
+	text-decoration: none;
+}
+#nav a:hover {
+	color: #D0904C;
+}
+
+.navButton {
+    font-size: 24px;
+    color: #000000;
+    user-select: none;
+}
+
+.navButton:not(:first-child) {
+    margin-top: 15px;
+}
+
+.navButton:hover {
+    color: #D0904C;
+    cursor: pointer;
+}
+
+.item {
+    padding-top: 10px;
+}
+
+#navList {
+    margin: 0px;
+}
+
+#searchSummonerName {
+    font-size: 20px;
+}
+
+#searchButton {
+    font-size: 14px;
+}
+
+#SummonerIcon {
+	width: 150px;
+	height: 150px;	
+}
+
+#services {
+    list-style-type:none;
+	margin: 0;
+	padding: 0;
+}
+
+    #services li:not(:first-child) {
+        margin-top: 15px;
+    }
+    
+.service {
+    color: #1F3853;
+    font-weight: bold;
+}
+    
+#Incidents {
+    padding-left: 25px;
+}
+
+.incidents {
+    font-size: 20px;
+}
+
+.incidents li {
+    margin-top: 15px;
+}
+
+.timestamp {
+    font-size: 16px;
+    padding-top: 5px;
+}
+
+/* GREEN */       
+.fa-check-circle {
+    color: #008000;
+}
+
+/* YELLOW */ 
+.fa-minus-circle, .fa-clock-o {
+    color: #D0904C;
+}
+
+/* RED */ 
+.fa-times-circle {
+    color: #8b0000;
+}
+
+/* BLUE */
+.fa-info-circle {
+    color: #1F3853;
+}

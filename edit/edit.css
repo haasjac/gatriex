@@ -1,0 +1,97 @@
+.content {
+    border-top: 1px solid #1F3853;
+    border-bottom: 1px solid #1F3853;
+    padding: 20px 0;
+}
+
+#editList, #addList {
+    list-style-type: none;
+    margin: 0;
+    padding: 0 50px;
+    font-size: 22px;
+}
+    
+    #editList input, #addList input {
+        font-size: 20px;
+        font-family: 'kingsbridgeregular';
+    }
+
+#addList {
+    user-select: none;
+}
+
+.category {
+    padding: 10px;
+    background: #EEEEEE;
+}
+
+.ui-state-highlight {
+    padding: 10px;
+}
+.category ul, .addButtonDiv {
+    list-style-type: none;
+    margin: 0;
+    padding-left: 50px;
+}
+
+.category li {
+    padding: 10px;
+}
+
+.list, .addList {
+    font-size: 18px;
+    padding: 10px;
+}
+
+    .item {
+        margin-right: 50px;
+        background: #F5F5F5;
+        line-height: 25px;
+    }
+
+    .item input {
+        font-size: 16px !important;
+    }
+
+.inputLink {
+    width: 500px;
+}
+
+.list_add {
+    padding: 5px;
+}
+
+.entryInputs {
+    padding-left: 25px;
+}
+
+.ui-button:hover {
+    color: #D0904C;
+}
+
+.deleteCategoryButton, .deleteButton, .addButton, .addCategoryButton {
+    float: right;
+}
+
+.formButtons {
+    text-align: right;
+    padding: 5px 50px;
+    margin-top: 15px;
+    
+}
+
+.ui-button {
+    font-size: 16px;
+}
+
+.formButtons button {
+    font-size: 18px;
+}
+
+.fa-check-circle {
+    color: #008000;
+}
+
+.fa-exclamation-triangle {
+    color: #8b0000;
+}

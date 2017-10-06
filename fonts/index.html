@@ -1,0 +1,115 @@
+<!-- NEWTAB.PHP
+	CONTAINS LINKS TO WORK AS BOOKMARKS
+    USES RIOT API TO FIND DATA FROM LEAGUE OF LEGENDS
+    CREATED BY JACOB HAAS
+-->
+<html>
+
+
+<!-- HEAD - CONTAINS SCRIPTS PHP TITLE AND FILE LINKS -->
+<head>
+<!-- SCRIPTS - LOADS IN JAVASCRIPT FILES -->
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js">
+</script>
+<script src="Script.js">
+</script>
+<script src="NavButtons.js">
+</script>
+<script src="myDate.js">
+</script>
+<script src="PresetSummoner.js">
+</script>
+<script src="LeagueInfo.js">
+</script>
+<script src="PrintInfo.js">
+</script>
+<script src="Status.js">
+</script>
+
+<!-- TITLE AND LINKS -->
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Gatriex</title>
+<link rel="shortcut icon" href="favicon.ico">
+<link rel="stylesheet" type="text/css" href="stylesheet.css">
+</head>
+
+
+<!--START BODY-->
+<body onLoad="onStartupHome()">
+Gatriex
+<!--HEADER - CONTAINS MYDATE -->
+<header>
+<!-- MYDATE -->
+<div id="myDate"></div>
+<!--<button id="refresh" onClick="getURL()">refresh</button>-->
+</header>
+
+<!-- TABLE CONTAINING MAIN CONTENT -->
+<table id="main">
+<tr>
+<td id="navcell">
+<nav>
+<!-- NAVIGATION - CONTAINS CATEGORY divS WITH HYPERTEXT LINKS -->
+<button id="navButton1" onClick="setButtons(1)"></button><br />
+<span id="NavCat1" style="display:none"></span>
+<br />
+<button id="navButton2" onClick="setButtons(2)"></button><br />
+<span id="NavCat2" style="display:none"></span>
+<br />
+<button id="navButton3" onClick="setButtons(3)"></button><br />
+<span id="NavCat3" style="display:none"></span>
+<br />
+<button id="navButton4" onClick="setButtons(4)"></button><br />
+<span id="NavCat4" style="display:none"></span>
+<br />
+<button id="navButton5" onClick="setButtons(5)"></button><br />
+<span id="NavCat5" style="display:none"></span>
+</nav>
+</td>
+<td id="sectioncell">
+<!-- SECTION - CONTAINS STATUS, SEARCH, AND LEAGUE INFO -->
+<section>
+<!-- SEARCH -->
+<div id="Search" style="display:inline"></div>
+<!-- STATUS -->
+<div id="Status" style="text-transform:capitalize; float:right"></div>
+<div id="Incidents" style="display:none"></div>
+<span id="IncidentsSpace"><br /><br /></span>
+<!-- FAVORITE SUMMONER -->
+<img style="float:left" id="SummonerIconfav">
+<div id="SummonerNamefav"></div>
+<div id="Leaguefav"></div>
+<div id="MiniSeriesfav"></div>
+<div id="Unfavorite"></div>
+<div id="Space"></div>
+<!-- CURRENT SUMMONER -->
+<img style="float:left" id="SummonerIconcur">
+<div id="SummonerNamecur"></div>
+<div id="Leaguecur"></div>
+<div id="MiniSeriescur"></div>
+<div id="DefaultButton"></div>
+</section>
+</td>
+</tr>
+</table>
+
+<!-- FOOTER - CONTAINS WEBSITE NAVIGATION AND CREATIVE COMMONS -->
+<footer>
+<br />
+<!-- NAVIGATION -->
+<a href="../Gatriex" class="style1">HOME</a> | <a href="About.html" class="style1">ABOUT</a>
+<br /><br />
+<!-- CREATIVE COMMONS -->
+<div class="Creative">
+This work is licensed under a <a class="Creative" rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
+</div>
+<!--<a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" style="float:right" width="60" height="20"></a>-->
+<br />
+<div style="font-size:12px">
+Gatriex isn't endorsed by Riot Games and doesn't reflect the views or opinions of Riot Games or anyone officially involved in producing or managing League of Legends.
+<br /> 
+League of Legends and Riot Games are trademarks or registered trademarks of Riot Games, Inc. League of Legends © Riot Games, Inc.
+</div>
+</footer>
+</body>
+</html>
