@@ -7,8 +7,6 @@
     $password = "password";
     $summoner = "SpeedOfHeat";
     
-    //var_dump(login($username, $password, true));
-    
     $test = regenerateToken($username);
     
     var_dump($test);

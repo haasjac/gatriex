@@ -1,6 +1,6 @@
 <?php
-    include($_SERVER['DOCUMENT_ROOT'] . '/credentials/riot.php');
-    include($_SERVER['DOCUMENT_ROOT'] . '/library/database.php');
+    require_once($_SERVER['DOCUMENT_ROOT'] . '/credentials/riot.php');
+    require_once($_SERVER['DOCUMENT_ROOT'] . '/library/database.php');
     $response = "";
     
     // Create connection

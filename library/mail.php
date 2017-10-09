@@ -1,7 +1,7 @@
 <?php
     declare(strict_types=1);
-    include_once($_SERVER['DOCUMENT_ROOT'] . '/library/database.php');
-    include_once($_SERVER['DOCUMENT_ROOT'] . '/library/response.php');
+    require_once($_SERVER['DOCUMENT_ROOT'] . '/library/database.php');
+    require_once($_SERVER['DOCUMENT_ROOT'] . '/library/response.php');
     
     function sendEmail($mail_to, $mail_subject, $mail_message): bool {
         $from_name = "Gatriex";

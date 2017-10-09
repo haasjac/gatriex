@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}Edit{% endblock %}
+{% block head %}
+    <link rel="stylesheet" type="text/css" href="/pages/edit/edit.css">
+    <script src="/pages/edit/edit.js"></script>
+{% endblock %}
+
+{% block content %}
+    <div id="edit" class="section">
+        <div class="mainHeaderDiv">
+            <span class="mainHeader">Edit Bookmarks</span>
+        </div>
+        <div class="content">
+	        <form id="form" style="margin-bottom:0;">
+	            <div id="listDiv">
+		            <ul id="editList"></ul> 
+		            <br />
+	                <ul id="addList">
+                        <li id="category_add" class="ui-state-default category">
+                            <div>
+                                Add Category: <input type="text" name="addCategory" id="addCategoryText" placeholder="Category" />
+                                <button type="button" class="ui-button addCategoryButton"><i class="fa fa-plus"></i></button>
+		                    </div>
+	                    </li>
+			       </ul>
+			    </div>
+		    </form>
+	    </div>
+	    <div class="formButtons">
+	        <button id="revertForm" class="ui-button"><i class="fa fa-refresh"></i> Revert Changes</button>
+	        <button id="submitForm" class="ui-button"><i class="fa fa-floppy-o"></i> Save Changes</button>
+	    </div>
+	</div>
+{% endblock %}
+
+{% block dialog %}
+	<div id="dialogBox" title="Save Changes">
+	    <div>
+	        Password: <input type="password" name="password" id="password" />
+	    </div>
+		<p id="dialogMessage"></p>
+	</div>
+{% endblock %}

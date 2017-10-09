@@ -1,6 +1,6 @@
 <?php
-    include($_SERVER['DOCUMENT_ROOT'] . '/library/mail.php');
-    include($_SERVER['DOCUMENT_ROOT'] . '/library/authentication.php');
+    require_once($_SERVER['DOCUMENT_ROOT'] . '/library/mail.php');
+    require_once($_SERVER['DOCUMENT_ROOT'] . '/library/authentication.php');
     
     $username = $_REQUEST["username"];
     

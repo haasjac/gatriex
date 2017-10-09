@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock %}
+{% block head %}
+    <link rel="stylesheet" type="text/css" href="/pages/home/home.css">
+    <script src="/pages/home/home.js"></script>
+{% endblock %}
+
+{% block content %}
+    <div id="nav" class="section">
+        <div class="mainHeaderDiv">
+            <span class="mainHeader">Bookmarks</span>
+            <a href="/edit" target="_blank" class="iconRight">
+                <i class="fa fa-pencil"></i>
+            </a>
+        </div>
+        <div class="content">
+            <dl id="navList"></dl>
+        </div>
+    </div>
+
+	<div id="content" >
+	    <div id="SummonerStats" class="section">
+    	    <div class="mainHeaderDiv">
+                <span class="mainHeader">Summoner Stats</span>
+                <i id="refreshSummoner" class="fa fa-refresh iconRight"></i>
+                <span id="SummonerError" class="errorIcon iconRight"></span>
+            </div>
+    		<div class="content">
+    		    <div>
+    		        <div>
+    		            <input type="text" name="searchSummonerName" placeholder="Summoner Name" id="searchSummonerName" />
+    		            <button id="searchButton" class="ui-button">Search</button>
+		            </div>
+    		        <div style="padding-top: 15px;">
+    		            <div style="float:left;">
+            				<img id="SummonerIcon" src="/images/Logo.png">
+            			</div>
+            			<div style="float:left; padding-left: 30px;">
+            				<div id="SummonerName"></div>
+            				<div id="League"></div>
+            				<div id="MiniSeries"></div>
+            			</div>
+            			<div style="clear: both;"></div>
+    		        </div>
+    			</div>
+    		</div>
+		</div>
+		<div id="ServerStatus" class="section">
+    		<div class="mainHeaderDiv">
+                <span class="mainHeader">Server Status<div id="Status" style="display:inline; text-transform:capitalize"> - North America</div></span>
+                <i id="refreshStatus" class="fa fa-refresh iconRight"></i>
+                <span id="StatusError" class="errorIcon iconRight"></span>
+            </div>
+    		<div class="content">
+    		    <div id="Incidents"></div>
+    		</div>
+		</div>
+	</div>
+	
+	<div style="clear: both;"></div>
+{% endblock %}
+
+{% block dialog %}
+    <div id="dialogBox" title="Error Updating Data">
+	    <div>
+	        Error code: <span id="errorCode"></span>
+	    </div>
+		<p id="dialogMessage"></p>
+	</div>
+{% endblock %}

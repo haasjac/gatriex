@@ -1,0 +1,107 @@
+@charset "utf-8";
+/* CSS Document */
+
+/* 
+	yellow - D0904C
+	blue - 1F3853
+*/
+
+html {
+	background-color: #1F3853;
+	background-image: url("/images/background.png");
+	height: 100%;
+}
+/* FONT FACE */
+@font-face {
+    font-family: 'kingsbridgeregular';
+    src: url('/fonts/kingsbridge-webfont.eot');
+    src: url('/fonts/kingsbridge-webfont.eot?#iefix') format('embedded-opentype'),
+         url('/fonts/kingsbridge-webfont.ttf') format('truetype'),
+         url('/fonts/kingsbridge-webfont.svg#kingsbridgeregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+	font-family: 'kingsbridgeregular';
+}
+
+#wrapper {
+    min-height: 100%;
+    width: 1200px;
+	margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+/* HEADER */
+#header {
+    color:#D0904C;
+    font-size:32px;
+    border-bottom: 2px solid #D0904C;
+    box-sizing: border-box;
+    padding-top: 20px;
+}
+
+#header img {
+    vertical-align: bottom;
+}
+
+#mydate {
+	display:inline;
+}
+
+/* MAIN */
+#main {
+    background-color: #E8E7E6;
+    display: flex;
+    flex: 1;
+    flex-direction: row;
+	width: 1200px;
+	margin-left: auto;
+    margin-right: auto;
+    margin: 10px 0;
+    box-sizing: border-box;
+	box-shadow: 0px 0px 10px 5px rgb(20,45,70);
+	min-height: min-content;
+}
+
+.section {
+    display: flex;
+	flex-direction: column;
+	flex: 1;
+	padding: 20px;
+    font-size:22px;
+	border: 1px solid #1F3853;
+	box-sizing: border-box;
+	min-height: min-content;
+}
+
+.mainHeader {
+    font-weight: bold;
+    font-size: 28px;
+    color: #1F3853;
+}
+
+.mainHeaderDiv {
+    margin-bottom: 15px;
+    line-height: 24px;
+}
+
+.content {
+    flex: 1;
+    min-height: min-content;
+}
+
+/* FOOTER */
+#footer {
+    color: #D0904C;
+    border-top: 2px solid #D0904C;
+    font-size: 12px;
+    text-align: center;
+    padding-bottom: 20px;
+}

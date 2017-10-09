@@ -1,5 +1,5 @@
 <?php
-    include($_SERVER['DOCUMENT_ROOT'] . '/library/database.php');
+    require_once($_SERVER['DOCUMENT_ROOT'] . '/library/database.php');
     
     $response = array();
     $headers = array();

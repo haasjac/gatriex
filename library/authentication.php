@@ -1,9 +1,9 @@
 <?php
     declare(strict_types=1);
-    include_once($_SERVER['DOCUMENT_ROOT'] . '/library/database.php');
-    include_once($_SERVER['DOCUMENT_ROOT'] . '/library/session.php');
-    include_once($_SERVER['DOCUMENT_ROOT'] . '/library/response.php');
-    include_once($_SERVER['DOCUMENT_ROOT'] . '/credentials/authentication.php');
+    require_once($_SERVER['DOCUMENT_ROOT'] . '/library/database.php');
+    require_once($_SERVER['DOCUMENT_ROOT'] . '/library/session.php');
+    require_once($_SERVER['DOCUMENT_ROOT'] . '/library/response.php');
+    require_once($_SERVER['DOCUMENT_ROOT'] . '/credentials/authentication.php');
 
     function encrypt_auth ($data): string {
         global $secret_key, $iv_size, $encrypt_method;
@@ -192,9 +192,12 @@
         $user = "";
         if (isset($_SESSION['User'])) {
             $user = $_SESSION['User'];
-        } else if (isset($_COOKIE["Auth_Id"])) {
-            $user = decrypt_auth($_COOKIE["Auth_Id"]);
-            $_SESSION['User'] = $user;
+        } else if (isset($_COOKIE["Auth_Id"]) && isset($_COOKIE["Auth_Token"])) {
+            $result = validateUserFromToken($_COOKIE["Auth_Id"], $_COOKIE["Auth_Token"]);
+            if ($result->valid) {
+                $user = $result->data["Username"];
+                $_SESSION['User'] = $user;
+            }
         }
         
         return $user;
