@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="/font-awesome-4.7.0/css/font-awesome.min.css" />
     <script src="/jquery-ui-1.12.1.custom/jquery.js"></script>
     <script src="/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
+    <script src="/js/account.js"></script>
     <script src="/js/date.js"></script>
     {% block head %}{% endblock %}
 </head>
@@ -17,9 +18,25 @@
 <body>
     <div id="wrapper">
         <div id="header">
-            <div>
-                <span><a href="/"><img src="/images/Logo.png" width="100" height="100" /></a></span>
-                <div id="mydate"></div>
+            <div id="headerLogoDiv">
+                <a href="/"><img src="/images/Logo.png" /></a>
+            </div>
+            <div id="headerLeftDiv">
+                
+                <div id="headerLeftText">
+                    <div id="headerTitle">Gatriex</div>
+                    <div id="headerDate"></div>
+                </div>
+            </div>
+            <div id="headerRightDiv">
+                <span id="headerRightText">
+                    <div id="headerUsername">{{ Username }}</div>
+                    {% if Username is empty %}
+                        <div id="headerLog" data-log="login">Login</div>
+                    {% else %}
+                        <div id="headerLog" data-log="logout">Logout</div>
+                    {% endif %}
+                </span>
             </div>
         </div>
         
@@ -34,6 +51,18 @@
         </div>
     </div>
     
+    <div id="loginDialogBox" title="Login">
+	    <form id="loginForm">
+            Username: <input type="text" name="username" id="loginUsername" /><br>
+            Password: <input type="password" name="password" id="loginPassword" /><br>
+        </form>
+		<p id="loginDialogMessage"></p>
+	</div>
+	<div id="logoutDialogBox" title="Logout">
+		<p id="logoutDialogMessage">
+		    Are you sure you want to logout?
+		</p>
+	</div>
 	{% block dialog %}{% endblock %}
 </body>
 </html>

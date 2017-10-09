@@ -43,17 +43,58 @@ body {
     color:#D0904C;
     font-size:32px;
     border-bottom: 2px solid #D0904C;
-    box-sizing: border-box;
-    padding-top: 20px;
+    padding: 5px 10px;
+    display: flex;
+    flex-direction: row;
+    margin-top: 20px;
 }
 
-#header img {
-    vertical-align: bottom;
+#headerLogoDiv {
+    padding-right: 20px;
 }
 
-#mydate {
-	display:inline;
+    #header img {
+        vertical-align: bottom;
+        height: 90px;
+        width: 90px;
+    }
+
+#headerLeftDiv, #headerRightDiv {
+    display: flex;
+    flex: 1;
 }
+
+    #headerLeftText {
+        display: flex;
+        flex-direction: column;
+    }
+    
+        #headerTitle {
+            font-size: 42px;
+            font-weight: bold;
+        }
+        
+        #headerDate {
+            margin-top: auto;
+        }
+    
+    #headerRightText {
+        margin-left: auto;
+        display: flex;
+        flex-direction: column;
+    }
+    
+        #headerUsername {
+            text-align: right;
+            font-weight: bold;
+            /*cursor: pointer;*/
+        }
+        
+        #headerLog {
+            text-align: right;
+            margin-top: auto;
+            cursor: pointer;
+        }
 
 /* MAIN */
 #main {

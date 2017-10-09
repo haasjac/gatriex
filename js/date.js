@@ -11,8 +11,8 @@ function myDate() {
 	var hour = (d.getHours() % 12 === 0 ? 12 : d.getHours() % 12);
 	var minutes = ((d.getMinutes() < 10) ? "0" + d.getMinutes() : d.getMinutes());
 	var time = days[d.getDay()] + ", " + months[d.getMonth()] + " " + d.getDate() + " " + hour + ":" + minutes + " " + mod;
-	if ($("#mydate").html() != time) {
-	    $("#mydate").html(time);
+	if ($("#headerDate").html() != time) {
+	    $("#headerDate").html(time);
 	}
 	setTimeout(myDate, 1000);
 }
