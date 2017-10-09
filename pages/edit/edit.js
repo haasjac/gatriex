@@ -35,10 +35,11 @@ $(function () {
 			var header = $('<div>' +
 				'<i class="fa fa-arrows-v"></i>' +
 				' Category: <input type="text" name="header_' + list_num + '" id="header_' + list_num + '" value="' + contentData[list_num].header + '" /> ' +
-				'<button type="button" id="delete_button_' + list_num + '" class="ui-button deleteCategoryButton"><i class="fa fa-remove"></i></button>' +
+				'<button class="ui-button collapseButton" data-num="' + list_num + '"><i class="fa fa-compress"></i> <span>Collaspe</span></button>' +
+				'<button id="delete_button_' + list_num + '" class="ui-button deleteCategoryButton"><i class="fa fa-remove"></i></button>' +
 				'</div>');
 				
-			var addList = $('<ul class="addList"></ul>');
+			var addList = $('<ul class="addList" id="addList_' + list_num + '"></ul>');
 			var footer = $('<li class="ui-state-default item" id="list_' + list_num + '_add_item"></li>');
 			footer.append('Add Bookmark');
 			footer.append('<button type="button" id="button_' + list_num + '" class="ui-button addButton"><i class="fa fa-plus"></i></button>');
@@ -93,60 +94,11 @@ $(function () {
 	    });
 	    
 	    $('#revertForm').click(function() {
-	        //$('#dialogMessage').html("");
-	        //$('#password').val("");
-	        //$('#dialogBox').dialog("open");
 	        getContent();
 	    });
 	    
 		$("#form").submit(function (e) {
-
 			e.preventDefault();
-
-			var data = [];
-
-			var categories = $("#editList").sortable("toArray");
-
-			for (var i = 0; i < categories.length; i++) {
-				var list_num = categories[i].replace(/category_/g, "");
-				var header = $("#header_" + list_num).val();
-				var items = $("#list_" + list_num).sortable("toArray");
-				var category = {};
-				category.header = header;
-				category.items = [];
-				for (var j = 0; j < items.length; j++) {
-					var item_list_num = items[j].replace(/_item_\d+/g, "").replace(/list_/g, "");
-					var item_id = items[j].replace(/list_\d+/g, "").replace(/_item_/g, "");
-					var obj = {
-						text: $("#list_" + item_list_num + "_text_" + item_id).val(),
-						link: $("#list_" + item_list_num + "_link_" + item_id).val()
-					};
-					category.items.push(obj);
-				}
-				if (category.header === "") {
-				    $('#dialogMessage').html('<i class="fa fa-exclamation-triangle"></i> Error: Categories must have a name.');
-				    return false;
-				}
-				if (category.items.length <= 0) {
-				    $('#dialogMessage').html('<i class="fa fa-exclamation-triangle"></i> Error:<br>Category "' + category.header + '" contains no bookmarks.<br><br>Categories must contain at least one bookmark.');
-				    return false;
-				}
-				data.push(category);
-			}
-
-			var jsonData = JSON.stringify({ "data" : data, "password" : $('#password').val() });
-			$.ajax({
-				url: '/api/edit/SetLinks.php',
-				type: 'POST',
-				contentType: 'application/json',
-				data: jsonData,
-				success: function (data) {
-				    $('#dialogMessage').html('<i class="fa fa-check-circle"></i> Changes were successfully saved.');
-				},
-				error: function (xhr, status, error) {
-				    $('#dialogMessage').html('<i class="fa fa-exclamation-triangle"></i> Error: ' + xhr.responseText);
-				}
-			});
 			return false;
 		});
 
@@ -180,10 +132,11 @@ $(function () {
 			var header = $('<div>' +
 				'<i class="fa fa-arrows-v"></i>' +
 				' Category: <input type="text" name="header_' + list_count + '" id="header_' + list_count + '" placeholder="Category" value="' + $('#addCategoryText').val() + '"/> ' +
+				'<button class="ui-button collapseButton" data-num="' + list_count + '"><i class="fa fa-compress"></i> <span>Collaspe</span></button>' +
 				'<button type="button" id="delete_button_' + list_count + '" class="ui-button deleteCategoryButton"><i class="fa fa-remove"></i></button>' +
 				'</div>');
 				
-			var addList = $('<ul class="addList"></ul>');
+			var addList = $('<ul class="addList" id="addList_' + list_count + '"></ul>');
 			var footer = $('<li class="ui-state-default item" id="list_' + list_count + '_add_item"></li>');
 			footer.append('Add Bookmark');
 			footer.append('<button type="button" id="button_' + list_count + '" class="ui-button addButton"><i class="fa fa-plus"></i></button>');
@@ -209,17 +162,95 @@ $(function () {
 			$('#' + item).remove();
 		});
 		
+		$("#editList").on("click", ".collapseButton", function () {
+			var list_num = $(this).attr("data-num");
+			var i = $(this).find("i");
+			var span = $(this).find("span");
+			if (i.hasClass("fa-compress")) {
+			    span.html("Expand");
+			} else {
+			    span.html("Collapse");
+			}
+			i.toggleClass("fa-compress");
+			i.toggleClass("fa-expand");
+			$("#list_" + list_num).toggle();
+			$("#addList_" + list_num).toggle();
+		});
+		
+		$("#collapseAll").click(function () {
+		    $.each($(".collapseButton"), function() {
+		        if ($(this).find("i").hasClass("fa-compress")) {
+		            $(this).click(); 
+		        }
+		    });
+		});
+		
+		$("#expandAll").click(function () {
+		    $.each($(".collapseButton"), function() {
+		        if ($(this).find("i").hasClass("fa-expand")) {
+		            $(this).click(); 
+		        }
+		    });
+		});
+		
 		$("#dialogBox").dialog({
 			autoOpen: false,
 			modal: true,
 			width: 400,
 			buttons: {
 			    Save: function () {
-					$("#form").submit();
+					saveChanges();
 				},
 				Close: function () {
 					$(this).dialog("close");
 				}
+			}
+		});
+	}
+	
+	function saveChanges() {
+	    var data = [];
+
+		var categories = $("#editList").sortable("toArray");
+
+		for (var i = 0; i < categories.length; i++) {
+			var list_num = categories[i].replace(/category_/g, "");
+			var header = $("#header_" + list_num).val();
+			var items = $("#list_" + list_num).sortable("toArray");
+			var category = {};
+			category.header = header;
+			category.items = [];
+			for (var j = 0; j < items.length; j++) {
+				var item_list_num = items[j].replace(/_item_\d+/g, "").replace(/list_/g, "");
+				var item_id = items[j].replace(/list_\d+/g, "").replace(/_item_/g, "");
+				var obj = {
+					text: $("#list_" + item_list_num + "_text_" + item_id).val(),
+					link: $("#list_" + item_list_num + "_link_" + item_id).val()
+				};
+				category.items.push(obj);
+			}
+			if (category.header === "") {
+			    $('#dialogMessage').html('<i class="fa fa-exclamation-triangle"></i> Error: Categories must have a name.');
+			    return false;
+			}
+			if (category.items.length <= 0) {
+			    $('#dialogMessage').html('<i class="fa fa-exclamation-triangle"></i> Error:<br>Category "' + category.header + '" contains no bookmarks.<br><br>Categories must contain at least one bookmark.');
+			    return false;
+			}
+			data.push(category);
+		}
+
+		var jsonData = JSON.stringify({ "data" : data, "password" : $('#password').val() });
+		$.ajax({
+			url: '/api/edit/SetLinks.php',
+			type: 'POST',
+			contentType: 'application/json',
+			data: jsonData,
+			success: function (data) {
+			    $('#dialogMessage').html('<i class="fa fa-check-circle"></i> Changes were successfully saved.');
+			},
+			error: function (xhr, status, error) {
+			    $('#dialogMessage').html('<i class="fa fa-exclamation-triangle"></i> Error: ' + xhr.responseText);
 			}
 		});
 	}
