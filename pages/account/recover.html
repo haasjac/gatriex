@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}Recover{% endblock %}
+{% block head %}
+    <link rel="stylesheet" type="text/css" href="/pages/account/account.css">
+    <script src="/pages/account/account.js"></script>
+{% endblock %}
+
+{% block content %}
+    <div id="recoverDiv" class="section">
+            <div class="centerSection">
+            <div class="mainHeaderDiv">
+                <span class="mainHeader">Recover Account</span>
+            </div>
+            <div class="content">
+                <form id="recoverUsernameForm">
+                    <fieldset>
+                        <legend>Recover Username:</legend>
+                        <div class="recoverRight">
+                            <label for="recoverUsernameEmail"></label>Email: 
+                            <input type="text" name="recoverUsernameEmail" id="recoverUsernameEmail" />
+                            <button id="recoverUsernameButton" class="ui-button">Send Email</button>
+                        </div>
+                    </fieldset>
+                    <div id="recoverUsernameMessage"></div>
+                </form>
+                <br>
+                <form id="recoverPasswordForm">
+                    <fieldset>
+                        <legend>Recover Password:</legend>
+                        <div class="recoverRight">
+                            <label for="recoverPasswordUsername"></label>Username: 
+                            <input type="text" name="recoverPasswordUsername" id="recoverPasswordUsername" />
+                            <button id="recoverPasswordButton" class="ui-button">Send Email</button>
+                        </div>
+                    </fieldset>
+                    <div id="recoverPasswordMessage"></div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block dialog %}
+    <div id="createDialogBox" title="Error">
+		<div id="createDialogMessage">
+		</div>
+	</div>
+{% endblock %}

@@ -1,3 +1,7 @@
+#main {
+    flex-direction: row;
+}
+
 #content {
     display: flex;
     flex-direction: column;
@@ -113,24 +117,4 @@
 .timestamp {
     font-size: 16px;
     padding-top: 5px;
-}
-
-/* GREEN */       
-.fa-check-circle {
-    color: #008000;
-}
-
-/* YELLOW */ 
-.fa-minus-circle, .fa-clock-o {
-    color: #D0904C;
-}
-
-/* RED */ 
-.fa-times-circle {
-    color: #8b0000;
-}
-
-/* BLUE */
-.fa-info-circle {
-    color: #1F3853;
 }

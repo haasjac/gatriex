@@ -273,9 +273,10 @@
         if ($valid) {
             try {
                 $hash_password = password_hash($password, PASSWORD_DEFAULT);
-                $stmt = $db->prepare("UPDATE User_Auth SET Forget_Token = ?, Password = ? WHERE Username = ?");
-                $stmt->execute(array("", $hash_password, $username));
+                $stmt = $db->prepare("UPDATE User_Auth SET Forget_Token = ?, Forget_Token_Expiry = ?, Password = ? WHERE Username = ?");
+                $stmt->execute(array("", "", $hash_password, $username));
             } catch(PDOException $ex) {
+                http_response_code(500);
                 $response->data["Error"] = $ex->getMessage();
                 $response->valid = false;
                 return $response;
@@ -306,7 +307,7 @@
             $user = $result->data["Username"];
             $token = $result->data["Auth_Token"];
             
-            $time = ($remember ? time() + 60*60*24*30 : 0); // 30 days or session
+            $time = ($remember ? time() + 60*60*24*365 : 0); // 1 year or session
             setrawcookie("Auth_Id", encrypt_auth($user), $time, "/", "gatriex.com", true, true);
             setrawcookie("Auth_Token", encrypt_auth($token), $time, "/", "gatriex.com", true, true);
             startSession();

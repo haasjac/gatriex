@@ -3,9 +3,9 @@
     
     $username = $_REQUEST["username"];
     $password = $_REQUEST["password"];
-    $token = $_REQUEST["token"];
+    $remember = $_REQUEST["remember"];
     
-    $result = resetPasswordFromForgetToken($username, $password, $token);
+    $result = login($username, $password, $remember);
     
     echo json_encode($result);
 ?>

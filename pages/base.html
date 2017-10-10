@@ -1,15 +1,18 @@
 <!DOCTYPE html>
 
+{% import "macros/flexForm.html" as flexForm %}
+
 <html>
 <head>
     <title>{% block title %}{% endblock %} - Gatriex</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <link rel="shortcut icon" href="/images/favicon.ico">
-    <link rel="stylesheet" type="text/css" href="/css/gatriex.css">
     <link rel="stylesheet" href="/jquery-ui-1.12.1.custom/jquery-ui.min.css" />
     <link rel="stylesheet" href="/font-awesome-4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="/css/gatriex.css">
     <script src="/jquery-ui-1.12.1.custom/jquery.js"></script>
     <script src="/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
+    <script src="/js/dialog.js"></script>
     <script src="/js/account.js"></script>
     <script src="/js/date.js"></script>
     {% block head %}{% endblock %}
@@ -52,16 +55,33 @@
     </div>
     
     <div id="loginDialogBox" title="Login">
-	    <form id="loginForm">
-            Username: <input type="text" name="username" id="loginUsername" /><br>
-            Password: <input type="password" name="password" id="loginPassword" /><br>
-        </form>
-		<p id="loginDialogMessage"></p>
+        <div id="loginDialogDiv">
+            <div id="loginDialogTop">
+                <form id="loginForm" class="flexForm">
+                        {{ flexForm.input('Username', 'loginUsername', 'text') }}
+                        {{ flexForm.input('Password', 'loginPassword', 'password') }}
+                        {{ flexForm.input('Remember Me', 'loginRemember', 'checkbox') }}
+                </form>
+                <div id="loginDialogMessage"></div>
+            </div>
+            <div id="loginDialogBottom">
+                <div id="loginDialogForgot">
+                    <a href="/account/recover.php">
+                        Recover Account
+                    </a>
+                </div>
+                <div id="loginDialogSignUp">
+                    <a href="/account/register.php">
+                        Register
+                    </a>
+                </div>
+            </div>
+        </div>
 	</div>
 	<div id="logoutDialogBox" title="Logout">
-		<p id="logoutDialogMessage">
+		<div id="logoutDialogMessage">
 		    Are you sure you want to logout?
-		</p>
+		</div>
 	</div>
 	{% block dialog %}{% endblock %}
 </body>

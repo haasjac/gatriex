@@ -6,7 +6,7 @@
     function sendEmail($mail_to, $mail_subject, $mail_message): bool {
         $from_name = "Gatriex";
         $from_mail = "DoNotReply@Gatriex.com";
-        
+        $mail_subject .= " - " . date("r (T)");
         
         $encoding = "utf-8";
     
@@ -61,6 +61,10 @@
         
         $response->valid = sendEmail($mail_to, $mail_subject, $mail_message);
         
+        if (!$response->valid) {
+            $response->data["Error"] = "Email failed to send.";
+        }
+        
         return $response;
     }
 
@@ -99,6 +103,10 @@
         $mail_message .= $url;
         
         $response->valid = sendEmail($mail_to, $mail_subject, $mail_message);
+        
+        if (!$response->valid) {
+            $response->data["Error"] = "Email failed to send.";
+        }
         
         return $response;
     }

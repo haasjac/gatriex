@@ -1,0 +1,29 @@
+{% macro input(label, id, type, placeholder, value) %}
+    <div class="flexFormField">
+        <div class="flexFormCell">
+            <label for="{{ id }}">{{ label }}:</label>
+        </div>
+        <div class="flexFormCell">
+            <input type="{{ type }}" name="{{ id }}" id="{{ id }}" placeholder="{{ placeholder }}" value="{{ value }}" />
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro hiddenInput(id, value) %}
+    <div class="flexFormField">
+        <div class="flexFormCell">
+            <input type="hidden" name="{{ id }}" id="{{ id }}" value="{{ value }}" />
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro button(label, id) %}
+    <div class="flexFormField">
+        <div class="flexFormCell">
+            
+        </div>
+        <div class="flexFormCell flexFormCellRight">
+            <button id="{{ id }}" class="ui-button">{{ label }}</button>
+        </div>
+    </div>
+{% endmacro %}
