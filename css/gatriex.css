@@ -152,11 +152,12 @@ body {
 a {
     text-decoration: none;
     color: #D0904C;
+    color: #1F3853;
 }
 
     a:hover {
         color: #1F3853;
-        //color: #D0904C;
+        color: #D0904C;
     }
     
 input {
@@ -182,7 +183,7 @@ input {
     text-align: right;
 }
 
-.flexForm input {
+.flexForm input, .fakeCheck {
     margin-left: 15px;
     font-size: 22px;
 }
@@ -255,9 +256,9 @@ input {
 }
 
 .ui-widget-content a {
-    color: #D0904C;
+    color: #1F3853;
 }
 
 .ui-widget-content a:hover {
-    color: #1F3853;
+    color: #D0904C;
 }

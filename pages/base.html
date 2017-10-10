@@ -13,6 +13,7 @@
     <script src="/jquery-ui-1.12.1.custom/jquery.js"></script>
     <script src="/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
     <script src="/js/dialog.js"></script>
+    <script src="/js/checkbox.js"></script>
     <script src="/js/account.js"></script>
     <script src="/js/date.js"></script>
     {% block head %}{% endblock %}
@@ -60,19 +61,19 @@
                 <form id="loginForm" class="flexForm">
                         {{ flexForm.input('Username', 'loginUsername', 'text') }}
                         {{ flexForm.input('Password', 'loginPassword', 'password') }}
-                        {{ flexForm.input('Remember Me', 'loginRemember', 'checkbox') }}
+                        {{ flexForm.inputCheckbox('Remember Me', 'loginRemember') }}
                 </form>
                 <div id="loginDialogMessage"></div>
             </div>
             <div id="loginDialogBottom">
                 <div id="loginDialogForgot">
                     <a href="/account/recover.php">
-                        Recover Account
+                        <i class="fa fa-question-circle-o"></i> Recover Account
                     </a>
                 </div>
                 <div id="loginDialogSignUp">
                     <a href="/account/register.php">
-                        Register
+                        <i class="fa fa-address-book-o"></i> Register
                     </a>
                 </div>
             </div>

@@ -10,9 +10,11 @@
     <div id="nav" class="section">
         <div class="mainHeaderDiv">
             <span class="mainHeader">Bookmarks</span>
+            {% if Username is not empty %}
             <a href="/edit" target="_blank" class="iconRight">
                 <i class="fa fa-pencil"></i>
             </a>
+            {% endif %}
         </div>
         <div class="content">
             <dl id="navList"></dl>
