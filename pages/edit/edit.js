@@ -82,7 +82,7 @@ $(function () {
 			start: function (e, ui) {
 				ui.placeholder.height(ui.item.height());
 			},
-			connectWith: ".list",
+			connectWith: ".list"
 		});
     }
 
@@ -240,12 +240,15 @@ $(function () {
 			data.push(category);
 		}
 
-		var jsonData = JSON.stringify({ "data" : data, "password" : $('#password').val() });
+		var postData = { 
+                    "data" : data, 
+                    "password" : $('#password').val() 
+                };
 		$.ajax({
 			url: '/api/edit/SetLinks.php',
 			type: 'POST',
 			contentType: 'application/json',
-			data: jsonData,
+			data: postData,
 			success: function (data) {
 			    $('#dialogMessage').html('<i class="fa fa-check-circle"></i> Changes were successfully saved.');
 			},
