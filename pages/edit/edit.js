@@ -241,13 +241,12 @@ $(function () {
 		}
 
 		var postData = { 
-                    "data" : data, 
-                    "password" : $('#password').val() 
-                };
+            "data" : data, 
+            "password" : $('#password').val() 
+        };
 		$.ajax({
 			url: '/api/edit/SetLinks.php',
 			type: 'POST',
-			contentType: 'application/json',
 			data: postData,
 			success: function (data) {
 			    $('#dialogMessage').html('<i class="fa fa-check-circle"></i> Changes were successfully saved.');
