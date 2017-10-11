@@ -1,11 +1,10 @@
 <?php
-    require_once($_SERVER['DOCUMENT_ROOT'] . '/library/database.php');
-    require_once($_SERVER['DOCUMENT_ROOT'] . '/library/authentication.php');
+    require_once(filter_input(INPUT_SERVER, "DOCUMENT_ROOT", FILTER_SANITIZE_STRING) . '/library/libraries.php');
     
     $response = array();
     $headers = array();
     
-    $user = getCurrentUser();
+    $user = $authentication->getCurrentUser();
     if ($user === "") {
         $user = "admin";
     }

@@ -59,7 +59,7 @@
 
             $mail_message .= "Your Username is: <b>" . $username . "</b>";
 
-            $response->valid = sendEmail($mail_to, $mail_subject, $mail_message);
+            $response->valid = $this->sendEmail($mail_to, $mail_subject, $mail_message);
 
             if (!$response->valid) {
                 $response->data["Error"] = "Email failed to send.";
@@ -102,7 +102,7 @@
 
             $mail_message .= $url;
 
-            $response->valid = sendEmail($mail_to, $mail_subject, $mail_message);
+            $response->valid = $this->sendEmail($mail_to, $mail_subject, $mail_message);
 
             if (!$response->valid) {
                 $response->data["Error"] = "Email failed to send.";

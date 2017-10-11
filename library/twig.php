@@ -9,8 +9,10 @@
     ));
     
     function getTwigOptions(): Array {
+        global $authentication;
+        
         $twig_options = array();
-        $user = getCurrentUser();
+        $user = $authentication->getCurrentUser();
         
         $twig_options["Username"] = $user;
         

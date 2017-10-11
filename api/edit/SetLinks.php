@@ -1,10 +1,7 @@
 <?php
-    require_once($_SERVER['DOCUMENT_ROOT'] . '/library/database.php');
-    require_once($_SERVER['DOCUMENT_ROOT'] . '/library/response.php');
-    require_once($_SERVER['DOCUMENT_ROOT'] . '/library/authentication.php');
-    require_once($_SERVER['DOCUMENT_ROOT'] . '/library/response.php');
+    require_once(filter_input(INPUT_SERVER, "DOCUMENT_ROOT", FILTER_SANITIZE_STRING) . '/library/libraries.php');
     
-    $data = $_REQUEST["data"];
+    $data = $input->getPost("data");
     
     if (!isset($data)) {
         $response = new Response();
@@ -14,17 +11,9 @@
         return;
     }
     
-    if (isset($_COOKIE["Auth_Id"]) && isset($_COOKIE["Auth_Token"])) {
-        $result = validateUserFromToken($_COOKIE["Auth_Id"], $_COOKIE["Auth_Token"]);
-        if (!$result->valid) {
-            echo json_encode($result);
-            return;
-        }
-    } else {
-        $response = new Response();
-        $response->data["Error"] = "Credentials have expired.";
-        $response->valid = false;
-        echo json_encode($response);
+    $result = $authentication->validateUserFromToken($input->getCookie("Auth_Id"), $input->getCookie("Auth_Token"));
+    if (!$result->valid) {
+        echo json_encode($result);
         return;
     }
     

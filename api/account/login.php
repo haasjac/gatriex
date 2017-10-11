@@ -1,11 +1,11 @@
 <?php
-    require_once($_SERVER['DOCUMENT_ROOT'] . '/library/authentication.php');
+    require_once(filter_input(INPUT_SERVER, "DOCUMENT_ROOT", FILTER_SANITIZE_STRING) . '/library/libraries.php');
     
-    $username = $_REQUEST["username"];
-    $password = $_REQUEST["password"];
-    $remember = $_REQUEST["remember"];
+    $username = $input->getPost("username");
+    $password = $input->getPost("password");
+    $remember = $input->getPost("remember");
     
-    $result = login($username, $password, $remember);
+    $result = $authentication->login($username, $password, $remember);
     
     echo json_encode($result);
 ?>

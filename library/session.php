@@ -8,7 +8,7 @@
         }
 
         function endSession() {
-            startSession();
+            $this->startSession();
 
             // Unset all of the session variables.
             $_SESSION = array();

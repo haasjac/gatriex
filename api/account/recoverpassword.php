@@ -1,13 +1,12 @@
 <?php
-    require_once($_SERVER['DOCUMENT_ROOT'] . '/library/mail.php');
-    require_once($_SERVER['DOCUMENT_ROOT'] . '/library/authentication.php');
+    require_once(filter_input(INPUT_SERVER, "DOCUMENT_ROOT", FILTER_SANITIZE_STRING) . '/library/libraries.php');
     
-    $username = $_REQUEST["username"];
+    $username = $input->getPost("username");
     
-    $result = generateForgetToken($username);
+    $result = $authentication->generateForgetToken($username);
     
     if ($result->valid) { 
-        $result = sendForgetPasswordEmail($username, $result->data["Token"]);
+        $result = $mail->sendForgetPasswordEmail($username, $result->data["Token"]);
     }
     
     echo json_encode($result);

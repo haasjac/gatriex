@@ -12,8 +12,12 @@
             return $this->getInput(INPUT_COOKIE, $cookie, FILTER_SANITIZE_STRING);
         }
         
-        function getPOST($param) {
-            return $this->get_input(INPUT_POST, $param);
+        function getPost($param) {
+            return $this->getInput(INPUT_POST, $param);
+        }
+        
+        function getGet($param) {
+            return $this->getInput(INPUT_GET, $param);
         }
     }
     

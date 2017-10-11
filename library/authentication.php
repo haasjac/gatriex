@@ -203,7 +203,7 @@
             if (isset($_SESSION['User'])) {
                 $user = $_SESSION['User'];
             } else {
-                $result = validateUserFromToken($input->getCookie("Auth_Id"), $input->getCookie("Auth_Token"));
+                $result = $this->validateUserFromToken($input->getCookie("Auth_Id"), $input->getCookie("Auth_Token"));
                 if ($result->valid) {
                     $user = $result->data["Username"];
                     $_SESSION['User'] = $user;
@@ -224,7 +224,7 @@
 
             $hash_token = password_hash($token, PASSWORD_DEFAULT);
 
-            $encrypt_token = encrypt_auth($token);
+            $encrypt_token = $this->encrypt_auth($token);
 
             $time = date("Y-m-d H:i:s", time() + 60*60*24); // one day
 

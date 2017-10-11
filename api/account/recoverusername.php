@@ -1,9 +1,9 @@
 <?php
-    require_once($_SERVER['DOCUMENT_ROOT'] . '/library/mail.php');
+    require_once(filter_input(INPUT_SERVER, "DOCUMENT_ROOT", FILTER_SANITIZE_STRING) . '/library/libraries.php');
     
-    $email = $_REQUEST["email"];
+    $email = $input->getPost("email");
     
-    $result = sendForgetUsernameEmail($email);
+    $result = $mail->sendForgetUsernameEmail($email);
     
     echo json_encode($result);
 ?>
