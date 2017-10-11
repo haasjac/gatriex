@@ -1,9 +1,9 @@
 <?php
     declare(strict_types=1);
-    require_once ($_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php');
-    require_once ($_SERVER['DOCUMENT_ROOT'] . '/library/authentication.php');
+    require_once (filter_input(INPUT_SERVER, "DOCUMENT_ROOT", FILTER_SANITIZE_STRING) . '/vendor/autoload.php');
+    require_once (filter_input(INPUT_SERVER, "DOCUMENT_ROOT", FILTER_SANITIZE_STRING) . '/library/authentication.php');
     
-    $loader = new Twig_Loader_Filesystem($_SERVER['DOCUMENT_ROOT'] . '/pages');
+    $loader = new Twig_Loader_Filesystem(filter_input(INPUT_SERVER, "DOCUMENT_ROOT", FILTER_SANITIZE_STRING) . '/pages');
     $twig = new Twig_Environment($loader, array(
         //'cache' => 'compilation_cache',
     ));
