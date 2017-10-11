@@ -1,5 +1,5 @@
 <?php
-    require_once(filter_input(INPUT_SERVER, "DOCUMENT_ROOT", FILTER_SANITIZE_STRING) . '/credentials/riot.php');
+    require_once($_SERVER['DOCUMENT_ROOT'] . '/credentials/riot.php');
     
     function api_call($url) {
         global $api_token;

@@ -1,9 +1,9 @@
 <?php
-    require_once(filter_input(INPUT_SERVER, "DOCUMENT_ROOT", FILTER_SANITIZE_STRING) . '/library/database.php');
-    require_once(filter_input(INPUT_SERVER, "DOCUMENT_ROOT", FILTER_SANITIZE_STRING) . '/library/session.php');
-    require_once(filter_input(INPUT_SERVER, "DOCUMENT_ROOT", FILTER_SANITIZE_STRING) . '/library/response.php');
-    require_once(filter_input(INPUT_SERVER, "DOCUMENT_ROOT", FILTER_SANITIZE_STRING) . '/library/input.php');
-    require_once(filter_input(INPUT_SERVER, "DOCUMENT_ROOT", FILTER_SANITIZE_STRING) . '/credentials/authentication.php');
+    require_once($_SERVER['DOCUMENT_ROOT'] . '/library/database.php');
+    require_once($_SERVER['DOCUMENT_ROOT'] . '/library/session.php');
+    require_once($_SERVER['DOCUMENT_ROOT'] . '/library/response.php');
+    require_once($_SERVER['DOCUMENT_ROOT'] . '/library/input.php');
+    require_once($_SERVER['DOCUMENT_ROOT'] . '/credentials/authentication.php');
 
     class myAuthentication {
         function encrypt_auth ($data): string {

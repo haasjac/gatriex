@@ -1,5 +1,5 @@
 <?php
-    require_once(filter_input(INPUT_SERVER, "DOCUMENT_ROOT", FILTER_SANITIZE_STRING) . '/library/libraries.php');
+    require_once($_SERVER['DOCUMENT_ROOT'] . '/library/libraries.php');
     
     $authentication->logout();
 ?>
