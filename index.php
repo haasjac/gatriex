@@ -2,7 +2,7 @@
     require_once ($_SERVER['DOCUMENT_ROOT'] . '/library/twig.php');
     require_once ($_SERVER['DOCUMENT_ROOT'] . '/library/database.php');
     
-    $template = $twig->load('home/home.html');
+    $template = $twig->load('home/home.twig');
     $twig_options = getTwigOptions();
     
     if ($twig_options["Username"] !== "") {

@@ -1,7 +1,7 @@
 <?php
     require_once ($_SERVER['DOCUMENT_ROOT'] . '/library/twig.php');
     
-    $template = $twig->load('account/resetpassword.html');
+    $template = $twig->load('account/resetpassword.twig');
     $twig_options = getTwigOptions();
     
     $token = "";
