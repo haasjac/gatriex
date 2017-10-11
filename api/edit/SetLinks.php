@@ -64,7 +64,7 @@
         $db->commit();
         $response = new Response();
         $response->valid = true;
-        echo json_encode($result);
+        echo json_encode($response);
         return;
     } catch (PDOException $ex) {
         http_response_code(500);
