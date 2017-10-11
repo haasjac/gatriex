@@ -226,8 +226,7 @@ $(function () {
 		}
 
 		var postData = { 
-            "data" : data, 
-            "password" : $('#password').val() 
+            "data" : data
         };
 		$.ajax({
 			url: '/api/edit/SetLinks.php',

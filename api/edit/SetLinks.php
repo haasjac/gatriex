@@ -1,7 +1,7 @@
 <?php
     require_once($_SERVER['DOCUMENT_ROOT'] . '/library/libraries.php');
     
-    $data = $input->getPost("data");
+    $data = $_REQUEST["data"];
     
     if (!isset($data)) {
         $response = new Response();
