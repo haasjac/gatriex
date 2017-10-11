@@ -27,20 +27,8 @@
     
     $user = $result->data["Username"];
     
-    $result = $db->prepare("SELECT text, link, header FROM Links WHERE Username = ?");
-        $result->execute(array($user));
-        while($row = $result->fetch(PDO::FETCH_ASSOC)) {
-            if (!isset($headers[$row["header"]])) {
-                $headers[$row["header"]] = array();
-            }
-            $item = array();
-            $item["text"] = $row["text"]; 
-            $item["link"] = $row["link"];
-            array_push($headers[$row["header"]], $item);
-        }
-    
     try {
-        $conn->beginTransaction();
+        $db->beginTransaction();
         
         $result = $db->prepare("DELETE FROM `Links` WHERE Username = ?");
         $result->execute(array($user));
@@ -70,10 +58,10 @@
         
         $stmt->execute($value_data);
         
-        $conn->commit();
+        $db->commit();
     } catch (PDOException $ex) {
         http_response_code(500);
         echo $ex;
-        $conn->rollBack();
+        $db->rollBack();
     }
 ?>
