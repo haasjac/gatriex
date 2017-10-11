@@ -42,7 +42,6 @@
         $token = generate_token();
         
         $hash_password = password_hash($password, PASSWORD_DEFAULT);
-        $hash_token = password_hash($token, PASSWORD_DEFAULT);
         
         $encrypt_user = encrypt_auth($username);
         $encrypt_token = encrypt_auth($token);
@@ -51,7 +50,7 @@
             $db->beginTransaction();
             
             $stmt = $db->prepare("INSERT INTO User_Auth (Username, Password, Auth_Token) VALUES (?,?,?)");
-            $stmt->execute(array($username, $hash_password, $hash_token));
+            $stmt->execute(array($username, $hash_password, $token));
             
             $stmt = $db->prepare("INSERT INTO User_Info (Username, Email, Summoner_Name) VALUES (?,?,?)");
             $stmt->execute(array($username, $email, $summoner));
@@ -316,8 +315,8 @@
             $token = $result->data["Auth_Token"];
             
             $time = ($remember ? time() + 60*60*24*365 : 0); // 1 year or session
-            setrawcookie("Auth_Id", encrypt_auth($user), $time, "/", "gatriex.com", true, true);
-            setrawcookie("Auth_Token", encrypt_auth($token), $time, "/", "gatriex.com", true, true);
+            setcookie("Auth_Id", encrypt_auth($user), $time, "/", "gatriex.com", true, true);
+            setcookie("Auth_Token", encrypt_auth($token), $time, "/", "gatriex.com", true, true);
             startSession();
             $_SESSION['User'] = $user;
         }

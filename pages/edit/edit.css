@@ -87,3 +87,7 @@
 .formButtons button {
     font-size: 18px;
 }
+
+#dialogMessage {
+    display: inline-block;
+}

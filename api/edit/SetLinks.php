@@ -20,6 +20,12 @@
             echo json_encode($result);
             return;
         }
+    } else {
+        $response = new Response();
+        $response->data["Error"] = "Credentials have expired.";
+        $response->valid = false;
+        echo json_encode($result);
+        return;
     }
     
     $user = $result->data["Username"];
