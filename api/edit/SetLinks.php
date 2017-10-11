@@ -2,19 +2,21 @@
     require_once($_SERVER['DOCUMENT_ROOT'] . '/library/database.php');
     require_once($_SERVER['DOCUMENT_ROOT'] . '/library/response.php');
     require_once($_SERVER['DOCUMENT_ROOT'] . '/library/authentication.php');
+    require_once($_SERVER['DOCUMENT_ROOT'] . '/library/response.php');
     
     $data = $_REQUEST["data"];
     
     if (!isset($data)) {
-        http_response_code(500);
-        echo ("No data");
+        $response = new Response();
+        $response->data["Error"] = "Error handling data.";
+        $response->valid = false;
+        echo json_encode($result);
         return;
     }
     
     if (isset($_COOKIE["Auth_Id"]) && isset($_COOKIE["Auth_Token"])) {
         $result = validateUserFromToken($_COOKIE["Auth_Id"], $_COOKIE["Auth_Token"]);
         if (!$result->valid) {
-            http_response_code(401);
             echo json_encode($result);
             return;
         }
@@ -54,6 +56,10 @@
         $stmt->execute($value_data);
         
         $db->commit();
+        $response = new Response();
+        $response->valid = true;
+        echo json_encode($result);
+        return;
     } catch (PDOException $ex) {
         http_response_code(500);
         echo $ex;

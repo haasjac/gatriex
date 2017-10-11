@@ -234,7 +234,12 @@ $(function () {
 			type: 'POST',
 			data: postData,
 			success: function (data) {
-			    $('#dialogMessage').html('<i class="fa fa-check-circle"></i> Changes were successfully saved.');
+                var result = JSON.parse(data);
+                if (result.valid) {
+                    $('#dialogMessage').html('<i class="fa fa-check-circle"></i> Changes were successfully saved.');
+                } else {
+                    $('#dialogMessage').html('<i class="fa fa-exclamation-triangle"></i> Error: ' + result.data.Error);
+                }
 			},
 			error: function (xhr, status, error) {
 			    $('#dialogMessage').html('<i class="fa fa-exclamation-triangle"></i> Error: ' + xhr.responseText);

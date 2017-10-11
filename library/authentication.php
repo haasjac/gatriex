@@ -139,8 +139,14 @@
         global $db;
         $response = new Response();
         
-        $decrypt_user = decrypt_auth($username);
-        $decrypt_token = decrypt_auth($token);
+        try {
+            $decrypt_user = decrypt_auth($username);
+            $decrypt_token = decrypt_auth($token);
+        } catch (Exception $ex) {
+            $response->data["Error"] = "Credentials have expired.";
+            $response->valid = false;
+            return $response;
+        }
         
         try {
             $stmt = $db->prepare("SELECT Username, Auth_Token FROM User_Auth WHERE Username = ?");
@@ -165,6 +171,8 @@
         
         if ($valid) {
             $response->data["Username"] = $rows[0]["Username"];
+        } else {
+            $response->data["Error"] = "Credentials have expired.";
         }
         
         $response->valid = $valid;
