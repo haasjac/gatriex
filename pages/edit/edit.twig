@@ -32,6 +32,7 @@
 		    </form>
 	    </div>
 	    <div class="formButtons">
+                <div id="dialogMessage"></div>
 	        <button id="revertForm" class="ui-button"><i class="fa fa-refresh"></i> Revert Changes</button>
 	        <button id="submitForm" class="ui-button"><i class="fa fa-floppy-o"></i> Save Changes</button>
 	    </div>
@@ -39,10 +40,4 @@
 {% endblock %}
 
 {% block dialog %}
-	<div id="dialogBox" title="Save Changes">
-	    <div>
-	        Password: <input type="password" name="password" id="password" />
-	    </div>
-		<p id="dialogMessage"></p>
-	</div>
 {% endblock %}

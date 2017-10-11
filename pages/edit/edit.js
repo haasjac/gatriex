@@ -89,8 +89,7 @@ $(function () {
 	function setEventHandlers() {
 	    $('#submitForm').click(function() {
 	        $('#dialogMessage').html("");
-	        $('#password').val("");
-	        $('#dialogBox').dialog("open");
+	        saveChanges();
 	    });
 	    
 	    $('#revertForm').click(function() {
@@ -191,20 +190,6 @@ $(function () {
 		            $(this).click(); 
 		        }
 		    });
-		});
-		
-		$("#dialogBox").dialog({
-			autoOpen: false,
-			modal: true,
-			width: 400,
-			buttons: {
-			    Save: function () {
-					saveChanges();
-				},
-				Close: function () {
-					$(this).dialog("close");
-				}
-			}
 		});
 	}
 	
