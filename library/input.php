@@ -19,6 +19,10 @@
         function getGet($param) {
             return $this->getInput(INPUT_GET, $param);
         }
+        
+        function getEnv($param) {
+            return $this->getInput(INPUT_ENV, $param, FILTER_SANITIZE_NUMBER_INT);
+        }
     }
     
     $input = new myInput();

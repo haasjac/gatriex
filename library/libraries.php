@@ -6,5 +6,6 @@
     require_once($_SERVER['DOCUMENT_ROOT'] . '/library/input.php');
     require_once($_SERVER['DOCUMENT_ROOT'] . '/library/mail.php');
     require_once($_SERVER['DOCUMENT_ROOT'] . '/library/validation.php');
+    require_once($_SERVER['DOCUMENT_ROOT'] . '/library/errorPage.php');
 ?>
 

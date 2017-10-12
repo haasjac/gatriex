@@ -104,6 +104,7 @@
     
 #Incidents {
     padding-left: 25px;
+    overflow-wrap: break-word;
 }
 
 .incidents {

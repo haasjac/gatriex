@@ -10,3 +10,13 @@ RewriteCond %{REQUEST_URI} !^/[0-9]+\..+\.cpaneldcv$
 RewriteCond %{REQUEST_URI} !^/[A-F0-9]{32}\.txt(?:\ Comodo\ DCV)?$
 RewriteCond %{REQUEST_URI} !^/\.well-known/acme-challenge/[0-9a-zA-Z_-]+$
 RewriteRule (.*) https://gatriex.com/$1 [R]
+
+ErrorDocument 400 /error/
+ErrorDocument 401 /error/
+ErrorDocument 403 /error/
+ErrorDocument 404 /error/
+
+ErrorDocument 500 /error/
+ErrorDocument 502 /error/
+ErrorDocument 503 /error/
+ErrorDocument 504 /error/

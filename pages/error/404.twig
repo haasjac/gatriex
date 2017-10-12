@@ -1,0 +1,23 @@
+{% extends "base.twig" %}
+
+{% block title %}Error - {{ ErrorCode }}{% endblock %}
+{% block head %}
+    <link rel="stylesheet" type="text/css" href="/pages/error/error.css">
+{% endblock %}
+
+{% block content %}
+    <div id="errorDiv" class="section top">
+            <div class="centerSection">
+            <div class="mainHeaderDiv">
+                <span class="mainHeader">Error - {{ ErrorCode }}</span>
+            </div>
+            <div class="content">
+                Page not found.
+            </div>
+        </div>
+    </div>
+    <div id="errorDiv" class="section bottom"></div>
+{% endblock %}
+
+{% block dialog %}
+{% endblock %}

@@ -1,0 +1,19 @@
+@charset "utf-8";
+/* CSS Document */
+
+/* 
+	yellow - D0904C
+	blue - 1F3853
+*/
+
+.centerSection {
+    margin: auto;
+}
+
+.bottom {
+    border-top: none;
+}
+
+.top {
+    border-bottom: none;
+}

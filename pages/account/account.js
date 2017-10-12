@@ -68,7 +68,7 @@ $(function () {
                 if (response.valid) {
                     $("#resetMessage").html("<i class='fa fa-check-circle'></i> Password Reset.");
                     $("#resetPassword").val("");
-                    $("#resetConfrimPassword").val("");
+                    $("#resetConfirmPassword").val("");
                 } else {
                     $("#resetMessage").html("<i class='fa fa-exclamation-triangle'></i> " + response.data.Error);
                 }
