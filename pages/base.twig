@@ -12,6 +12,7 @@
     <link rel="stylesheet" type="text/css" href="/css/gatriex.css">
     <script src="/jquery-ui-1.12.1.custom/jquery.js"></script>
     <script src="/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
+    <script src="/js/dataRequester.js"></script>
     <script src="/js/dialog.js"></script>
     <script src="/js/checkbox.js"></script>
     <script src="/js/account.js"></script>
@@ -83,6 +84,10 @@
 		<div id="logoutDialogMessage">
 		    Are you sure you want to logout?
 		</div>
+	</div>
+    <div id="dataRequesterDialogBox" title="Error">
+        <div id="dataRequesterDialogError"></div>
+		<div id="dataRequesterDialogMessage"></div>
 	</div>
 	{% block dialog %}{% endblock %}
 </body>

@@ -1,3 +1,5 @@
+/* global dataRequester */
+
 "use strict";
 
 //global variables
@@ -31,21 +33,12 @@ $(function () {
             var data = { 
                 "email": $("#recoverUsernameEmail").val()
             };
-        	$.ajax({
-                url: "/api/account/recoverusername.php",
-                method: "POST",
-                data: data,
-            	success: function(data) {
-            	    var result = JSON.parse(data);
-            	    if (result.valid) {
-            	        $("#recoverUsernameMessage").html("<i class='fa fa-check-circle'></i> Email Sent.");
-            	    } else {
-            	        $("#recoverUsernameMessage").html("<i class='fa fa-exclamation-triangle'></i> " + result.data.Error);
-            	    }
-            	},
-            	error: function(xhr, status, error) {
-            		$("#recoverUsernameMessage").html("<i class='fa fa-exclamation-triangle'></i> " + error);
-            	}
+            dataRequester.apiCall('/api/account/recoverusername.php', "POST", data, function (response) {
+                if (response.valid) {
+                    $("#recoverUsernameMessage").html("<i class='fa fa-check-circle'></i> Email Sent.");
+                } else {
+                    $("#recoverUsernameMessage").html("<i class='fa fa-exclamation-triangle'></i> " + response.data.Error);
+                }
             });
         });
         
@@ -54,21 +47,12 @@ $(function () {
             var data = { 
                 "username": $("#recoverPasswordUsername").val()
             };
-        	$.ajax({
-                url: "/api/account/recoverpassword.php",
-                method: "POST",
-                data: data,
-            	success: function(data) {
-            	    var result = JSON.parse(data);
-            	    if (result.valid) {
-            	        $("#recoverPasswordMessage").html("<i class='fa fa-check-circle'></i> Email Sent.");
-            	    } else {
-            	        $("#recoverPasswordMessage").html("<i class='fa fa-exclamation-triangle'></i> " + result.data.Error);
-            	    }
-            	},
-            	error: function(xhr, status, error) {
-            		$("#recoverPasswordMessage").html("<i class='fa fa-exclamation-triangle'></i> " + error);
-            	}
+            dataRequester.apiCall('/api/account/recoverpassword.php', "POST", data, function (response) {
+                if (response.valid) {
+                    $("#recoverPasswordMessage").html("<i class='fa fa-check-circle'></i> Email Sent.");
+                } else {
+                    $("#recoverPasswordMessage").html("<i class='fa fa-exclamation-triangle'></i> " + response.data.Error);
+                }
             });
         });
         
@@ -80,21 +64,14 @@ $(function () {
                 "confirmPassword": $("#resetConfirmPassword").val(),
                 "token": $("#resetToken").val()
             };
-        	$.ajax({
-                url: "/api/account/resetpassword.php",
-                method: "POST",
-                data: data,
-            	success: function(data) {
-            	    var result = JSON.parse(data);
-            	    if (result.valid) {
-            	        $("#resetMessage").html("<i class='fa fa-check-circle'></i> Password Reset.");
-            	    } else {
-            	        $("#resetMessage").html("<i class='fa fa-exclamation-triangle'></i> " + result.data.Error);
-            	    }
-            	},
-            	error: function(xhr, status, error) {
-            		$("#resetMessage").html("<i class='fa fa-exclamation-triangle'></i> " + error);
-            	}
+            dataRequester.apiCall('/api/account/resetpassword.php', "POST", data, function (response) {
+                if (response.valid) {
+                    $("#resetMessage").html("<i class='fa fa-check-circle'></i> Password Reset.");
+                    $("#resetPassword").val("");
+                    $("#resetConfrimPassword").val("");
+                } else {
+                    $("#resetMessage").html("<i class='fa fa-exclamation-triangle'></i> " + response.data.Error);
+                }
             });
         });
         
@@ -119,25 +96,14 @@ $(function () {
             "confirmEmail": $("#createConfirmEmail").val(),
             "summoner": $("#createSummoner").val(),
         };
-    	$.ajax({
-            url: "/api/account/register.php",
-            method: "POST",
-            data: data,
-        	success: function(data) {
-        	    var result = JSON.parse(data);
-        	    if (result.valid) {
-        	        $("#createForm").hide();
-        	        $("#createSuccess").show();
-        	    } else {
-        	        $("#createDialogMessage").html(result.data.Error);
-        	        $("#createDialogBox").dialog("open");
-        	    }
-        	},
-        	error: function(xhr, status, error) {
-        		console.log(error);
-        		$("#createDialogMessage").html(error);
-    	        $("#createDialogBox").dialog("open");
-        	}
+        dataRequester.apiCall('/api/account/register.php', "POST", data, function (response) {
+            if (response.valid) {
+                $("#createForm").hide();
+                $("#createSuccess").show();
+            } else {
+                $("#createDialogMessage").html(response.data.Error);
+                $("#createDialogBox").dialog("open");
+            }
         });
     }
 });

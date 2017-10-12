@@ -212,6 +212,11 @@ input {
     flex: 1;
 }
 
+#dataRequesterDialogMessage {
+    max-height: 500px;
+    overflow-y: auto;
+}
+
 /* FA ICONS */
 
     /* green */       

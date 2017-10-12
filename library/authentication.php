@@ -200,14 +200,10 @@
             
             $session->startSession();
             $user = "";
-            if (isset($_SESSION['User'])) {
-                $user = $_SESSION['User'];
-            } else {
-                $result = $this->validateUserFromToken($input->getCookie("Auth_Id"), $input->getCookie("Auth_Token"));
-                if ($result->valid) {
-                    $user = $result->data["Username"];
-                    $_SESSION['User'] = $user;
-                }
+            
+            $result = $this->validateUserFromToken($input->getCookie("Auth_Id"), $input->getCookie("Auth_Token"));
+            if ($result->valid) {
+                $user = $result->data["Username"];
             }
 
             return $user;
@@ -323,7 +319,6 @@
                 setcookie("Auth_Id", $this->encrypt_auth($user), $time, "/", "gatriex.com", true, true);
                 setcookie("Auth_Token", $this->encrypt_auth($token), $time, "/", "gatriex.com", true, true);
                 $session->startSession();
-                $_SESSION['User'] = $user;
             }
 
             $response->data["Username"] = $user;

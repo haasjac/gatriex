@@ -57,7 +57,9 @@
         return;
     } catch (PDOException $ex) {
         http_response_code(500);
-        echo $ex;
+        $response->data["Error"] = $ex->getMessage();
+        $response->valid = false;
+        echo json_encode($response);
         $db->rollBack();
     }
 ?>

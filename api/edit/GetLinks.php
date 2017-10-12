@@ -1,7 +1,8 @@
 <?php
     require_once($_SERVER['DOCUMENT_ROOT'] . '/library/libraries.php');
+    $response = new Response();
+    $response->data["Links"] = array();
     
-    $response = array();
     $headers = array();
     
     $user = $authentication->getCurrentUser();
@@ -27,13 +28,16 @@
             $category = array();
             $category["header"] = $key;
             $category["items"] = $value;
-            array_push($response, $category);
+            array_push($response->data["Links"], $category);
         }
         
-        $out = array_values($response);
-        echo json_encode($out, true);
+        $response->valid = true;
+        echo json_encode($response);
     
     } catch(PDOException $ex) {
-        echo $ex->getMessage();
+        http_response_code(500);
+        $response->data["Error"] = $ex->getMessage();
+        $response->valid = false;
+        echo json_encode($response);
     }
 ?>

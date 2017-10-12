@@ -1,8 +1,12 @@
 <?php
     require_once($_SERVER['DOCUMENT_ROOT'] . '/credentials/riot.php');
+    require_once($_SERVER['DOCUMENT_ROOT'] . '/library/libraries.php');
     
     function api_call($url) {
         global $api_token;
+        
+        $response = new Response();
+        
         $curl = curl_init();
         curl_setopt_array($curl, array(
         	CURLOPT_URL => $url,
@@ -13,8 +17,29 @@
         
         $result = curl_exec($curl);
         
+        if (!$result) {
+            // log curl_error($curl);
+            $response->data["Error"] = "Error handling request.";
+            $response->valid = false;
+        } else {
+            $response->data["Response"] = json_decode($result);
+            $response->valid = true;
+        }
+        
         curl_close($curl);
-        return $result;
+        
+        if (isset($response->data["Response"])) {
+            if (
+                    isset($response->data["Response"]->status) && 
+                    isset ($response->data["Response"]->status->message) &&
+                    isset ($response->data["Response"]->status->status_code)
+                ) {
+                $response->data["Error"] = $response->data["Response"]->status->message;
+                $response->valid = false;
+            }
+        }
+        
+        return $response;
     }
 
 ?>

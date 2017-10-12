@@ -31,9 +31,11 @@
     		<div class="content">
     		    <div>
     		        <div>
-    		            <input type="text" name="searchSummonerName" placeholder="Summoner Name" id="searchSummonerName" />
-    		            <button id="searchButton" class="ui-button">Search</button>
-    		            <input type="hidden" name="userSummonerName" id="userSummonerName" value="{{ SummonerName }}" />
+                        <form id="searchForm">
+                            <input type="text" name="searchSummonerName" placeholder="Summoner Name" id="searchSummonerName" />
+                            <button id="searchButton" class="ui-button">Search</button>
+                            <input type="hidden" name="userSummonerName" id="userSummonerName" value="{{ SummonerName }}" />
+                        </form>
 		            </div>
     		        <div style="padding-top: 15px;">
     		            <div style="float:left;">
@@ -65,10 +67,7 @@
 {% endblock %}
 
 {% block dialog %}
-    <div id="dialogBox" title="Error Updating Data">
-	    <div>
-	        Error code: <span id="errorCode"></span>
-	    </div>
-		<p id="dialogMessage"></p>
+    <div id="dialogBox" title="Error Fetching Data">
+		<div id="dialogMessage"></div>
 	</div>
 {% endblock %}

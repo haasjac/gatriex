@@ -1,3 +1,5 @@
+/* global dataRequester */
+
 "use strict";
 
 $(function () {
@@ -11,20 +13,14 @@ $(function () {
 	}
 
 	function getContent() {
-	    $.ajax({
-			url: '/api/edit/GetLinks.php',
-			type: 'GET',
-			dataType: 'json',
-			success: function (data) {
-				contentData = data;
-				dataReady();
-			},
-			error: function (xhr, status, error) {
-				$('#error').html(error);
-				$('#error-details').html(xhr.responseText);
-				$('#error-message').dialog("open");
-			}
-		});
+        dataRequester.apiCall('/api/edit/GetLinks.php', "GET", null, function (response) {
+            if (response.valid) {
+                contentData = response.data.Links;
+                dataReady();
+            } else {
+				$('#dialogMessage').html('<i class="fa fa-exclamation-triangle"></i> Error: ' + response.data.Error);
+            }
+        });
 	}
 
 	function createEditList() {
@@ -219,7 +215,7 @@ $(function () {
 			    return false;
 			}
 			if (category.items.length <= 0) {
-			    $('#dialogMessage').html('<i class="fa fa-exclamation-triangle"></i> Error:<br>Category "' + category.header + '" contains no bookmarks.<br><br>Categories must contain at least one bookmark.');
+			    $('#dialogMessage').html('<i class="fa fa-exclamation-triangle"></i> Error: Category "' + category.header + '" contains no bookmarks.');
 			    return false;
 			}
 			data.push(category);
@@ -228,21 +224,13 @@ $(function () {
 		var postData = { 
             "data" : data
         };
-		$.ajax({
-			url: '/api/edit/SetLinks.php',
-			type: 'POST',
-			data: postData,
-			success: function (data) {
-                var result = JSON.parse(data);
-                if (result.valid) {
-                    $('#dialogMessage').html('<i class="fa fa-check-circle"></i> Changes were successfully saved.');
-                } else {
-                    $('#dialogMessage').html('<i class="fa fa-exclamation-triangle"></i> Error: ' + result.data.Error);
-                }
-			},
-			error: function (xhr, status, error) {
-			    $('#dialogMessage').html('<i class="fa fa-exclamation-triangle"></i> Error: ' + xhr.responseText);
-			}
-		});
+        
+        dataRequester.apiCall('/api/edit/SetLinks.php', "POST", postData, function (response) {
+            if (response.valid) {
+                $('#dialogMessage').html('<i class="fa fa-check-circle"></i> Changes were successfully saved.');
+            } else {
+                $('#dialogMessage').html('<i class="fa fa-exclamation-triangle"></i> Error: ' + response.data.Error);
+            }
+        });
 	}
 });
