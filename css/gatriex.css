@@ -62,7 +62,10 @@ body {
 
 #headerLeftDiv, #headerRightDiv {
     display: flex;
-    flex: 1;
+}
+
+#headerRightDiv {
+    flex: 1;	
 }
 
     #headerLeftText {
