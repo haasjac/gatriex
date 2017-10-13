@@ -4,17 +4,12 @@
     
     $template = $twig->load('test/test.twig');
     $twig_options = getTwigOptions();
+        
+    //echo $template->render($twig_options);
     
-    if ($twig_options["Username"] === "") {
-        //$errorPage->render(403);
-        //return;
-        if (headers_sent() === false)
-        {
-            header('Location: ' . "/");
-        }
-
-        exit();
-    }
+    $r = array("data" => "test", "other" => "stuff");
     
-    echo $template->render($twig_options);
+    $t = var_export($x, true);
+    
+    echo $t;
 ?>

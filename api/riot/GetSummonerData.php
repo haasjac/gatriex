@@ -43,7 +43,7 @@
     echo json_encode($response);
        
     function getVersion() {
-        global $db;
+        global $db, $log;
 
         $response = new Response();
         $sql = "SELECT * FROM Version WHERE Time >= DATE_SUB(NOW(), INTERVAL 10 MINUTE)";
@@ -73,8 +73,8 @@
                 $stmt->execute(array($response->data["Version"]));
                 $db->commit();
             } catch (PDOException $ex) {
-                http_response_code(500);
-                $response->data["Error"] = $ex->getMessage();
+                $log->error("Database error in GetSummonerData.php", $ex->getMessage());
+                $response->data["Error"] = "Error handling request";
                 $response->valid = false;
                 $db->rollBack();
                 return $response;

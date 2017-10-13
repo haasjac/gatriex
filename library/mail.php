@@ -78,7 +78,8 @@
                 $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
             } catch(PDOException $ex) {
                 http_response_code(500);
-                $response->data["Error"] = $ex->getMessage();
+                $log->error("Database error in mail.php", $ex->getMessage());
+                $response->data["Error"] = "Error handling request.";
                 $response->valid = false;
                 return $response;
             }

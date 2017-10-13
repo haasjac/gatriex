@@ -3,6 +3,7 @@
     require_once($_SERVER['DOCUMENT_ROOT'] . '/library/session.php');
     require_once($_SERVER['DOCUMENT_ROOT'] . '/library/response.php');
     require_once($_SERVER['DOCUMENT_ROOT'] . '/library/input.php');
+    require_once($_SERVER['DOCUMENT_ROOT'] . '/library/log.php');
     require_once($_SERVER['DOCUMENT_ROOT'] . '/credentials/authentication.php');
 
     class myAuthentication {
@@ -37,7 +38,7 @@
         //User Functions
 
         function createUser($username, $password, $email, $summoner): Response {
-            global $db;
+            global $db, $log;
             $response = new Response();
 
             $token = $this->generate_token();
@@ -55,11 +56,15 @@
 
                 $stmt = $db->prepare("INSERT INTO User_Info (Username, Email, Summoner_Name) VALUES (?,?,?)");
                 $stmt->execute(array($username, $email, $summoner));
+                
+                $stmt = $db->prepare("INSERT INTO Links (Username, Text, Link, Header) (SELECT ?, Text, Link, Header FROM Links WHERE Username = 'admin')");
+                $stmt->execute(array($username));
 
                 $db->commit();
             } catch(PDOException $ex) {
                 http_response_code(500);
-                $response->data["Error"] = $ex->getMessage();
+                $log->error("Database error in Authentication.php createUser", $ex->getMessage());
+                $response->data["Error"] = "Error handling request.";
                 $response->valid = false;
                 $db->rollBack();
 
@@ -74,7 +79,7 @@
         }
 
         function regenerateToken($username): Response {
-            global $db;
+            global $db, $log;
             $response = new Response();
 
             $token = $this->generate_token();
@@ -87,7 +92,8 @@
                 $stmt->execute(array($token, $username));
             } catch(PDOException $ex) {
                 http_response_code(500);
-                $response->data["Error"] = $ex->getMessage();
+                $log->error("Database error in Authentication.php regenerateToken", $ex->getMessage());
+                $response->data["Error"] = "Error handling request.";
                 $response->valid = false;
                 return $response;
             }
@@ -100,7 +106,7 @@
         }
 
         function validateUserFromPassword($username, $password): Response {
-            global $db;
+            global $db, $log;
             $response = new Response();
 
             try {
@@ -109,7 +115,8 @@
                 $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
             } catch(PDOException $ex) {
                 http_response_code(500);
-                $response->data["Error"] = $ex->getMessage();
+                $log->error("Database error in Authentication.php validateUserFromPassword", $ex->getMessage());
+                $response->data["Error"] = "Error handling request.";
                 $response->valid = false;
                 return $response;
             }
@@ -136,7 +143,7 @@
         }
 
         function validateUserFromToken($username, $token): Response {
-            global $db;
+            global $db, $log;
             $response = new Response();
 
             try {
@@ -154,7 +161,8 @@
                 $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
             } catch(PDOException $ex) {
                 http_response_code(500);
-                $response->data["Error"] = $ex->getMessage();
+                $log->error("Database error in Authentication.php validateUserFromToken", $ex->getMessage());
+                $response->data["Error"] = "Error handling request.";
                 $response->valid = false;
                 return $response;
             }
@@ -181,7 +189,7 @@
         }
 
         function updateHash($username, $value, $hash, $type) {
-            global $db;
+            global $db, $log;
 
             if (password_needs_rehash($hash, PASSWORD_DEFAULT)) {
                 $new_hash = password_hash($value, PASSWORD_DEFAULT);
@@ -189,8 +197,7 @@
                     $stmt = $db->prepare("UPDATE User_Auth SET " . $type . " = ? WHERE Username = ?");
                     $stmt->execute(array($new_hash, $username));
                 } catch(PDOException $ex) {
-                    http_response_code(500);
-                    echo $ex->getMessage();
+                    $log->error("Database error in Authentication.php updateHash", $ex->getMessage());
                 }
             }
         }
@@ -213,7 +220,7 @@
         // Forgotten Password
 
         function generateForgetToken($username): Response {
-            global $db;
+            global $db, $log;
             $response = new Response();
 
             $token = $this->generate_token();
@@ -229,7 +236,8 @@
                 $stmt->execute(array($hash_token, $time, $username));
             } catch(PDOException $ex) {
                 http_response_code(500);
-                $response->data["Error"] = $ex->getMessage();
+                $log->error("Database error in Authentication.php generateForgetToken", $ex->getMessage());
+                $response->data["Error"] = "Error handling request.";
                 $response->valid = false;
                 return $response;
             }
@@ -241,7 +249,7 @@
         }
 
         function resetPasswordFromForgetToken($username, $password, $token): Response {
-            global $db;
+            global $db, $log;
             $response = new Response();
 
             $decrypt_token = $this->decrypt_auth($token);
@@ -252,7 +260,8 @@
                 $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
             } catch(PDOException $ex) {
                 http_response_code(500);
-                $response->data["Error"] = $ex->getMessage();
+                $log->error("Database error in Authentication.php resetPasswordFromForgetToken", $ex->getMessage());
+                $response->data["Error"] = "Error handling request.";
                 $response->valid = false;
                 return $response;
             }
@@ -283,7 +292,8 @@
                     $stmt->execute(array("", "", $hash_password, $username));
                 } catch(PDOException $ex) {
                     http_response_code(500);
-                    $response->data["Error"] = $ex->getMessage();
+                    $log->error("Database error in Authentication.php resetPasswordFromForgetToken", $ex->getMessage());
+                    $response->data["Error"] = "Error handling request.";
                     $response->valid = false;
                     return $response;
                 }

@@ -57,9 +57,8 @@
         return;
     } catch (PDOException $ex) {
         http_response_code(500);
-        $response->data["Error"] = $ex->getMessage();
-        $response->valid = false;
-        echo json_encode($response);
+        $log->error("Database error in SetLinks.php", $ex->getMessage());
+        echo "Error handling request.";
         $db->rollBack();
     }
 ?>
