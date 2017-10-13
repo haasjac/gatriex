@@ -12,7 +12,11 @@
                 <span class="mainHeader">Error - Unauthorized</span>
             </div>
             <div class="content">
-                You must be logged in to view this page. {{ Username }}
+                {% if {{ Username }} is empty %}
+                    You must be logged in to view this page.
+                {% else %}
+                    You are not authorized to view this page.
+                {% endif %}
             </div>
         </div>
     </div>
