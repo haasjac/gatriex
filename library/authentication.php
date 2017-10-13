@@ -62,7 +62,6 @@
 
                 $db->commit();
             } catch(PDOException $ex) {
-                http_response_code(500);
                 $log->error("Database error in Authentication.php createUser", $ex->getMessage());
                 $response->data["Error"] = "Error handling request.";
                 $response->valid = false;
@@ -91,7 +90,6 @@
                 $stmt = $db->prepare("UPDATE User_Auth SET Auth_Token=? WHERE Username = ?");
                 $stmt->execute(array($token, $username));
             } catch(PDOException $ex) {
-                http_response_code(500);
                 $log->error("Database error in Authentication.php regenerateToken", $ex->getMessage());
                 $response->data["Error"] = "Error handling request.";
                 $response->valid = false;
@@ -114,7 +112,6 @@
                 $stmt->execute(array($username));
                 $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
             } catch(PDOException $ex) {
-                http_response_code(500);
                 $log->error("Database error in Authentication.php validateUserFromPassword", $ex->getMessage());
                 $response->data["Error"] = "Error handling request.";
                 $response->valid = false;
@@ -160,7 +157,6 @@
                 $stmt->execute(array($decrypt_user));
                 $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
             } catch(PDOException $ex) {
-                http_response_code(500);
                 $log->error("Database error in Authentication.php validateUserFromToken", $ex->getMessage());
                 $response->data["Error"] = "Error handling request.";
                 $response->valid = false;
@@ -235,7 +231,6 @@
                 $stmt = $db->prepare("UPDATE User_Auth SET Forget_Token=?, Forget_Token_Expiry=? WHERE Username = ?");
                 $stmt->execute(array($hash_token, $time, $username));
             } catch(PDOException $ex) {
-                http_response_code(500);
                 $log->error("Database error in Authentication.php generateForgetToken", $ex->getMessage());
                 $response->data["Error"] = "Error handling request.";
                 $response->valid = false;
@@ -259,7 +254,6 @@
                 $stmt->execute(array($username));
                 $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
             } catch(PDOException $ex) {
-                http_response_code(500);
                 $log->error("Database error in Authentication.php resetPasswordFromForgetToken", $ex->getMessage());
                 $response->data["Error"] = "Error handling request.";
                 $response->valid = false;
@@ -291,7 +285,6 @@
                     $stmt = $db->prepare("UPDATE User_Auth SET Forget_Token = ?, Forget_Token_Expiry = ?, Password = ? WHERE Username = ?");
                     $stmt->execute(array("", "", $hash_password, $username));
                 } catch(PDOException $ex) {
-                    http_response_code(500);
                     $log->error("Database error in Authentication.php resetPasswordFromForgetToken", $ex->getMessage());
                     $response->data["Error"] = "Error handling request.";
                     $response->valid = false;

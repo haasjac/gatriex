@@ -19,7 +19,6 @@
                 $stmt->execute(array($username));
                 $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
             } catch(PDOException $ex) {
-                http_response_code(500);
                 $log->error("Database error in validataion.php validateUsername", $ex->getMessage());
                 $response->data["Error"] = "Error validating username.";
                 $response->valid = false;
@@ -70,11 +69,10 @@
             }
             
             try {
-                $stmt = $db->prepare("SELECT 1 FROM User_Auth WHERE Email = ?");
+                $stmt = $db->prepare("SELECT 1 FROM User_Info WHERE Email = ?");
                 $stmt->execute(array($email));
                 $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
             } catch(PDOException $ex) {
-                http_response_code(500);
                 $log->error("Database error in validataion.php validateEmail", $ex->getMessage());
                 $response->data["Error"] = "Error validating email.";
                 $response->valid = false;
