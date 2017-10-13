@@ -7,9 +7,14 @@
         
     //echo $template->render($twig_options);
     
-    $r = array("data" => "test", "other" => "stuff");
+    // The message
+    $message = "Line 1\r\nLine 2\r\nLine 3";
     
-    $t = var_export($x, true);
+    // In case any of our lines are larger than 70 characters, we should use wordwrap()
+    $message = wordwrap($message, 70, "\r\n");
     
-    echo $t;
+    // Send
+    $result = mail('haasjac@umich.edu', 'My Subject', $message);
+    
+    var_dump($result);
 ?>
