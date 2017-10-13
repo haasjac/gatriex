@@ -7,5 +7,6 @@
     require_once($_SERVER['DOCUMENT_ROOT'] . '/library/mail.php');
     require_once($_SERVER['DOCUMENT_ROOT'] . '/library/validation.php');
     require_once($_SERVER['DOCUMENT_ROOT'] . '/library/errorPage.php');
+    require_once($_SERVER['DOCUMENT_ROOT'] . '/library/redirect.php');
 ?>
 

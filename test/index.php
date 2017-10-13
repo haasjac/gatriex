@@ -6,8 +6,14 @@
     $twig_options = getTwigOptions();
     
     if ($twig_options["Username"] === "") {
-        $errorPage->render(403);
-        return;
+        //$errorPage->render(403);
+        //return;
+        if (headers_sent() === false)
+        {
+            header('Location: ' . "/");
+        }
+
+        exit();
     }
     
     echo $template->render($twig_options);
