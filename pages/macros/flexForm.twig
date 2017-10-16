@@ -1,10 +1,18 @@
-{% macro input(label, id, type, placeholder, value) %}
+{% macro input(label, id, type, placeholder, value, tooltip) %}
     <div class="flexFormField">
         <div class="flexFormCell">
-            <label for="{{ id }}">{{ label }}:</label>
+            <label for="{{ id }}">
+                {{ label }}:
+                {% if tooltip is not empty %}
+                    <i class="fa fa-question-circle-o" title="{{ tooltip }}"></i> 
+                {% endif %}
+            </label>
         </div>
         <div class="flexFormCell">
             <input type="{{ type }}" name="{{ id }}" id="{{ id }}" placeholder="{{ placeholder }}" value="{{ value }}" />
+        </div>
+        <div class="flexFormCell">
+            <label id="{{ id }}-error" class="error" for="{{ id }}"></label>
         </div>
     </div>
 {% endmacro %}
@@ -32,10 +40,70 @@
 {% macro button(label, id) %}
     <div class="flexFormField">
         <div class="flexFormCell">
-            
+
         </div>
         <div class="flexFormCell flexFormCellRight">
             <button id="{{ id }}" class="ui-button">{{ label }}</button>
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro profile(label, field, id, value, type, tooltip) %}
+    <div class="flexFormField">
+        <div class="flexFormCell">
+            <span>
+                {{ label }}:
+                {% if tooltip is not empty %}
+                    <i class="fa fa-question-circle-o" title="{{ tooltip }}"></i> 
+                {% endif %}
+            </span>
+        </div>
+        <div class="flexFormCell">
+            <span id="{{ id }}Span" class="profileSpan">{{ value }}</span>
+            <input type="{{ type }}" name="{{ id }}Input" id="{{ id }}Input" value="{% if type != "password" %} {{ value }} {% endif %}" style="display:none"/>
+            <input type="hidden" id="{{ id }}Field" value="{{ field }}" />
+        </div>
+        <div class="flexFormCell">
+            <i class="fa fa-pencil profileEdit" id="{{ id }}Pencil" data-parent="{{ id }}"></i>
+        </div>
+    </div>
+    <div class="flexFormField">
+        <div class="flexFormCell">
+        </div>
+        <div class="flexFormCell">
+            <label id="{{ id }}Input-error" class="error" for="{{ id }}Input"></label>
+        </div>
+        <div class="flexFormCell">
+        </div>
+    </div>
+    {% if type == "password" %}
+        <div class="flexFormField {{ id }}Edit" style="display:none">
+            <div class="flexFormCell">
+                <span>
+                    Confirm {{ label }}:
+                </span>
+            </div>
+            <div class="flexFormCell">
+                <input type="{{ type }}" name="{{ id }}Confirm" id="{{ id }}Confirm" />
+            </div>
+        </div>
+        <div class="flexFormField">
+            <div class="flexFormCell">
+            </div>
+            <div class="flexFormCell">
+                <label id="{{ id }}Confirm-error" class="error" for="{{ id }}Confirm"></label>
+            </div>
+            <div class="flexFormCell">
+            </div>
+        </div>
+    {% endif %}
+    <div class="flexFormField {{ id }}Edit" style="display:none">
+        <div class="flexFormCell">
+
+        </div>
+        <div class="flexFormCell flexFormCellRight">
+            <button id="{{ id }}Save" class="ui-button profileSave" data-parent="{{ id }}">Save Changes</button>
+            <button id="{{ id }}Cancel" class="ui-button profileCancel" data-parent="{{ id }}">Cancel</button>
         </div>
     </div>
 {% endmacro %}

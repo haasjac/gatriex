@@ -5,7 +5,7 @@
 {% block title %}Register{% endblock %}
 {% block head %}
     <link rel="stylesheet" type="text/css" href="/pages/account/account.css">
-    <script src="/pages/account/account.js"></script>
+    <script src="/pages/account/register.js"></script>
 {% endblock %}
 
 {% block content %}
@@ -21,7 +21,7 @@
                     {{ flexForm.input('Confirm Password', 'createConfirmPassword', 'password') }}
                     {{ flexForm.input('Email', 'createEmail', 'text') }}
                     {{ flexForm.input('Confirm Email', 'createConfirmEmail', 'text') }}
-                    {{ flexForm.input('Summoner Name', 'createSummoner', 'text') }}
+                    {{ flexForm.input('Summoner Name', 'createSummoner', 'text', null, null, 'Used as a default on the home page. Optional') }}
                     {{ flexForm.button('Create Account', 'createButton') }}
                 </form>
                 

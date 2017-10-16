@@ -1,0 +1,119 @@
+/* global dataRequester, username */
+
+"use strict";
+
+//global variables
+
+
+//On load
+$(function () {
+    
+	var validator;
+    
+    setValidator();
+	setEventHandlers();
+    
+    function setValidator() {
+        $.validator.messages.required = "Required.";
+        
+        validator = $("#profileForm").validate({
+            rules: {
+                profilePasswordInput: {
+                    required: true,
+                    minlength: 8
+                },
+                profilePasswordConfirm: {
+                    required: true,
+                    equalTo: profilePasswordInput
+                },
+                profileEmailInput: {
+                    required: true,
+                    email: true,
+                    remote: "/api/validation/EmailFree.php"
+                },
+                profileSummonerInput: {
+                    required: true
+                }
+            },
+            messages: {
+                profilePasswordInput: {
+                    minlength: "Must be at least 8 characters."
+                },
+                profilePasswordConfirm: {
+                    equalTo: "Passwords do not match."
+                },
+                profileEmailInput: {
+                    remote: "This Email is unavailable."
+                }
+            },
+            showErrors: function(errorMap, errorList) {
+                for (var i = 0; i < errorList.length; i++) {
+                    errorList[i].message = "<i class='fa fa-exclamation-triangle'></i> " + errorList[i].message;
+                }
+                this.defaultShowErrors();
+            },
+            success: function(label) {
+                //label.html('<i class="fa fa-check-circle"></i>');
+            }
+        });
+    }
+
+    function setEventHandlers() {
+        
+        $("#profileForm").submit(function () {
+           return false; 
+        });
+        
+        $(".profileEdit").click(function () {
+            showEdit($(this).attr("data-parent"));
+        });
+        
+        $(".profileCancel").click(function () {
+            hideEdit($(this).attr("data-parent"));
+        });
+        
+        $(".profileSave").click(function () {
+            if (validator.form()) {
+                updateField($(this).attr("data-parent")); 
+            }
+        });
+    }
+    
+    function showEdit(id) {
+        $("." + id + "Edit").show();
+        $("#" + id + "Input").show();
+        $("#" + id + "Span").hide();
+        $("#" + id + "Pencil").hide();
+        
+        if ($("#" + id + "Input").attr("type") !== "password") {
+            $("#" + id + "Input").val($("#" + id + "Span").text());
+        }
+    }
+    
+    function hideEdit(id) {
+        $("." + id + "Edit").hide();
+        $("#" + id + "Input").hide();
+        $("#" + id + "Span").show();
+        $("#" + id + "Pencil").show();
+    }
+    
+    function updateField(id) {
+        var data = {
+            username: username,
+            value: $("#" + id + "Input").val(),
+            field: $("#" + id + "Field").val(),
+            confirmValue: $("#" + id + "Confirm").val()
+        };
+        
+        dataRequester.apiCall("/api/account/profile.php", "POST", data, function (response) {
+            if (response.valid) {
+                if ($("#" + id + "Input").attr("type") !== "password") {
+                    $("#" + id + "Span").text($("#" + id + "Input").val());
+                }
+                hideEdit(id);
+            } else {
+                console.log(response);
+            }
+        });
+    }
+});

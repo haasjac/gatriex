@@ -1,0 +1,29 @@
+{% extends "base.twig" %}
+
+{% import "macros/flexForm.twig" as flexForm %}
+
+{% block title %}Profile{% endblock %}
+{% block head %}
+    <link rel="stylesheet" type="text/css" href="/pages/account/account.css">
+    <script src="/pages/account/profile.js"></script>
+{% endblock %}
+
+{% block content %}
+    <div id="profileDiv" class="section">
+        <div class="centerSection">
+            <div class="mainHeaderDiv">
+                <span class="mainHeader">{{ Username }}</span>
+            </div>
+            <div class="content">
+                <form id="profileForm" class="flexForm">
+                    {{ flexForm.profile("Email", "Email", "profileEmail", Email, "text") }}
+                    {{ flexForm.profile("Password", "Password", "profilePassword", "********", "password") }}
+                    {{ flexForm.profile("Summoner Name", "Summoner_Name", "profileSummoner", Summoner, "text", 'Used as a default on the home page.') }}
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block dialog %}
+{% endblock %}

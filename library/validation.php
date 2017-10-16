@@ -8,12 +8,6 @@
             global $db, $log;
             $response = new Response();
 
-            $response->valid = strlen($username) >= 3;
-            if (!$response->valid) {
-                $response->data["Error"] = "Username must be at least 3 characters.";
-                return $response;
-            }
-
             try {
                 $stmt = $db->prepare("SELECT 1 FROM User_Auth WHERE Username = ?");
                 $stmt->execute(array($username));
@@ -30,6 +24,8 @@
                 $response->valid = false;
                 $response->data["Error"] = "Username already in use.";
                 return $response;
+            } else {
+                $response->valid = true;
             }
 
             return $response;
