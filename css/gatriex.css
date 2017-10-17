@@ -150,11 +150,25 @@ body {
 
 /* FOOTER */
 #footer {
+    display: flex;
     color: #D0904C;
     border-top: 2px solid #D0904C;
-    font-size: 12px;
-    text-align: center;
+    font-size: 16px;
     padding-bottom: 20px;
+    padding-top: 5px;
+}
+
+#footerLeft, #footerRight {
+    display: flex;
+}
+
+#footerRight {
+    margin-left: auto;
+}
+
+#footerRight a {
+    padding: 0 5px;
+    font-weight: bold;
 }
 
 /* LINKS */
@@ -169,11 +183,11 @@ a {
         color: #D0904C;
     }
     
-#headerUsername a, #headerLog {
+#headerUsername a, #headerLog, #footer a {
     color: #D0904C;
 }
 
-#headerUsername a:hover, #headerLog:hover {
+#headerUsername a:hover, #headerLog:hover, #footer a:hover {
     text-decoration: underline;
 }
     
@@ -201,7 +215,6 @@ input {
 }
 
 .flexForm input, .fakeCheck {
-    //margin-left: 15px;
     font-size: 22px;
 }
 
@@ -286,8 +299,10 @@ input {
 
 .ui-widget-content a {
     color: #1F3853;
+    /*color: #D0904C;*/
 }
 
 .ui-widget-content a:hover {
     color: #D0904C;
+    /*color: #1F3853;*/
 }

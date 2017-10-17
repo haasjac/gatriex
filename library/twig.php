@@ -15,6 +15,7 @@
         $user = $authentication->getCurrentUser();
         
         $twig_options["Username"] = $user;
+        $twig_options["year"] = date("Y");
         
         return $twig_options;
     }

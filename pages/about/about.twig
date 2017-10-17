@@ -1,0 +1,84 @@
+{% extends "base.twig" %}
+
+{% block title %}About{% endblock %}
+{% block head %}
+    <link rel="stylesheet" type="text/css" href="/pages/about/about.css">
+    <!--script src="/pages/account/profile.js"></script-->
+{% endblock %}
+
+{% block content %}
+    <div id="aboutDiv" class="section">
+        <div class="mainHeaderDiv">
+            <span class="mainHeader">About the Creator</span>
+        </div>
+        <div class="content">
+            <div id="logos" class="flex">
+                <img src="/images/jh_logo.png" id="jh_logo" height="200" width="200">
+                <div id="icons">
+                    <a href="https://github.com/haasjac">
+                        <i class="fa fa-github-square"></i> Github
+                    </a>
+                    <br>
+                    <a href="https://www.linkedin.com/in/jacob-haas-08a89b130">
+                        <i class="fa fa-linkedin-square"></i> LinkedIn
+                    </a>
+                    <br>
+                    <a href="http://haasjac.com">
+                        <i class="fa fa-user-circle-o"></i> haasjac.com
+                    </a>
+                </div>
+            </div>
+            <div id="aboutText" class="flex">
+                My name is Jacob Haas.<br><br>
+                I am a software engineer in Ann Arbor, MI and develop Gatriex.com in my spare time.<br><br>
+                If you have any comments, questions, or concerns please use the <a href="/contact">Contact Page.</a>
+            </div>
+        </div>
+    </div>
+    <div id="thirdPartyDiv" class="section">
+        <div class="content">
+            <div class="flex">
+                <div class="mainHeaderDiv">
+                    <span class="mainHeader">Riot Games</span>
+                </div>
+                <div style="font-size: 16px; margin-right: 75px;">
+                    Gatriex.com isn't endorsed by Riot Games and doesn't reflect the views or opinions of Riot Games
+                    or anyone officially involved in producing or managing <span style="font-style: italic;">League of Legends</span>. 
+                    <span style="font-style: italic;">League of Legends</span> and Riot Games are trademarks or registered trademarks
+                    of Riot Games, Inc. <span style="font-style: italic;">League of Legends</span> <i class="fa fa-copyright"></i> Riot Games, Inc.
+                </div>
+            </div>
+            <div class="flex"> 
+                <div class="mainHeaderDiv">
+                    <span class="mainHeader">Third Party</span>
+                </div>
+                <div>
+                    <a target="_blank" href="http://fontawesome.io">
+                        <i class="fa fa-fa"></i> Font Awesome by Dave Gandy
+                    </a>
+                </div>
+                <br>
+                <div>
+                    <a target="_blank" href="http://jqueryui.com">
+                        <i class="fa fa-external-link-square"></i> jQuery UI
+                    </a>
+                </div>
+                <br>
+                <div>
+                    <a target="_blank" href="https://jqueryvalidation.org">
+                        <i class="fa fa-external-link-square"></i> jQuery Validation
+                    </a>
+                </div>
+                <br>
+                <div>
+                    <a target="_blank" href="https://twig.symfony.com/">
+                        <i class="fa fa-external-link-square"></i> Twig
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block dialog %}
+{% endblock %}

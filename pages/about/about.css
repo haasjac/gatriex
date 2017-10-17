@@ -1,0 +1,34 @@
+@charset "utf-8";
+/* CSS Document */
+
+/* 
+	yellow - D0904C
+	blue - 1F3853
+*/
+
+.content {
+    display: flex;
+}
+.flex {
+    flex: 1;
+    padding: 10px 10px 0;
+    margin: 0 auto;
+}
+#logos {
+    display: flex;
+    flex-direction: column;
+}
+#icons {
+    margin: 0 auto;
+}
+#thirdPartyDiv {
+    flex: 1;
+}
+#jh_logo {
+    height: 200px;
+    width: 200px;
+    margin: 0 auto;
+}
+#aboutText {
+    flex: 3;
+}

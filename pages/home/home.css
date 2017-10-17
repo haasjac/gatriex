@@ -44,14 +44,6 @@
     flex: 2;
 }
 
-#nav a {
-	color: #1F3853;
-	text-decoration: none;
-}
-#nav a:hover {
-	color: #D0904C;
-}
-
 .navButton {
     font-size: 24px;
     color: #000000;
