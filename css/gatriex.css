@@ -208,7 +208,14 @@ input {
 .flexFormCell {
     display: table-cell;
     padding: 5px 10px;
+    vertical-align: top;
 }
+
+    .flexFormCell textarea {
+        font-family: 'kingsbridgeregular';
+        font-size: 22px;
+        resize: none;
+    }
 
 .flexFormCellRight {
     text-align: right;

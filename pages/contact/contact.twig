@@ -1,9 +1,11 @@
 {% extends "base.twig" %}
 
+{% import "macros/flexForm.twig" as flexForm %}
+
 {% block title %}Contact{% endblock %}
 {% block head %}
-    <!--link rel="stylesheet" type="text/css" href="/pages/account/account.css"-->
-    <!--script src="/pages/account/profile.js"></script-->
+    <link rel="stylesheet" type="text/css" href="/pages/contact/contact.css">
+    <script src="/pages/contact/contact.js"></script>
 {% endblock %}
 
 {% block content %}
@@ -12,7 +14,18 @@
             <span class="mainHeader">Contact</span>
         </div>
         <div class="content">
-            Please email us at <a href="mailto:Contact@gatriex.com">Contact@gatriex.com</a>
+            To contact the site developer, please use the automated form below.<br><br>
+            Alternatively you can directly send an email to <a href="mailto:Contact@gatriex.com">Contact@gatriex.com</a>
+            
+            <div id="formDiv">
+                <form id="contactForm" class="flexForm">
+                    {{ flexForm.input('Name', 'contactName', 'text', "Your Name") }}
+                    {{ flexForm.input('Email', 'contactEmail', 'text', "your@email.com") }}
+                    {{ flexForm.input('Subject', 'contactSubject', 'text', 'Subject') }}
+                    {{ flexForm.input('Message', 'contactMessage', 'textarea', 'Message') }}
+                    {{ flexForm.button('Send Email', 'contactButton') }}
+                </form>
+            </div>
         </div>
     </div>
 {% endblock %}
