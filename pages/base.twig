@@ -24,37 +24,39 @@
 
 <body>
     <div id="wrapper">
-        <div id="header">
-            <div id="headerLogoDiv">
-                <a href="/"><img src="/images/Logo.png" /></a>
-            </div>
-            <div id="headerLeftDiv">
-                
-                <div id="headerLeftText">
-                    <div id="headerTitle">Gatriex</div>
-                    <div id="headerDate"></div>
+        <div id="inner-wrapper">
+            <div id="header">
+                <div id="headerLogoDiv">
+                    <a href="/"><img src="/images/Logo.png" /></a>
+                </div>
+                <div id="headerLeftDiv">
+
+                    <div id="headerLeftText">
+                        <div id="headerTitle">Gatriex</div>
+                        <div id="headerDate"></div>
+                    </div>
+                </div>
+                <div id="headerRightDiv">
+                    <span id="headerRightText">
+                        <div id="headerUsername"><a href="/account/profile.php">{{ Username }}</a></div>
+                        {% if Username is empty %}
+                            <div id="headerLog" data-log="login">Login</div>
+                        {% else %}
+                            <div id="headerLog" data-log="logout">Logout</div>
+                        {% endif %}
+                    </span>
                 </div>
             </div>
-            <div id="headerRightDiv">
-                <span id="headerRightText">
-                    <div id="headerUsername"><a href="/account/profile.php">{{ Username }}</a></div>
-                    {% if Username is empty %}
-                        <div id="headerLog" data-log="login">Login</div>
-                    {% else %}
-                        <div id="headerLog" data-log="logout">Logout</div>
-                    {% endif %}
-                </span>
+
+            <div id="main">
+                {% block content %}{% endblock %}
             </div>
-        </div>
-        
-        <div id="main">
-            {% block content %}{% endblock %}
-        </div>
-        
-        <div id="footer">
-            Gatriex.com isn't endorsed by Riot Games and doesn't reflect the views or opinions of Riot Games or anyone officially involved in producing or managing League of Legends.
-            <br /> 
-            League of Legends and Riot Games are trademarks or registered trademarks of Riot Games, Inc. League of Legends © Riot Games, Inc.
+
+            <div id="footer">
+                Gatriex.com isn't endorsed by Riot Games and doesn't reflect the views or opinions of Riot Games or anyone officially involved in producing or managing League of Legends.
+                <br /> 
+                League of Legends and Riot Games are trademarks or registered trademarks of Riot Games, Inc. League of Legends © Riot Games, Inc.
+            </div>
         </div>
     </div>
     
