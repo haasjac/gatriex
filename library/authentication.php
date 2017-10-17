@@ -291,10 +291,7 @@
                     return $response;
                 }
 
-                $result = $this->regenerateToken($username);
-                if(!$result->valid) {
-                    //log error
-                }
+                $this->regenerateToken($username);
                 $response->valid = true;
                 return $response;
             } else {
@@ -336,6 +333,31 @@
             setrawcookie("Auth_Id", "", $time, "/", "gatriex.com", true, true);
             setrawcookie("Auth_Token", "", $time, "/", "gatriex.com", true, true);
             $session->endSession();
+        }
+        
+        function updateField($username, $value, $field): Response {
+            global $db, $log;
+            
+            $response = new Response();
+            
+            try {
+                $table = "User_Info";
+                if ($field === "Password") {
+                    $table = "User_Auth";
+                    $value = password_hash($value, PASSWORD_DEFAULT);
+                }
+                $sql = "UPDATE " . $table . " SET " . $field . " = ? WHERE Username = ?";
+                $stmt = $db->prepare($sql);
+                $stmt->execute(array($value, $username));
+            } catch(PDOException $ex) {
+                $log->error("Database error in Authentication.php updateField" . $field, $ex->getMessage());
+                $response->data["Error"] = "Error handling request.";
+                $response->valid = false;
+                return $response;
+            }
+            
+            $response->valid = true;
+            return $response;
         }
     }
     

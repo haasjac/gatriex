@@ -18,3 +18,16 @@
 .recoverRight {
     text-align: right;
 }
+
+.profileEdit {
+    color: #1F3853;
+    cursor: pointer;
+}
+
+.profileEdit:hover {
+    color: #D0904C;
+}
+
+.profileSpan {
+    color: #1F3853;
+}
