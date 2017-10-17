@@ -19,6 +19,22 @@
             // Send mail
             return mail($mail_to, $mail_subject, $mail_message, $header);
         }
+        
+        function sendContactEmail($mail_subject, $mail_message, $from_name, $from_mail): bool {
+            $mail_to = "Contact@gatriex.com";
+            
+            $encoding = "utf-8";
+
+            // Mail header
+            $header = "Content-type: text/html; charset=".$encoding." \r\n";
+            $header .= "From: ".$from_name." <".$from_mail."> \r\n";
+            $header .= "MIME-Version: 1.0 \r\n";
+            $header .= "Content-Transfer-Encoding: 8bit \r\n";
+            $header .= "Date: ".date("r (T)")." \r\n";
+
+            // Send mail
+            return mail($mail_to, $mail_subject, $mail_message, $header);
+        }
 
         function sendForgetUsernameEmail($email): Response {
             global $db;

@@ -8,16 +8,19 @@
     //echo $template->render($twig_options);
     
     // The message
-    $message = "Why am I able to do this? wtf.";
+    $message = "Line 1\r\nLine 2\r\nLine 3";
+    
+    // In case any of our lines are larger than 70 characters, we should use wordwrap()
+    $message = wordwrap($message, 70, "\r\n");
     
     // Send
-    //$result = sendEmail('cischken@umich.edu', 'Jake sent this', $message, "Cooper Riehl", "cariehl@umich.edu");
+    $result = sendEmail('haasjac@umich.edu', 'My Subject', $message, "Nikki", "haasjac@gmail.com");
     
     var_dump($result);
     
     function sendEmail($mail_to, $mail_subject, $mail_message, $from_name, $from_mail) {
-        //$from_name = "Gatriex";
-        //$from_mail = "DoNotReply@Gatriex.com";
+        $from_name = "Gatriex";
+        $from_mail = "DoNotReply@Gatriex.com";
 
         $encoding = "utf-8";
 
