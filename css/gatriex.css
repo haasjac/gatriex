@@ -228,9 +228,8 @@ input {
 /* JQUERY-VALIDATION */
 
 .error {
-    //margin-left: 15px;
-    /*color: red;*/
     color: #8b0000;
+    border-color: red;
 }
 
 /* FA ICONS */

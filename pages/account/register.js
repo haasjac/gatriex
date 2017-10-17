@@ -20,7 +20,11 @@ $(function () {
             rules: {
                 createUsername: {
                     required: true,
-                    remote: "/api/validation/UsernameFree.php"
+                    remote: {
+                        url: "/api/validation/UsernameFree.php",
+                        data: { username: function () { return $("#createUsername").val(); } },
+                        method: "POST"
+                    }
                 },
                 createPassword: {
                     required: true,
@@ -33,7 +37,11 @@ $(function () {
                 createEmail: {
                     required: true,
                     email: true,
-                    remote: "/api/validation/EmailFree.php"
+                    remote: {
+                        url: "/api/validation/EmailFree.php",
+                        data: { email: function () { return $("#createEmail").val(); } },
+                        method: "POST"
+                    }
                 },
                 createConfirmEmail: {
                     required: true,
@@ -65,9 +73,6 @@ $(function () {
                     errorList[i].message = "<i class='fa fa-exclamation-triangle'></i> " + errorList[i].message;
                 }
                 this.defaultShowErrors();
-            },
-            success: function(label) {
-                label.html('<i class="fa fa-check-circle"></i>');
             }
         });
     }

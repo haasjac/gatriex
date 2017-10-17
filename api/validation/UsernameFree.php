@@ -1,7 +1,7 @@
 <?php
     require_once($_SERVER['DOCUMENT_ROOT'] . '/library/libraries.php');
     
-    $username = $input->getGet("createUsername");
+    $username = $input->getPost("username");
     
     $result = $validation->validateUsername($username);
     

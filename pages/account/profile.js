@@ -29,7 +29,11 @@ $(function () {
                 profileEmailInput: {
                     required: true,
                     email: true,
-                    remote: "/api/validation/EmailFree.php"
+                    remote: {
+                        url: "/api/validation/EmailFree.php",
+                        data: { email: function () { return $("#profileEmailInput").val(); } },
+                        method: "POST"
+                    }
                 },
                 profileSummonerInput: {
                     required: true
@@ -51,9 +55,6 @@ $(function () {
                     errorList[i].message = "<i class='fa fa-exclamation-triangle'></i> " + errorList[i].message;
                 }
                 this.defaultShowErrors();
-            },
-            success: function(label) {
-                //label.html('<i class="fa fa-check-circle"></i>');
             }
         });
     }
@@ -87,6 +88,8 @@ $(function () {
         
         if ($("#" + id + "Input").attr("type") !== "password") {
             $("#" + id + "Input").val($("#" + id + "Span").text());
+        } else {
+            $("#" + id + "Input").val("");
         }
     }
     
@@ -95,6 +98,8 @@ $(function () {
         $("#" + id + "Input").hide();
         $("#" + id + "Span").show();
         $("#" + id + "Pencil").show();
+        
+        $("#" + id + "Input").removeClass("error");
     }
     
     function updateField(id) {
@@ -112,7 +117,8 @@ $(function () {
                 }
                 hideEdit(id);
             } else {
-                console.log(response);
+                $("#" + id + "Input-error").html("<i class='fa fa-exclamation-triangle'></i> " + response.data.Error);
+                $("#" + id + "Input-error").show();
             }
         });
     }

@@ -27,6 +27,13 @@
             echo json_encode($result);
             return;
         }
+    } else if ($field === "Email") {
+        $result = $validation->validateEmail($value);
+    
+        if (!$result->valid) {
+            echo json_encode($result);
+            return;
+        }
     }
     
     $result = $authentication->updateField($username, $value, $field);
