@@ -28,6 +28,7 @@
             // Mail header
             $header = "Content-type: text/html; charset=".$encoding." \r\n";
             $header .= "From: ".$from_name." <".$from_mail."> \r\n";
+            $header .= "Reply-To: ".$from_name." <".$from_mail."> \r\n";
             $header .= "MIME-Version: 1.0 \r\n";
             $header .= "Content-Transfer-Encoding: 8bit \r\n";
             $header .= "Date: ".date("r (T)")." \r\n";
