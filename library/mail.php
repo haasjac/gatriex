@@ -20,7 +20,9 @@
             return mail($mail_to, $mail_subject, $mail_message, $header);
         }
         
-        function sendContactEmail($mail_subject, $mail_message, $from_name, $from_mail): bool {
+        function sendContactEmail($mail_subject, $mail_message, $from_name, $from_mail): Response {
+            $response = new Response();
+            
             $mail_to = "Contact@gatriex.com";
             
             $encoding = "utf-8";
@@ -34,7 +36,13 @@
             $header .= "Date: ".date("r (T)")." \r\n";
 
             // Send mail
-            return mail($mail_to, $mail_subject, $mail_message, $header);
+            $response->valid = mail($mail_to, $mail_subject, $mail_message, $header);
+            
+            if (!$response->valid) {
+                $response->data["Error"] = "Email failed to send.";
+            }
+
+            return $response;
         }
 
         function sendForgetUsernameEmail($email): Response {
