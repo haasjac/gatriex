@@ -1,6 +1,6 @@
-{% macro input(label, id, type, placeholder, value, tooltip) %}
+{% macro input(label, id, type, placeholder, value, tooltip, options) %}
     <div class="flexFormField">
-        <div class="flexFormCell">
+        <div class="flexFormCell flexFormCellLabel">
             <label for="{{ id }}">
                 {{ label }}:
                 {% if tooltip is not empty %}
@@ -8,9 +8,18 @@
                 {% endif %}
             </label>
         </div>
-        <div class="flexFormCell">
+        <div class="flexFormCell flexFormCellInput">
             {% if type == "textarea" %}
                 <textarea name="{{ id }}" id="{{ id }}" placeholder="{{ placeholder }}" value="{{ value }}"></textarea>
+            {% elseif type == "select" %}
+                <select id="{{ id }}">
+                    {% for option in options %}
+                        <option>{{ option }}</option>
+                    {% endfor %}
+                </select>
+            {% elseif type == "checkbox" %}
+                <i class="fa fa-{% if value == "checked" %}check-{% endif %}square-o fakeCheck" data-realcheck="{{ id }}" id="fake{{ id }}"></i>
+                <input type="checkbox" name="{{ id }}" id="{{ id }}" {% if value == "checked" %} checked="checked" {% endif %} style="display:none"/>
             {% else %}
                 <input type="{{ type }}" name="{{ id }}" id="{{ id }}" placeholder="{{ placeholder }}" value="{{ value }}" />
             {% endif %}
@@ -35,22 +44,28 @@
 
 {% macro inputCheckbox(label, id, checked = false) %}
     <div class="flexFormField">
-        <div class="flexFormCell">
+        <div class="flexFormCell flexFormCellLabel">
             <label for="{{ id }}">{{ label }}:</label>
         </div>
-        <div class="flexFormCell">
-            <i class="fa fa-square-o fakeCheck" data-realcheck="{{ id }}"></i>
+        <div class="flexFormCell flexFormCellInput">
+            <i class="fa fa-square-o fakeCheck" data-realcheck="{{ id }}" id="fake{{ id }}"></i>
             <input type="checkbox" name="{{ id }}" id="{{ id }}" {% if checked %} checked="checked" {% endif %} style="display:none"/>
+        </div>
+    </div>
+    <div class="flexFormField">
+        <div class="flexFormCell flexFormCellLabel">
+        </div>
+        <div class="flexFormCell flexFormCellInput">
         </div>
     </div>
 {% endmacro %}
 
 {% macro button(label, id) %}
     <div class="flexFormField">
-        <div class="flexFormCell">
+        <div class="flexFormCell flexFormCellLabel">
 
         </div>
-        <div class="flexFormCell flexFormCellRight">
+        <div class="flexFormCell flexFormCellRight flexFormCellInput">
             <button id="{{ id }}" class="ui-button">{{ label }}</button>
         </div>
     </div>

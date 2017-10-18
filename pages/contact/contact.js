@@ -9,6 +9,7 @@
 $(function () {
     
 	var validator;
+    var lastName = "", lastEmail = "";
     
     setValidator();
 	setEventHandlers();
@@ -45,6 +46,18 @@ $(function () {
 
     function setEventHandlers() {
         
+        $("#contactSubject").parent().parent().hide();
+        
+        $("#contactSubjectSelect").change(function () {
+           if ($("#contactSubjectSelect").val() === "Other") {
+               $("#contactSubject").val("");
+               $("#contactSubject").parent().parent().show();
+           } else {
+               $("#contactSubject").parent().parent().hide();
+               $("#contactSubject").val($("#contactSubjectSelect").val());
+           }
+        });
+        
         $("#contactForm").submit(function () {
             if (validator.form()) {
                 sendEmail();
@@ -52,6 +65,18 @@ $(function () {
             return false; 
         });
         
+        $("#fakecontactAnon").click( function () {
+            console.log("hmm");
+            if (!$("#contactAnon").prop("checked")) {
+                lastName = $("#contactName").val();
+                lastEmail = $("#contactEmail").val();
+                $("#contactName").val("Annonymous");
+                $("#contactEmail").val("DoNotReply@gatriex.com");
+            } else {
+                $("#contactName").val(lastName);
+                $("#contactEmail").val(lastEmail);
+            }
+        });        
     }
     
     function sendEmail() {
@@ -61,6 +86,7 @@ $(function () {
             subject: $("#contactSubject").val(),
             message: $("#contactMessage").val()
         };
+        data.message = data.message.replace(/(?:\r\n|\r|\n)/g, '<br />');
         dataRequester.apiCall("/api/log/contact.php", "POST", data, function (response) {
             if (response.valid) {
                 console.log(response);

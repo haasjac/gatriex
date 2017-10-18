@@ -26,7 +26,7 @@ $(function () {
         $("#loginDialogBox").dialog({
         	autoOpen: false,
         	modal: true,
-        	width: 600,
+        	width: 650,
         	buttons: {
         	    Login: function () {
         	      login();  
