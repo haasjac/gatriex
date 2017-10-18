@@ -13,6 +13,13 @@
         return;
     }
     
+    if ($region=== "") {
+        $response->data["Error"] = "Region cannot be empty.";
+        $response->valid = false;
+        echo json_encode($response);
+        return;
+    }
+    
     $result = api_call("https://" . $region . ".api.riotgames.com/lol/summoner/v3/summoners/by-name/" . $summonerName);
     
     if (!$result->valid) {
@@ -47,8 +54,9 @@
         global $db, $log, $region;
 
         $response = new Response();
-        $sql = "SELECT * FROM Version WHERE Time >= DATE_SUB(NOW(), INTERVAL 10 MINUTE)";
-        $stmt = $db->query($sql);
+        $sql = "SELECT * FROM Version WHERE Region = ? AND Time >= DATE_SUB(NOW(), INTERVAL 10 MINUTE)";
+        $stmt = $db->prepare($sql);
+        $stmt->execute(array($region));
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         if (sizeof($result) > 0) {
@@ -60,7 +68,7 @@
             $result = api_call("https://" . $region . ".api.riotgames.com/lol/static-data/v3/versions");
             
             if (!$result->valid) {
-                return result;
+                return $result;
             }
             
             $response->data["Version"] = $result->data["Response"][0];
@@ -68,10 +76,13 @@
             
             try {
                 $db->beginTransaction();
-                $sql = "DELETE FROM Version WHERE Time < DATE_SUB(NOW(), INTERVAL 10 MINUTE)";
-                $result = $db->query($sql);
-                $stmt = $db->prepare("INSERT INTO Version (Version) VALUES (?)");
-                $stmt->execute(array($response->data["Version"]));
+                $sql = "UPDATE Version SET Version = ?, Time = CURRENT_TIMESTAMP WHERE Region = ?";
+                $stmt = $db->prepare($sql);
+                $stmt->execute(array($response->data["Version"], $region));
+                if ($stmt->rowCount() <= 0) {
+                    $stmt = $db->prepare("INSERT INTO Version (Version, Region) VALUES (?,?)");
+                    $stmt->execute(array($response->data["Version"], $region));
+                }
                 $db->commit();
             } catch (PDOException $ex) {
                 $log->error("Database error in GetSummonerData.php", $ex->getMessage());
