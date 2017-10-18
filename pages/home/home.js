@@ -137,8 +137,9 @@ $(function () {
                             break;
                     }
                     var severity = '<i class="fa fa-li ' + fa + '" data-severity="' + updates[0].severity + '"></i>';
-                    var timestamp = formatTime(updates[0]);
-                    var incident = $("<li>" + severity + " <span>" + updates[0].content + "</span>" + timestamp + "</li>");
+                    var timestamp = formatTime(updates[0]);    
+                    
+                    var incident = $("<li>" + severity + " <span>" + addHTML(updates[0].content) + "</span>" + timestamp + "</li>");
                     var updatesList = $('<ul class="updates fa-ul"></ul>');
                     
     			    for (var updateIndex = 1; updateIndex < updates.length; updateIndex++) {
@@ -165,17 +166,25 @@ $(function () {
         
     	var mini = "";
     	var league = "";
-    	if (data.League.length > 0 && data.League[0].queueType === "RANKED_SOLO_5x5") {
-        	if (data.League[0].miniSeries){
-        		mini = data.League[0].miniSeries.progress;
+        var leagueIndex = -1;
+        for (var i = 0; i < data.League.length; i++) {
+            if (data.League[i].queueType === "RANKED_SOLO_5x5") {
+                leagueIndex = i;
+                break;
+            }
+        }
+        
+    	if (leagueIndex >= 0) {
+        	if (data.League[leagueIndex].miniSeries){
+        		mini = data.League[leagueIndex].miniSeries.progress;
         		mini = mini.replace(/W/g,"<i class='fa fa-check-circle'></i> ");
         		mini = mini.replace(/N/g,"<i class='fa fa-minus-circle'></i> ");
         		mini = mini.replace(/L/g,"<i class='fa fa-times-circle'></i> ");
         		mini = mini.trim();
         	} else {
-        	    mini = data.League[0].leaguePoints + " LP";
+        	    mini = data.League[leagueIndex].leaguePoints + " LP";
         	}
-        	league = capitalize(data.League[0].tier) + " " + data.League[0].rank;
+        	league = capitalize(data.League[leagueIndex].tier) + " " + data.League[leagueIndex].rank;
     	} else {
     	    mini = "";
     	    league = "Level: " + data.Summoner.summonerLevel;
@@ -244,5 +253,24 @@ $(function () {
         var d = new Date(time);
         timestamp.append(d.toLocaleTimeString() + ", " + d.toLocaleDateString());
         return timestamp.prop('outerHTML');
+    }
+    
+    function addHTML(data) {
+        var arr = data.split(/\s+/);
+        
+        var urlRegex = new RegExp(/^(?:(?:(?:https?|ftp):)?\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})).?)(?::\d{2,5})?(?:[/?#]\S*)?$/i);
+        
+        for (var i = 0; i < arr.length; i++) {
+            var item = arr[i];
+            if (urlRegex.test(item)) {
+                data = data.replace(item, function (original) {
+                    return "<a href='" + original + "'>" + original + "</a>";
+                });
+            }
+        }
+        
+        data = data.replace(/(?:\r\n|\r|\n)/g, '<br />');
+        
+        return data;
     }
 });
