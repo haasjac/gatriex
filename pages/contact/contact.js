@@ -1,4 +1,4 @@
-/* global dataRequester, username */
+/* global dataRequester, username*/
 
 "use strict";
 
@@ -59,6 +59,7 @@ $(function () {
         });
         
         $("#contactForm").submit(function () {
+            $("#contactFeedbackMessage").html("");
             if (validator.form()) {
                 sendEmail();
             }
@@ -66,7 +67,6 @@ $(function () {
         });
         
         $("#fakecontactAnon").click( function () {
-            console.log("hmm");
             if (!$("#contactAnon").prop("checked")) {
                 lastName = $("#contactName").val();
                 lastEmail = $("#contactEmail").val();
@@ -89,9 +89,16 @@ $(function () {
         data.message = data.message.replace(/(?:\r\n|\r|\n)/g, '<br />');
         dataRequester.apiCall("/api/log/contact.php", "POST", data, function (response) {
             if (response.valid) {
-                console.log(response);
+                var message = '<i class="fa fa-check-circle"></i> Thank you for the feedback!';
+                if (!$("#contactAnon").prop("checked")) {
+                    message += " You should receive a reply within a couple of days.";
+                }
+                $("#contactFeedbackMessage").html(message);
+                $("#contactForm").hide();
             } else {
-                console.log(response);
+                console.log(response.data.Error);
+                var message = '<i class="fa fa-exclamation-triangle"></i> ' + response.data.Error;
+                $("#contactFeedbackMessage").html(message);                
             }
         });
     }
