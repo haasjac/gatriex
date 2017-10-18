@@ -94,6 +94,7 @@ $(function () {
                     message += " You should receive a reply within a couple of days.";
                 }
                 $("#contactFeedbackMessage").html(message);
+                $("#contactForm").hide();
             } else {
                 console.log(response.data.Error);
                 var message = '<i class="fa fa-exclamation-triangle"></i> ' + response.data.Error;
