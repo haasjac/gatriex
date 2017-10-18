@@ -14,7 +14,7 @@
             {% elseif type == "select" %}
                 <select id="{{ id }}">
                     {% for option in options %}
-                        <option>{{ option }}</option>
+                        <option {% if option == value %} selected {% endif %}>{{ option }}</option>
                     {% endfor %}
                 </select>
             {% elseif type == "checkbox" %}
@@ -71,7 +71,7 @@
     </div>
 {% endmacro %}
 
-{% macro profile(label, field, id, value, type, tooltip) %}
+{% macro profile(label, field, id, value, type, tooltip, options) %}
     <div class="flexFormField">
         <div class="flexFormCell">
             <span>
@@ -83,7 +83,17 @@
         </div>
         <div class="flexFormCell">
             <span id="{{ id }}Span" class="profileSpan">{{ value }}</span>
-            <input type="{{ type }}" name="{{ id }}Input" id="{{ id }}Input" value="{% if type != "password" %} {{ value }} {% endif %}" style="display:none"/>
+            
+            {% if type == "select" %}
+                <select id="{{ id }}Input" style="display:none">
+                    {% for option in options %}
+                        <option {% if option == value %} selected {% endif %}>{{ option }}</option>
+                    {% endfor %}
+                </select>
+            {% else %}
+                <input type="{{ type }}" name="{{ id }}Input" id="{{ id }}Input" value="{% if type != "password" %} {{ value }} {% endif %}" style="display:none"/>
+            {% endif %}
+            
             <input type="hidden" id="{{ id }}Field" value="{{ field }}" />
         </div>
         <div class="flexFormCell">

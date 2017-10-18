@@ -4,6 +4,7 @@
     
     $response = new Response();
     $summonerName = $input->getGet("summonerName");
+    $region = $input->getGet("region");
     
     if ($summonerName === "") {
         $response->data["Error"] = "Summoner name cannot be empty.";
@@ -12,7 +13,7 @@
         return;
     }
     
-    $result = api_call("https://na1.api.riotgames.com/lol/summoner/v3/summoners/by-name/" . $summonerName);
+    $result = api_call("https://" . $region . ".api.riotgames.com/lol/summoner/v3/summoners/by-name/" . $summonerName);
     
     if (!$result->valid) {
         echo json_encode($result);
@@ -21,7 +22,7 @@
         $response->data["Summoner"] = $result->data["Response"];
     }
     
-    $result = api_call("https://na1.api.riotgames.com/lol/league/v3/positions/by-summoner/" . $response->data["Summoner"]->id);
+    $result = api_call("https://" . $region . ".api.riotgames.com/lol/league/v3/positions/by-summoner/" . $response->data["Summoner"]->id);
     
     if (!$result->valid) {
         echo json_encode($result);
@@ -43,7 +44,7 @@
     echo json_encode($response);
        
     function getVersion() {
-        global $db, $log;
+        global $db, $log, $region;
 
         $response = new Response();
         $sql = "SELECT * FROM Version WHERE Time >= DATE_SUB(NOW(), INTERVAL 10 MINUTE)";
@@ -56,7 +57,7 @@
             return $response;
         }
         else {
-            $result = api_call("https://na1.api.riotgames.com/lol/static-data/v3/versions");
+            $result = api_call("https://" . $region . ".api.riotgames.com/lol/static-data/v3/versions");
             
             if (!$result->valid) {
                 return result;

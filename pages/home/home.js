@@ -10,12 +10,12 @@ $(function () {
     var fetchingStatus = false;
     
 	getNavigation();
+    //setUpRegion();
 	setEventHandlers();
 	getSummoner();
 	getStatus();
 	setInterval(getSummoner, 300000); // 5 min
 	setInterval(getStatus, 300000); // 5 min
-
 
     function setEventHandlers() {
         $("#refreshSummoner").click(function () {
@@ -40,6 +40,23 @@ $(function () {
         $('#StatusError').click(function () {
             $("#dialogMessage").html($(this).attr('data-message'));
             $('#dialogBox').dialog("open");
+        });
+        
+        $("#editRegion").click(function () {
+            $("#nameRegion").hide();
+            $("#selectRegion").show();
+            $("#editRegion").hide();
+        });
+        
+        $("#selectRegion").change(function () {
+            $("#nameRegion").html($("#selectRegion option:selected").text());
+            
+            $("#nameRegion").show();
+            $("#selectRegion").hide();
+            $("#editRegion").show();
+            
+            getSummoner();
+            getStatus();
         });
         
         $("#dialogBox").dialog({
@@ -73,7 +90,10 @@ $(function () {
         $('#SummonerError').html('');
         
         
-        var data = { "summonerName": searchName };
+        var data = { 
+            "region": $("#selectRegion").val(),
+            "summonerName": searchName
+        };
         
         dataRequester.apiCall("/api/riot/GetSummonerData.php", "GET", data, function (response) {
             if (response.valid) {
@@ -97,7 +117,11 @@ $(function () {
         $("#refreshStatus").addClass("fa-spin");
         $('#StatusError').html('');
         
-        dataRequester.apiCall("/api/riot/GetStatusData.php", "GET", null, function (response) {
+        var data = {
+            "region": $("#selectRegion").val()
+        };        
+        
+        dataRequester.apiCall("/api/riot/GetStatusData.php", "GET", data, function (response) {
             if (response.valid) {
                 displayStatus(response.data.Response);
             } else {
@@ -111,7 +135,6 @@ $(function () {
     }
     
     function displayStatus(data) {
-        $("#Status").html(" - " + data.name);
         var servicesList = $('<ul id="services" class="fa-ul"></ul>');
         var services = data.services;
         
@@ -264,7 +287,7 @@ $(function () {
             var item = arr[i];
             if (urlRegex.test(item)) {
                 data = data.replace(item, function (original) {
-                    return "<a href='" + original + "'>" + original + "</a>";
+                    return "<a target='_blank' href='" + original + "'>" + original + "</a>";
                 });
             }
         }

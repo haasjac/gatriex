@@ -112,3 +112,13 @@
     font-size: 16px;
     padding-top: 5px;
 }
+
+#nameRegion{
+    display:inline; 
+    text-transform:capitalize;
+}
+
+#editRegion:hover {
+    color: #D0904C;
+    cursor: pointer;
+}

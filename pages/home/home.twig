@@ -34,7 +34,7 @@
                         <form id="searchForm">
                             <input type="text" name="searchSummonerName" placeholder="Summoner Name" id="searchSummonerName" />
                             <button id="searchButton" class="ui-button">Search</button>
-                            <input type="hidden" name="userSummonerName" id="userSummonerName" value="{{ SummonerName }}" />
+                            <input type="hidden" id="userSummonerName" value="{{ SummonerName }}" />
                         </form>
 		            </div>
     		        <div style="padding-top: 15px;">
@@ -50,10 +50,18 @@
     		        </div>
     			</div>
     		</div>
-		</div>
+		</div>                        
 		<div id="ServerStatus" class="section">
     		<div class="mainHeaderDiv">
-                <span class="mainHeader">Server Status<div id="Status" style="display:inline; text-transform:capitalize"> - North America</div></span>
+                <span class="mainHeader">Server Status - 
+                    <div id="nameRegion">North America</div>
+                    <select id="selectRegion" style="display:none">
+                        {% for name, key in RegionList %}
+                            <option {% if name == Region %} selected {% endif %} value="{{ key }}">{{ name }}</option>
+                        {% endfor %}
+                    </select>
+                    <i id="editRegion" class="fa fa-pencil"></i>
+                </span>
                 <i id="refreshStatus" class="fa fa-refresh iconRight"></i>
                 <span id="StatusError" class="errorIcon iconRight"></span>
             </div>

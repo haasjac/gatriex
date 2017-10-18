@@ -9,5 +9,6 @@
     require_once($_SERVER['DOCUMENT_ROOT'] . '/library/errorPage.php');
     require_once($_SERVER['DOCUMENT_ROOT'] . '/library/redirect.php');
     require_once($_SERVER['DOCUMENT_ROOT'] . '/library/log.php');
+    require_once($_SERVER['DOCUMENT_ROOT'] . '/library/riot.php');
 ?>
 

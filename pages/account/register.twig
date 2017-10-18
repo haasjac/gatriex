@@ -22,6 +22,7 @@
                     {{ flexForm.input('Email', 'createEmail', 'text') }}
                     {{ flexForm.input('Confirm Email', 'createConfirmEmail', 'text') }}
                     {{ flexForm.input('Summoner Name', 'createSummoner', 'text', null, null, 'Used as a default on the home page. Optional') }}
+                    {{ flexForm.input("Region", "createRegion", "select", null, "North America", 'Used as a default on the home page.', RegionList) }}
                     {{ flexForm.button('Create Account', 'createButton') }}
                 </form>
                 

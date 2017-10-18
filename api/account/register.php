@@ -7,6 +7,7 @@
     $email = $input->getPost("email");
     $confirmEmail = $input->getPost("confirmEmail");
     $summoner = $input->getPost("summoner");
+    $region = $input->getPost("region");
     
     $result = $validation->validateUsername($username);
     
@@ -43,7 +44,7 @@
         return;
     }
     
-    $result = $authentication->createUser($username, $password, $email, $summoner);
+    $result = $authentication->createUser($username, $password, $email, $summoner, $region);
     
     echo json_encode($result);
 ?>

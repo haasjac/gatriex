@@ -104,7 +104,8 @@ $(function () {
             "confirmPassword": $("#createConfirmPassword").val(),
             "email": $("#createEmail").val(),
             "confirmEmail": $("#createConfirmEmail").val(),
-            "summoner": $("#createSummoner").val()
+            "summoner": $("#createSummoner").val(),
+            "region": $("#createRegion").val()
         };
         dataRequester.apiCall('/api/account/register.php', "POST", data, function (response) {
             if (response.valid) {

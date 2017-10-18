@@ -8,16 +8,17 @@
     $redirect->requireUser($twig_options["Username"]);
     
     try {
-        $stmt = $db->prepare("SELECT Email, Summoner_Name FROM User_Info WHERE Username = ?");
+        $stmt = $db->prepare("SELECT Email, Summoner_Name, Region FROM User_Info WHERE Username = ?");
         $stmt->execute(array($twig_options["Username"]));
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $twig_options["Email"] = $rows[0]["Email"];
         $twig_options["Summoner"] = $rows[0]["Summoner_Name"];
+        $twig_options["Region"] = $rows[0]["Region"];
     } catch(PDOException $ex) {
         $log->error("Database error in profile.php", $ex->getMessage());
-        $response->data["Error"] = "Error handling request.";
-        $response->valid = false;
     }
+    
+    $twig_options["RegionList"] = $riot->getRegions();
     
     echo $template->render($twig_options);
 ?>

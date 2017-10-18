@@ -37,7 +37,7 @@
 
         //User Functions
 
-        function createUser($username, $password, $email, $summoner): Response {
+        function createUser($username, $password, $email, $summoner, $region): Response {
             global $db, $log;
             $response = new Response();
 
@@ -54,8 +54,8 @@
                 $stmt = $db->prepare("INSERT INTO User_Auth (Username, Password, Auth_Token) VALUES (?,?,?)");
                 $stmt->execute(array($username, $hash_password, $token));
 
-                $stmt = $db->prepare("INSERT INTO User_Info (Username, Email, Summoner_Name) VALUES (?,?,?)");
-                $stmt->execute(array($username, $email, $summoner));
+                $stmt = $db->prepare("INSERT INTO User_Info (Username, Email, Summoner_Name, Region) VALUES (?,?,?,?)");
+                $stmt->execute(array($username, $email, $summoner, $region));
                 
                 $stmt = $db->prepare("INSERT INTO Links (Username, Text, Link, Header) (SELECT ?, Text, Link, Header FROM Links WHERE Username = 'admin')");
                 $stmt->execute(array($username));

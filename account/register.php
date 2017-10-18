@@ -7,5 +7,7 @@
     
     $redirect->requireNoUser($twig_options["Username"]);
     
+    $twig_options["RegionList"] = $riot->getRegions();
+    
     echo $template->render($twig_options);
 ?>
