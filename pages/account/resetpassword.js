@@ -43,9 +43,6 @@ $(function () {
                     errorList[i].message = "<i class='fa fa-exclamation-triangle'></i> " + errorList[i].message;
                 }
                 this.defaultShowErrors();
-            },
-            success: function(label) {
-                label.html('<i class="fa fa-check-circle"></i>');
             }
         });
     }

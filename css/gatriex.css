@@ -191,7 +191,7 @@ a {
     text-decoration: underline;
 }
     
-input {
+input, select {
     font-size: 22px;
     font-family: 'kingsbridgeregular';
 }

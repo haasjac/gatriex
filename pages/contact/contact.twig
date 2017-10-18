@@ -15,12 +15,15 @@
         </div>
         <div class="content">
             To contact the site developer, please use the automated form below.<br><br>
-            Alternatively you can directly send an email to <a href="mailto:Contact@gatriex.com">Contact@gatriex.com</a>
+            Alternatively, you can directly send an email to <a href="mailto:Contact@gatriex.com">Contact@gatriex.com</a>
             
             <div id="formDiv">
                 <form id="contactForm" class="flexForm">
                     {{ flexForm.input('Name', 'contactName', 'text', "Your Name") }}
                     {{ flexForm.input('Email', 'contactEmail', 'text', "your@email.com") }}
+                    {{ flexForm.input('Remain anonymous', 'contactAnon', 'checkbox', null, null, "If you chose to remain anonymous, we will not be able to send you a reply.") }}
+                    {% set options = ["Comment", "Question", "Concern", "Report a Bug", "Other"] %}
+                    {{ flexForm.input('Subject', 'contactSubjectSelect', 'select', null, null, null, options) }}
                     {{ flexForm.input('Subject', 'contactSubject', 'text', 'Subject') }}
                     {{ flexForm.input('Message', 'contactMessage', 'textarea', 'Message') }}
                     {{ flexForm.button('Send Email', 'contactButton') }}
