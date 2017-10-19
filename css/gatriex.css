@@ -225,6 +225,10 @@ input, select {
     font-size: 22px;
 }
 
+.fakeCheck {
+    cursor: pointer;
+}
+
 #loginDialogDiv {
     display: flex;
     flex: 1;

@@ -10,7 +10,6 @@ $(function () {
     var fetchingStatus = false;
     
 	getNavigation();
-    //setUpRegion();
 	setEventHandlers();
 	getSummoner();
 	getStatus();
@@ -239,7 +238,7 @@ $(function () {
             if (response.valid) {
                 for (var i = 0; i < response.data.Links.length; i++) {
                     var data = response.data.Links[i];
-                    $('#navList').append('<dt data-catid="' + i + '" class="navButton"><i class="fa fa-caret-right"></i> ' + data.header + '</dt>');
+                    $('#navList').append('<dt data-catid="' + i + '" class="navButton"><i class="fa fa-caret-right fa-fw"></i> ' + data.header + '</dt>');
                     for (var j = 0; j < data.items.length; j++) {
                         var item = data.items[j];
                         var link = '<dd class="item item' + i + '" style="display:none;"><a href=' + item.link + ' target="_blank" ><i class="fa fa-bookmark-o"></i> ' + item.text + '</a></dd>';

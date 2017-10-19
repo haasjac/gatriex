@@ -57,6 +57,6 @@ $(function() {
                 console.log("Error failed to be logged.");
         	}
         });
-    }
+    };
    
 });
