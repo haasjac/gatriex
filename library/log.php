@@ -4,7 +4,7 @@
     class myLog {
         function error($message, $error) {
             global $errorPath;
-            ini_set("error_log", $errorPath . "gatriex.log");
+            ini_set("error_log", $errorPath . "gatriex" . date("-Y-m") . ".log");
             $result = error_log($message . ":\r\n" . $error . "\r\n");
             return $result;
         }

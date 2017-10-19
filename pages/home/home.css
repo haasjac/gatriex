@@ -118,7 +118,11 @@
     text-transform:capitalize;
 }
 
-#editRegion:hover {
+#editRegion, #cancelRegion {
+    font-size: 22px;
+}
+
+#editRegion:hover, #cancelRegion:hover {
     color: #D0904C;
     cursor: pointer;
 }

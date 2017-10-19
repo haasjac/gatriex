@@ -5,5 +5,7 @@
     $template = $twig->load('test/test.twig');
     $twig_options = getTwigOptions();
         
-    echo $template->render($twig_options);
+    //echo $template->render($twig_options);
+    
+    echo date("-Y-m");
 ?>

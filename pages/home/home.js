@@ -44,16 +44,25 @@ $(function () {
         
         $("#editRegion").click(function () {
             $("#nameRegion").hide();
-            $("#selectRegion").show();
             $("#editRegion").hide();
+            $("#selectRegion").show();
+            $("#cancelRegion").show();
+        });
+        
+        $("#cancelRegion").click(function () {
+            $("#nameRegion").show();
+            $("#editRegion").show();
+            $("#selectRegion").hide();
+            $("#cancelRegion").hide();
         });
         
         $("#selectRegion").change(function () {
             $("#nameRegion").html($("#selectRegion option:selected").text());
             
             $("#nameRegion").show();
-            $("#selectRegion").hide();
             $("#editRegion").show();
+            $("#selectRegion").hide();
+            $("#cancelRegion").hide();
             
             getSummoner();
             getStatus();
