@@ -126,3 +126,27 @@
     color: #D0904C;
     cursor: pointer;
 }
+
+.summonerFlex {
+    flex: 1;
+    display: flex;
+    margin: auto;
+}
+
+#summonerFlexContainer {
+    padding-top: 15px; 
+    display: flex;
+    flex-wrap: wrap;
+}
+
+#summonerFlexDiv {
+    margin: auto 25px;
+    flex-direction: column;
+}
+
+.champ {
+    height: 90px;
+    width: 90px;
+    display: none;
+    padding: 10px;
+}

@@ -106,6 +106,7 @@ $(function () {
         dataRequester.apiCall("/api/riot/GetSummonerData.php", "GET", data, function (response) {
             if (response.valid) {
                 displaySummoner(response.data);
+                console.log(response.data);
             } else {
                 $('#SummonerError').html('<i class="fa fa-exclamation-triangle"></i>');
                 $('#SummonerError').attr('data-message', response.data.Error);
@@ -223,6 +224,12 @@ $(function () {
     	$("#MiniSeries").html(mini);
     	$("#SummonerName").html(data.Summoner.name);
     	$("#League").html(league);
+        
+        for (var i = 0; i < data.Mastery.length; i++) {
+            var url =  "https://ddragon.leagueoflegends.com/cdn/" + data.Version + "/img/champion/" + data.Champions[i] + ".png";
+            $("#champ" + i).attr("src", url);
+            $("#champ" + i).show();
+        }
     }
     
     function clearSummonerData() {
@@ -303,5 +310,39 @@ $(function () {
         data = data.replace(/(?:\r\n|\r|\n)/g, '<br />');
         
         return data;
+    }
+    
+    function sortMastery(data){
+        var result = [];
+        
+        try {
+            result = data.sort(function(a,b) {
+                var aLevel = a.championLevel;
+                var bLevel = b.championLevel;
+
+                if (aLevel > bLevel) {
+                    return -1;
+                } else if (bLevel > aLevel) {
+                    return 1;
+                } else {
+                    var aPoints = a.championPoints;
+                    var bPoints = b.championPoints;
+                    if (aPoints > bPoints) {
+                        return -1;
+                    } else if (bPoints > aPoints) {
+                        return 1;
+                    } else {
+                        return 0;
+                    }
+                }
+            });
+        } catch (ex) {
+            console.log(ex);
+            result = data;
+        }
+        
+        result = result.slice(0,3);
+        
+        return result;
     }
 });

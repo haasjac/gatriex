@@ -38,6 +38,33 @@
         $response->data["League"] = $result->data["Response"];
     }
     
+    $result = api_call("https://" . $region . ".api.riotgames.com/lol/champion-mastery/v3/champion-masteries/by-summoner/" . $response->data["Summoner"]->id);
+    
+    if (!$result->valid) {
+        echo json_encode($result);
+        return;
+    } else {
+        $array = $result->data["Response"];
+        $sorted = usort($array, "sortMastery");
+        if ($sorted) {
+            $response->data["Mastery"] = array_slice($array, 0, 3);
+        } else {
+            $response->data["Mastery"] = array_slice($result->data["Response"], 0, 3);
+        }
+    }
+    
+    $response->data["Champions"] = array();
+    for ($i = 0; $i < sizeof($response->data["Mastery"]); $i++) {
+        $result = getChampion($response->data["Mastery"][$i]->championId);
+    
+        if (!$result->valid) {
+            echo json_encode($result);
+            return;
+        } else {
+            $response->data["Champions"][$i] = $result->data["Key"];
+        }
+    }    
+    
     $result = getVersion();
     
     if (!$result->valid) {
@@ -50,7 +77,7 @@
     $response->valid = true;
     echo json_encode($response);
        
-    function getVersion() {
+    function getVersion(): Response {
         global $db, $log, $region;
 
         $response = new Response();
@@ -92,6 +119,55 @@
                 return $response;
             }
             return $response;
+        }
+    }
+    
+    function getChampion($id): Response {
+        global $db, $log, $region;
+
+        $response = new Response();
+        $sql = "SELECT * FROM Champions WHERE id = ?";
+        $stmt = $db->prepare($sql);
+        $stmt->execute(array($id));
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        if (sizeof($result) > 0) {
+            $response->data["Key"] = $result[0]["ChampKey"];
+            $response->valid = true;
+            return $response;
+        }
+        else {
+            $result = api_call("https://" . $region . ".api.riotgames.com/lol/static-data/v3/champions/" . $id);
+            
+            if (!$result->valid) {
+                return $result;
+            }
+            var_dump($result);
+            $response->data["Key"] = $result->data["Response"]->key;
+            $response->valid = true;
+            
+            try {
+                $stmt = $db->prepare("INSERT INTO Champions (id, ChampKey) VALUES (?,?)");
+                $stmt->execute(array($id, $result->data["Response"]->key));
+            } catch (PDOException $ex) {
+                $log->error("Database error in GetSummonerData.php", $ex->getMessage());
+                $response->data["Error"] = "Error handling request";
+                $response->valid = false;
+                return $response;
+            }
+            return $response;
+        }
+    }
+    
+    function sortMastery($a, $b): int {
+        try {
+            if ($a->championLevel === $b->championLevel) {
+                return $b->championPoints - $a->championPoints;
+            } else {
+                return $b->championLevel - $a->championLevel;
+            }
+        } catch (Exception $ex) {
+            return 0;
         }
     }
 ?>

@@ -37,15 +37,20 @@
                             <input type="hidden" id="userSummonerName" value="{{ SummonerName }}" />
                         </form>
 		            </div>
-    		        <div style="padding-top: 15px;">
-    		            <div style="float:left;">
+    		        <div id="summonerFlexContainer">
+    		            <div class="summonerFlex">
             				<img id="SummonerIcon" src="/images/Logo.png">
             			</div>
-            			<div style="float:left; padding-left: 30px;">
+            			<div class="summonerFlex" id="summonerFlexDiv">
             				<div id="SummonerName"></div>
             				<div id="League"></div>
             				<div id="MiniSeries"></div>
             			</div>
+                        <div class="summonerFlex">
+                            <img id="champ0" class="champ">
+                            <img id="champ1" class="champ">
+                            <img id="champ2" class="champ">
+                        </div>
             			<div style="clear: both;"></div>
     		        </div>
     			</div>
