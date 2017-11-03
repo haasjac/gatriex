@@ -114,6 +114,9 @@ $(function () {
             
             fetchingSummoner = false;
             $("#refreshSummoner").removeClass("fa-spin");
+        }, function () {
+            fetchingSummoner = false;
+            $("#refreshSummoner").removeClass("fa-spin");
         });
     }
     
@@ -138,6 +141,9 @@ $(function () {
                 $('#StatusError').attr('data-message', response.data.Error);
             }
             
+            fetchingStatus = false;
+            $("#refreshStatus").removeClass("fa-spin");
+        }, function () {
             fetchingStatus = false;
             $("#refreshStatus").removeClass("fa-spin");
         });
@@ -177,7 +183,7 @@ $(function () {
     			    for (var updateIndex = 1; updateIndex < updates.length; updateIndex++) {
     			        severity = '<i class="fa fa-li ' + (updates[updateIndex].severity === "info" ? "fa-info-circle" : "fa-question-circle") + '" data-severity="' + updates[updateIndex].severity + '"></i>';
     			        var timestamp = formatTime(updates[updateIndex]);
-    			        updatesList.append("<li>" + severity + " <span>" + updates[updateIndex].content + "</span>" + timestamp + "</li>");
+    			        updatesList.append("<li>" + severity + " <span>" + addHTML(updates[updateIndex].content) + "</span>" + timestamp + "</li>");
     			    }
     			    
     				incident.append(updatesList);

@@ -18,7 +18,7 @@ $(function() {
         }
     });
      
-    dataRequester.apiCall = function (url, method, data, callback) {
+    dataRequester.apiCall = function (url, method, data, callback, errorCallback) {
         $.ajax({
             url: url,
             method: method,
@@ -36,11 +36,15 @@ $(function() {
         	    callback(result);
         	},
         	error: function(xhr) {
-                $("#dataRequesterDialogError").html("Error " + xhr.status + ": " + xhr.statusText);
-                if (xhr.status !== 404) {
-                    $("#dataRequesterDialogMessage").html(xhr.responseText);
-                }
-                $("#dataRequesterDialogBox").dialog("open");
+        	    console.log(xhr);
+        	    errorCallback();
+        	    if (xhr.status && xhr.status != 0) {
+                    $("#dataRequesterDialogError").html("Error " + xhr.status + ": " + xhr.statusText);
+                    if (xhr.status !== 404) {
+                        $("#dataRequesterDialogMessage").html(xhr.responseText);
+                    }
+                    $("#dataRequesterDialogBox").dialog("open");
+        	    }
         	}
         });
     };
