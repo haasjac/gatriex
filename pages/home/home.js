@@ -161,6 +161,9 @@ $(function () {
             for (var incidentIndex = 0; incidentIndex < incidents.length; incidentIndex++) {
                 if (incidents[incidentIndex].active) {
                     var updates = incidents[incidentIndex].updates;
+                    if (updates.length <= 0) {
+                        continue;
+                    }
                     var fa;
                     switch (updates[0].severity) {
                         case "info":
