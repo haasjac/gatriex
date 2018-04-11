@@ -34,6 +34,13 @@
     color: #1F3853;
 }
 
+#SummonerLevel {
+    color: #D0904C;
+    font-size: 26px;
+    font-weight: bold;
+    padding-right: 5px;
+}
+
 #SummonerStats {
     flex: 1;
     font-size: 24px;
@@ -140,13 +147,12 @@
 }
 
 #summonerFlexDiv {
-    margin: auto 25px;
-    flex-direction: column;
+    flex-direction: row;
 }
 
 .champ {
     height: 90px;
     width: 90px;
     display: none;
-    padding: 10px;
+    padding: 5px;
 }

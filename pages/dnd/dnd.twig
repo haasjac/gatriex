@@ -1,0 +1,30 @@
+{% extends "base.twig" %}
+
+{% block title %}D&D{% endblock %}
+{% block head %}
+    <link rel="stylesheet" type="text/css" href="/pages/dnd/dnd.css">
+    <script src="/pages/dnd/dnd.js"></script>
+{% endblock %}
+
+{% block content %}
+    <div id="edit" class="section">
+        <div class="mainHeaderDiv">
+            <span class="mainHeader">Dungeons and Dragons</span>
+        </div>
+        <div class="content">
+	        <form id="form" style="margin-bottom:0;">
+	            <div id="listDiv">
+		            <ul id="editList"></ul> 
+			    </div>
+		    </form>
+	    </div>
+	    <div class="formButtons">
+            <div id="dialogMessage"></div>
+            <button type="button" class="ui-button" id="editButton">Edit</button>
+            <button type="button" class="ui-button addCategoryButton hide"><i class="fa fa-plus"></i></button>
+	    </div>
+	</div>
+{% endblock %}
+
+{% block dialog %}
+{% endblock %}

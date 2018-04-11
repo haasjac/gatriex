@@ -1,0 +1,59 @@
+.content {
+    border-top: 1px solid #1F3853;
+    border-bottom: 1px solid #1F3853;
+    padding: 20px 0;
+}
+
+#editList, #addList {
+    list-style-type: none;
+    margin: 0;
+    padding: 0 50px;
+    font-size: 22px;
+}
+    
+    #editList input, #addList input {
+        font-size: 36px;
+        color: #1F3853;
+        border: solid 1.5px;
+        background: none;
+    }
+
+#editList {
+    user-select: none;
+}
+
+#editList li {
+    margin: 10px;
+}
+
+.person {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+}
+
+.personName {
+    padding: 0 15px;
+}
+
+.hide {
+    display: none;
+}
+
+.initSelected {
+    background: #1F3853;
+    text: blue;
+}
+
+
+#editList .initSelected input {
+    color: #D0904C;
+}
+
+.blue {
+    color: #3383bb;
+}
+
+.red {
+    color: #8b0000;
+}

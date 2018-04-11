@@ -106,7 +106,6 @@ $(function () {
         dataRequester.apiCall("/api/riot/GetSummonerData.php", "GET", data, function (response) {
             if (response.valid) {
                 displaySummoner(response.data);
-                console.log(response.data);
             } else {
                 $('#SummonerError').html('<i class="fa fa-exclamation-triangle"></i>');
                 $('#SummonerError').attr('data-message', response.data.Error);
@@ -225,9 +224,10 @@ $(function () {
         	league = capitalize(data.League[leagueIndex].tier) + " " + data.League[leagueIndex].rank;
     	} else {
     	    mini = "";
-    	    league = "Level: " + data.Summoner.summonerLevel;
+    	    league = "";
     	}
     	$("#MiniSeries").html(mini);
+    	$("#SummonerLevel").html(data.Summoner.summonerLevel)
     	$("#SummonerName").html(data.Summoner.name);
     	$("#League").html(league);
         
