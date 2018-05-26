@@ -172,6 +172,9 @@ $(function () {
                         case "warn":
                             fa = "fa-exclamation-circle";
                             break;
+                        case "error":
+                            fa = "fa-exclamation-triangle";
+                            break;
                         default:
                             fa = "fa-question-circle";
                             break;
