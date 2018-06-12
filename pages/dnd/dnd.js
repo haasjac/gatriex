@@ -146,8 +146,8 @@ $(function () {
         var listitems = $('li', editList);
 
         listitems.sort(function (a, b) {
-            var initA = $(a).find(".playerInitiative").val();
-            var initB = $(b).find(".playerInitiative").val();
+            var initA = Number($(a).find(".playerInitiative").val());
+            var initB = Number($(b).find(".playerInitiative").val());
 
             if (initA === initB) {
                 var teamA = $(a).find(".playerTeam").hasClass("blue");
