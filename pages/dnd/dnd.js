@@ -98,13 +98,18 @@ $(function () {
 		    var item = $('<li id="li_' + list_count + '" class="ui-state-default"></li>');
 		    var div = $('<div class="person"></div>');
 		    //var img = $('<img height="50" width="50" />');
-		    var img = $('<i class="fa fa-user fa-2x profile blue"></i>');
-		    var name = $('<div class="personName"><input style="width:50%" type="text" /> <input style="width:10%" type="number" /></div>');
+		    var img = $('<i class="fa fa-user fa-2x profile blue playerTeam"></i>');
+            var name = $('<div class="personName"><input class="playerName" style="width:50%" type="text" /> <input class="playerInitiative" style="width:10%" type="number" /></div>');
 		    var removeButton = $(' <button id="button_' + list_count + '" class="ui-button deleteCategoryButton"><i class="fa fa-minus"></i></button>');
 		    div.append(img).append(name).append(removeButton);
 		    $('#editList').append(item.append(div));
 			setSortable();
-		});
+        });
+
+        $("#sortButton").click(function () {
+            sortList();
+            setSortable();
+        });
 
 		$("#editList").on("click", ".deleteCategoryButton", function () {
 			var item = $(this).attr("id").replace(/button/g, "li");
@@ -124,7 +129,8 @@ $(function () {
 	        editMode = !editMode;
 	        setSortable();
 		    $(".addCategoryButton").toggleClass("hide"); 
-		    $(".deleteCategoryButton").toggleClass("hide");
+            $(".deleteCategoryButton").toggleClass("hide");
+            $("#sortButton").toggleClass("hide"); 
 		});
 		
 		$("#editList").on("click", ".profile", function () {
@@ -133,7 +139,32 @@ $(function () {
 		    }
 		});
 	}
-	
+
+    function sortList() {
+        var editList = $('#editList');
+
+        var listitems = $('li', editList);
+
+        listitems.sort(function (a, b) {
+            var initA = $(a).find(".playerInitiative").val();
+            var initB = $(b).find(".playerInitiative").val();
+
+            if (initA === initB) {
+                var teamA = $(a).find(".playerTeam").hasClass("blue");
+                var teamB = $(b).find(".playerTeam").hasClass("blue");
+                if (teamA === teamB) {
+                    return 0;
+                }
+                return teamA ? -1 : 1;
+            }
+            else {
+                return (initA < initB) ? 1 : -1;
+            }
+        });
+
+        editList.append(listitems);
+    }
+
 	function saveChanges() {
 	    /*var data = [];
 
