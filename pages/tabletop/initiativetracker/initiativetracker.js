@@ -16,7 +16,7 @@ $(function () {
     function getContent() {
         CampaignName = $("#CampaignName").val();
         if (username && CampaignName) {
-            dataRequester.apiCall('/api/dnd/GetCampaign.php', "GET", { "CampaignName": CampaignName }, function (response) {
+            dataRequester.apiCall('/api/tabletop/initiativetracker/GetCampaign.php', "GET", { "CampaignName": CampaignName }, function (response) {
                 if (response.valid) {
                     contentData = response.data.Campaign;
                     dataReady();
@@ -221,7 +221,7 @@ $(function () {
             "data": data
         };
 
-        dataRequester.apiCall('/api/dnd/SaveCampaign.php', "POST", postData, function (response) {
+        dataRequester.apiCall('/api/tabletop/initiativetracker/SaveCampaign.php', "POST", postData, function (response) {
             if (response.valid) {
                 $('#dialogMessage').html('<i class="fa fa-floppy-o"></i>');
                 pendingChanges = false;

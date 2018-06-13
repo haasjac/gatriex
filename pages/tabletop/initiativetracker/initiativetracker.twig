@@ -1,18 +1,18 @@
 {% extends "base.twig" %}
 
-{% block title %}D&D{% endblock %}
+{% block title %}Initiative Tracker{% endblock %}
 {% block head %}
-    <link rel="stylesheet" type="text/css" href="/pages/dnd/dnd.css">
-    <script src="/pages/dnd/dnd.js"></script>
+    <link rel="stylesheet" type="text/css" href="/pages/tabletop/initiativetracker/initiativetracker.css">
+    <script src="/pages/tabletop/initiativetracker/initiativetracker.js"></script>
 {% endblock %}
 
 {% block content %}
     <div id="edit" class="section">
         <div class="mainHeaderDiv">
 			{% if CampaignName is empty %}
-                <span class="mainHeader">Dungeons and Dragons</span>
+                <span class="mainHeader">Initiative Tracker</span>
             {% else %}
-                <span class="mainHeader">Dungeons and Dragons - {{ CampaignName }}</span>
+                <span class="mainHeader">Initiative Tracker - {{ CampaignName }}</span>
             {% endif %}
 			<input id="CampaignName" type="hidden" value="{{ CampaignName }}"/>
         </div>

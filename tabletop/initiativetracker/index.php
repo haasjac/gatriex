@@ -2,7 +2,7 @@
     require_once ($_SERVER['DOCUMENT_ROOT'] . '/library/twig.php');
     require_once ($_SERVER['DOCUMENT_ROOT'] . '/library/libraries.php');
     
-    $template = $twig->load('dnd/dnd.twig');
+    $template = $twig->load('tabletop/initiativetracker/initiativetracker.twig');
     $twig_options = getTwigOptions();
     	
 	if (isset($_REQUEST["CampaignName"])) {

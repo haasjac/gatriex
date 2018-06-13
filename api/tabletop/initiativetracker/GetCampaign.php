@@ -20,7 +20,7 @@
 	$user = $result->data["Username"];
     
     try {
-		$sql = "SELECT Campaign FROM DnD_Campaigns WHERE Username = ? AND Name=?";
+		$sql = "SELECT Campaign FROM InitiativeTracker_Campaigns WHERE Username = ? AND Name=?";
         $stmt = $db->prepare($sql);
         $stmt->execute(array($user, $name));
 		if ($stmt->rowCount() > 1) {

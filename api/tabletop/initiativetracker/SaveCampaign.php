@@ -25,11 +25,11 @@
     try {
         $db->beginTransaction();
 
-		$sql = "UPDATE DnD_Campaigns SET Campaign=? WHERE Username = ? AND Name=?";
+		$sql = "UPDATE InitiativeTracker_Campaigns SET Campaign=? WHERE Username = ? AND Name=?";
         $stmt = $db->prepare($sql);
         $stmt->execute(array($campaign, $user, $name));
         if ($stmt->rowCount() <= 0) {
-            $stmt = $db->prepare("INSERT INTO DnD_Campaigns (Username, Name, Campaign) VALUES (?,?,?)");
+            $stmt = $db->prepare("INSERT INTO InitiativeTracker_Campaigns (Username, Name, Campaign) VALUES (?,?,?)");
             $stmt->execute(array($user, $name, $campaign));
         }
         
