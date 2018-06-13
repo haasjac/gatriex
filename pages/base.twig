@@ -39,12 +39,19 @@
                 </div>
                 <div id="headerRightDiv">
                     <span id="headerRightText">
-                        <div id="headerUsername"><a href="/account/profile.php">{{ Username }}</a></div>
-                        {% if Username is empty %}
-                            <div id="headerLog" data-log="login">Login</div>
-                        {% else %}
-                            <div id="headerLog" data-log="logout">Logout</div>
-                        {% endif %}
+						<div class="headerProfile">
+							{% if Username is empty %}
+								<div id="headerLogin"><i class="fa fa-sign-in"></i> Login</div>
+							{% else %}
+								<div id="headerUsername">{{ Username }}</div>
+								<div class="headerProfileNav">
+									<ul>
+										<a href="/account/profile.php"><li id="headerProfile"><i class="fa fa-gear"></i> Settings</li></a>
+										<li id="headerLogout"><i class="fa fa-sign-out"></i> Logout</li>
+									</ul>
+								</div>
+							{% endif %}
+						</div>
                     </span>
                 </div>
             </div>

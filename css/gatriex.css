@@ -1,4 +1,4 @@
-@charset "utf-8";
+﻿@charset "utf-8";
 /* CSS Document */
 
 /* 
@@ -100,13 +100,50 @@ body {
             font-weight: bold;
             /*cursor: pointer;*/
         }
-        
-        #headerLog {
-            text-align: right;
-            margin-top: auto;
+
+        #headerLogin:hover {
+            text-decoration: underline;
             cursor: pointer;
         }
 
+.headerProfile {
+    position: relative;
+    margin-top: auto;
+}
+
+.headerProfileNav {
+    display: none;
+    position: absolute;
+    right: 0;
+    z-index: 1;
+    box-shadow: 0px 8px 16px 0px rgba(20,45,70, 0.7);
+    background-color: #E8E7E6;
+}
+
+.headerProfile:hover .headerProfileNav {
+    display: block;
+    cursor: pointer;
+}
+
+.headerProfileNav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    border: solid 1px #dcdde0;
+}
+
+.headerProfileNav li {
+    color: #1F3853;
+    padding: 20px;
+    font-size: 24px;
+    width: 150px;
+}
+
+    .headerProfileNav li:hover {
+        color: #D0904C;
+        background-color: #dcdde0;
+    }
+    
 /* MAIN */
 #main {
     background-color: #E8E7E6;
@@ -183,11 +220,11 @@ a {
         color: #D0904C;
     }
     
-#headerUsername a, #headerLog, #footer a {
+#footer a {
     color: #D0904C;
 }
 
-#headerUsername a:hover, #headerLog:hover, #footer a:hover {
+#footer a:hover {
     text-decoration: underline;
 }
     

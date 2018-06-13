@@ -15,12 +15,12 @@ $(function () {
             return false; 
         });
         
-        $("#headerLog").click(function () {
-            if ($(this).attr("data-log") === "login") {
-                $('#loginDialogBox').dialog("open");
-            } else if ($(this).attr("data-log") === "logout") {
-                $('#logoutDialogBox').dialog("open");
-            }
+        $("#headerLogin").click(function () {
+            $('#loginDialogBox').dialog("open");
+        });
+
+        $("#headerLogout").click(function () {
+            $('#logoutDialogBox').dialog("open");
         });
         
         $("#loginDialogBox").dialog({
