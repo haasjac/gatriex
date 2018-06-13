@@ -304,7 +304,7 @@
         //Front End
 
         function login($username, $password, $remember): Response {
-            global $session;
+            global $session, $auth_domain;
             
             $response = new Response();
 
@@ -316,8 +316,8 @@
                 $token = $result->data["Auth_Token"];
 
                 $time = ($remember ? time() + 60*60*24*365 : 0); // 1 year or session
-                setcookie("Auth_Id", $this->encrypt_auth($user), $time, "/", "gatriex.com", true, true);
-                setcookie("Auth_Token", $this->encrypt_auth($token), $time, "/", "gatriex.com", true, true);
+                setcookie("Auth_Id", $this->encrypt_auth($user), $time, "/", $auth_domain, true, true);
+                setcookie("Auth_Token", $this->encrypt_auth($token), $time, "/", $auth_domain, true, true);
                 $session->startSession();
             }
 
@@ -327,11 +327,11 @@
         }
 
         function logout() {
-            global $session;
+            global $session, $auth_domain;
             
             $time = time() - 3600;
-            setrawcookie("Auth_Id", "", $time, "/", "gatriex.com", true, true);
-            setrawcookie("Auth_Token", "", $time, "/", "gatriex.com", true, true);
+            setrawcookie("Auth_Id", "", $time, "/", $auth_domain, true, true);
+            setrawcookie("Auth_Token", "", $time, "/", $auth_domain, true, true);
             $session->endSession();
         }
         

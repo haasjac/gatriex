@@ -4,25 +4,25 @@
     padding: 20px 0;
 }
 
-#editList, #addList {
+#initList, #addList {
     list-style-type: none;
     margin: 0;
     padding: 0 50px;
     font-size: 22px;
 }
     
-    #editList input, #addList input {
+    #initList input, #addList input {
         font-size: 36px;
         color: #1F3853;
         border: solid 1.5px;
         background: none;
     }
 
-#editList {
+#initList {
     user-select: none;
 }
 
-#editList li {
+#initList li {
     margin: 10px;
 }
 
@@ -32,7 +32,7 @@
     padding: 10px;
 }
 
-.personName {
+.playerDiv {
     padding: 0 15px;
 }
 
@@ -42,11 +42,10 @@
 
 .initSelected {
     background: #1F3853;
-    text: blue;
 }
 
 
-#editList .initSelected input {
+#initList .initSelected input {
     color: #D0904C;
 }
 

@@ -4,13 +4,13 @@
     
     $template = $twig->load('dnd/dnd.twig');
     $twig_options = getTwigOptions();
-    
-    /*if ($twig_options["Username"] === "") {
-        $errorPage->render(403);
-        exit();
-    }*/
-    
-    //$redirect->requireUser($twig_options["Username"]);
+    	
+	if (isset($_REQUEST["CampaignName"])) {
+		$twig_options["CampaignName"] = $_REQUEST["CampaignName"];
+	}
+	else {
+		$twig_options["CampaignName"] = "";
+	}
     
     echo $template->render($twig_options);
 ?>

@@ -35,9 +35,10 @@ $(function() {
                 }
         	    callback(result);
         	},
-        	error: function(xhr) {
-        	    console.log(xhr);
-        	    errorCallback();
+            error: function (xhr) {
+                if (errorCallback) {
+                    errorCallback();
+                }
         	    if (xhr.status && xhr.status != 0) {
                     $("#dataRequesterDialogError").html("Error " + xhr.status + ": " + xhr.statusText);
                     if (xhr.status !== 404) {

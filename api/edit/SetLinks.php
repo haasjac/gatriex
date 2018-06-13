@@ -7,7 +7,7 @@
         $response = new Response();
         $response->data["Error"] = "Error handling data.";
         $response->valid = false;
-        echo json_encode($result);
+        echo json_encode($response);
         return;
     }
     

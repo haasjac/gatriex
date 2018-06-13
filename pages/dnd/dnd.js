@@ -1,83 +1,61 @@
-/* global dataRequester */
+/* global dataRequester, username */
 
 "use strict";
 
 $(function () {
-	var contentData = {}, item_count = {}, list_count = 0, selected = 0, editMode = false;
+	var contentData = {}, list_count = 0, editMode = false, pendingChanges = false, CampaignName = "";
 
     setEventHandlers();
-    dataReady();
-	//getContent();
+
+    getContent();
+
 	function dataReady() {
-	    //createEditList();
-	    setSortable();
+	    createInitList();
 	}
 
-	function getContent() {
-        /*dataRequester.apiCall('/api/edit/GetLinks.php', "GET", null, function (response) {
-            if (response.valid) {
-                contentData = response.data.Links;
-                dataReady();
-            } else {
-				$('#dialogMessage').html('<i class="fa fa-exclamation-triangle"></i> Error: ' + response.data.Error);
-            }
-        });*/
+    function getContent() {
+        CampaignName = $("#CampaignName").val();
+        if (username && CampaignName) {
+            dataRequester.apiCall('/api/dnd/GetCampaign.php', "GET", { "CampaignName": CampaignName }, function (response) {
+                if (response.valid) {
+                    contentData = response.data.Campaign;
+                    dataReady();
+                } else {
+                    $('#dialogMessage').html('<i class="fa fa-exclamation-triangle"></i> Error: ' + response.data.Error);
+                }
+            });
+        }
 	}
 
-	function createEditList() {
-		/*$('#editList').empty();
-		for (var list_num = 0; list_num < contentData.length; list_num++) {
-			var category = $('<li id="category_' + list_num + '" class="ui-state-default category"></li>');
-			
-			var header = $('<div>' +
-				'<i class="fa fa-arrows-v"></i>' +
-				' Category: <input type="text" name="header_' + list_num + '" id="header_' + list_num + '" value="' + contentData[list_num].header + '" /> ' +
-				'<button class="ui-button collapseButton" data-num="' + list_num + '"><i class="fa fa-compress"></i> <span>Collaspe</span></button>' +
-				'<button id="delete_button_' + list_num + '" class="ui-button deleteCategoryButton"><i class="fa fa-remove"></i></button>' +
-				'</div>');
-				
-			var addList = $('<ul class="addList" id="addList_' + list_num + '"></ul>');
-			var footer = $('<li class="ui-state-default item" id="list_' + list_num + '_add_item"></li>');
-			footer.append('Add Bookmark');
-			footer.append('<button type="button" id="button_' + list_num + '" class="ui-button addButton"><i class="fa fa-plus"></i></button>');
-			var footerdiv = $('<div class="entryInputs"></div>');
-			footerdiv.append('Text: <input type="text" id="list_' + list_num + '_add_text" placeholder="Gatriex" />');
-			footerdiv.append('<br />Link: <input class="inputLink" type="text" id="list_' + list_num + '_add_link" placeholder="https://gatriex.com" />');
-			footer.append(footerdiv);
-			addList.append(footer);
-			
-			var list = $('<ul id="list_' + list_num + '" class="list"></ul>');
+    function createInitList() {
+        if (!contentData) {
+            return;
+        }
 
-			for (var i = 0; i < contentData[list_num].items.length; i++) {
-				var item = $('<li class="ui-state-default item" id="list_' + list_num + '_item_' + i + '"></li>');
-				item.append('<i class="fa fa-arrows-v"></i> Bookmark');
-				item.append('<button type="button" id="list_' + list_num + '_button_' + i + '" class="ui-button deleteButton"><i class="fa fa-remove"></i></button>');
-				var div = $('<div class="entryInputs"></div>');
-				div.append('Text: <input type="text" name="list_' + list_num + '_text_' + i + '" id="list_' + list_num + '_text_' + i + '" value="' + contentData[list_num].items[i].text + '" />');
-				div.append('<br />Link: <input class="inputLink" type="text" name="list_' + list_num + '_link_' + i + '" id="list_' + list_num + '_link_' + i + '" value="' + contentData[list_num].items[i].link + '" />');
-				item.append(div);
-				list.append(item);
-			}
-			item_count[list_num] = i;
-			category.append(header).append(list).append(addList);
-			$('#editList').append(category);
-		}
-		
-		list_count = contentData.length;*/
+        list_count = Number(contentData.list_count) || 0;
+
+        $.each(contentData.players, function (index, player) {
+            addPlayer(player.id, player);
+        });
+        
+        setSortable();
 	}
 
     function setSortable() {
         if (editMode) {
-            $("#editList").sortable({
+            $("#initList").sortable({
     			placeholder: "ui-state-highlight",
     			start: function (e, ui) {
     				ui.placeholder.height(ui.item.height());
-    			},
+                },
+                update: function (e, ui) {
+                    setPendingChanges();
+                },
     			disabled: false
     		});
         }
         else {
-            $("#editList").sortable({
+            $("#initList").sortable({
     			placeholder: "ui-state-highlight",
     			start: function (e, ui) {
     				ui.placeholder.height(ui.item.height());
@@ -94,34 +72,32 @@ $(function () {
 		});
 	    
 		$(".addCategoryButton").click(function () {
-		    list_count += 1;
-		    var item = $('<li id="li_' + list_count + '" class="ui-state-default"></li>');
-		    var div = $('<div class="person"></div>');
-		    //var img = $('<img height="50" width="50" />');
-		    var img = $('<i class="fa fa-user fa-2x profile blue playerTeam"></i>');
-            var name = $('<div class="personName"><input class="playerName" style="width:50%" type="text" /> <input class="playerInitiative" style="width:10%" type="number" /></div>');
-		    var removeButton = $(' <button id="button_' + list_count + '" class="ui-button deleteCategoryButton"><i class="fa fa-minus"></i></button>');
-		    div.append(img).append(name).append(removeButton);
-		    $('#editList').append(item.append(div));
-			setSortable();
+            list_count += 1;
+            addPlayer(list_count);
+            setSortable();
+            setPendingChanges();
         });
 
         $("#sortButton").click(function () {
             sortList();
             setSortable();
+            setPendingChanges();
         });
-
-		$("#editList").on("click", ".deleteCategoryButton", function () {
+        
+		$("#initList").on("click", ".deleteCategoryButton", function () {
 			var item = $(this).attr("id").replace(/button/g, "li");
-			$('#' + item).remove();
+            $('#' + item).remove();
+            setPendingChanges();
 		});
 		
-		$("#editList").on("click", "li", function () {
+		$("#initList").on("click", "li", function () {
 		    if (!editMode) {
-    			$("#editList li").each(function () {
-    		        $(this).removeClass("initSelected"); 
+    			$("#initList li").each(function () {
+                    $(this).removeClass("initSelected");
+                    $(this).find(".playerSelected").val(false);
     		    });
-    		    $(this).addClass("initSelected");
+                $(this).addClass("initSelected");
+                $(this).find(".playerSelected").val(true);
 		    }
 		});
 		
@@ -130,24 +106,38 @@ $(function () {
 	        setSortable();
 		    $(".addCategoryButton").toggleClass("hide"); 
             $(".deleteCategoryButton").toggleClass("hide");
-            $("#sortButton").toggleClass("hide"); 
+            $("#sortButton").toggleClass("hide");
+
+            if (!editMode && username && CampaignName && pendingChanges) {
+                saveChanges();
+            }
 		});
 		
-		$("#editList").on("click", ".profile", function () {
+		$("#initList").on("click", ".profile", function () {
 		    if (editMode) {
-		        $(this).toggleClass("red blue");
+                $(this).toggleClass("red blue");
+                if ($(this).hasClass("blue")) {
+                    $(this).find(".playerTeam").val("blue");
+                }
+                else {
+                    $(this).find(".playerTeam").val("red");
+                }
 		    }
-		});
+        });
+
+        $("#initList").on("change", "input", function () {
+            setPendingChanges();
+        });
 	}
 
     function sortList() {
-        var editList = $('#editList');
+        var initList = $('#initList');
 
-        var listitems = $('li', editList);
+        var listitems = $('li', initList);
 
         listitems.sort(function (a, b) {
-            var initA = $(a).find(".playerInitiative").val();
-            var initB = $(b).find(".playerInitiative").val();
+            var initA = Number($(a).find(".playerInitiative").val());
+            var initB = Number($(b).find(".playerInitiative").val());
 
             if (initA === initB) {
                 var teamA = $(a).find(".playerTeam").hasClass("blue");
@@ -162,51 +152,83 @@ $(function () {
             }
         });
 
-        editList.append(listitems);
+        initList.append(listitems);
     }
 
-	function saveChanges() {
-	    /*var data = [];
-
-		var categories = $("#editList").sortable("toArray");
-
-		for (var i = 0; i < categories.length; i++) {
-			var list_num = categories[i].replace(/category_/g, "");
-			var header = $("#header_" + list_num).val();
-			var items = $("#list_" + list_num).sortable("toArray");
-			var category = {};
-			category.header = header;
-			category.items = [];
-			for (var j = 0; j < items.length; j++) {
-				var item_list_num = items[j].replace(/_item_\d+/g, "").replace(/list_/g, "");
-				var item_id = items[j].replace(/list_\d+/g, "").replace(/_item_/g, "");
-				var obj = {
-					text: $("#list_" + item_list_num + "_text_" + item_id).val(),
-					link: $("#list_" + item_list_num + "_link_" + item_id).val()
-				};
-				category.items.push(obj);
-			}
-			if (category.header === "") {
-			    $('#dialogMessage').html('<i class="fa fa-exclamation-triangle"></i> Error: Categories must have a name.');
-			    return false;
-			}
-			if (category.items.length <= 0) {
-			    $('#dialogMessage').html('<i class="fa fa-exclamation-triangle"></i> Error: Category "' + category.header + '" contains no bookmarks.');
-			    return false;
-			}
-			data.push(category);
-		}
-
-		var postData = { 
-            "data" : data
-        };
+    function addPlayer(number, data) {
+        if (Number.isNaN(number)) {
+            return;
+        }
         
-        dataRequester.apiCall('/api/edit/SetLinks.php', "POST", postData, function (response) {
+        data = data || {};
+        var playerSelectedValue = data.selected === "true";
+        var playerTeamValue = data.team || "blue";
+        var playerNameValue = data.name || "";
+        var playerInitiativeValue = Number(data.initiative || 0);
+        
+        var playerId = '<input class="playerId" name="playerId_' + number + '" type="hidden" value="' + number + '" />';
+        var playerSelected = '<input class="playerSelected" name="playerSelected_' + number + '" type="hidden" value="' + playerSelectedValue + '" />';
+        var playerTeam = '<input class="playerTeam" name="playerTeam_' + number + '" type="hidden" value="' + playerTeamValue + '" />';
+        var playerName = '<input class="playerName" name="playerName_' + number + '" style="width:50%" type="text" value="' + playerNameValue + '" placeholder="Player Name" />';
+        var playerInitiative = '<input class="playerInitiative" name="playerInitiative_' + number + '" style="width:10%" type="number" value="' + playerInitiativeValue + '" />';
+
+        var item = $('<li id="li_' + number + '" class="ui-state-default' + (playerSelectedValue ? ' initSelected' : '') + '"></li>');
+        var div = $('<div class="person"></div>');
+        var img = $('<i class="fa fa-user fa-2x profile ' + playerTeamValue + '">' + playerTeam + '</i>');
+        var name = $('<div class="playerDiv">' + playerName + ' ' + playerInitiative + '</div>');
+        var removeButton = $(' <button id="button_' + number + '" class="ui-button deleteCategoryButton' + (editMode ? '' : ' hide') + '"><i class="fa fa-minus"></i></button>');
+        div.append(playerId).append(playerSelected).append(img).append(name).append(removeButton);
+        $('#initList').append(item.append(div));
+    }
+
+    function setPendingChanges() {
+        if (username && CampaignName) {
+            $('#dialogMessage').html('<i class="fa fa-spin fa-circle-o"></i>');
+            pendingChanges = true;
+        }
+    }
+
+    function saveChanges() {
+        $('#dialogMessage').html('<i class="fa fa-spin fa-circle-o-notch"></i>');
+
+        var campaign = {};
+
+        campaign.list_count = list_count;
+
+        campaign.players = [];
+
+        var initList = $('#initList');
+
+        var listitems = $('li', initList);
+
+        $.each(listitems, function (index, element) {
+            var player = {};
+            player.id = $(element).find(".playerId").val();
+            player.selected = $(element).find(".playerSelected").val();
+            player.team = $(element).find(".playerTeam").val();
+            player.name = $(element).find(".playerName").val();
+            player.initiative = $(element).find(".playerInitiative").val();
+
+            campaign.players.push(player);
+        });
+        
+        var data = {};
+
+        data.name = CampaignName;
+        data.campaign = campaign;
+
+        var postData = {
+            "data": data
+        };
+
+        dataRequester.apiCall('/api/dnd/SaveCampaign.php', "POST", postData, function (response) {
             if (response.valid) {
-                $('#dialogMessage').html('<i class="fa fa-check-circle"></i> Changes were successfully saved.');
+                $('#dialogMessage').html('<i class="fa fa-floppy-o"></i>');
+                pendingChanges = false;
+                setTimeout(function () { $('#dialogMessage').html(''); }, 1000);
             } else {
                 $('#dialogMessage').html('<i class="fa fa-exclamation-triangle"></i> Error: ' + response.data.Error);
             }
-        });*/
+        });
 	}
 });

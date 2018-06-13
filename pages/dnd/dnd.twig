@@ -9,12 +9,17 @@
 {% block content %}
     <div id="edit" class="section">
         <div class="mainHeaderDiv">
-            <span class="mainHeader">Dungeons and Dragons</span>
+			{% if CampaignName is empty %}
+                <span class="mainHeader">Dungeons and Dragons</span>
+            {% else %}
+                <span class="mainHeader">Dungeons and Dragons - {{ CampaignName }}</span>
+            {% endif %}
+			<input id="CampaignName" type="hidden" value="{{ CampaignName }}"/>
         </div>
         <div class="content">
 	        <form id="form" style="margin-bottom:0;">
 	            <div id="listDiv">
-		            <ul id="editList"></ul> 
+		            <ul id="initList"></ul> 
 			    </div>
 		    </form>
 	    </div>
