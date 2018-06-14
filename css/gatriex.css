@@ -58,13 +58,13 @@ body {
 }
 
 #headerLogoDiv {
-    padding-right: 20px;
+    padding-right: 15px;
 }
 
     #header img {
         vertical-align: bottom;
-        height: 90px;
-        width: 90px;
+        height: 50px;
+        width: 50px;
     }
 
 #headerLeftDiv, #headerRightDiv {
@@ -75,40 +75,67 @@ body {
     flex: 1;	
 }
 
-    #headerLeftText {
-        display: flex;
-        flex-direction: column;
+#headerLeftText {
+    display: flex;
+    font-size: 32px;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+    .headerLink {
+        padding: 0;
+        color: #D0904C;
     }
-    
-        #headerTitle {
-            font-size: 42px;
-            font-weight: bold;
-        }
-        
-        #headerDate {
-            margin-top: auto;
-        }
-    
-    #headerRightText {
-        margin-left: auto;
-        display: flex;
-        flex-direction: column;
-    }
-    
-        #headerUsername {
-            text-align: right;
-            font-weight: bold;
-            /*cursor: pointer;*/
+
+        .headerLink:not(:first-child) {
+            padding-left: 5px;
         }
 
-        #headerLogin:hover {
-            text-decoration: underline;
-            cursor: pointer;
+        .headerLink:not(:last-child) {
+            padding-right: 10px;
         }
+
+    .headerLinkText {
+        display: none;
+    }
+    
+    #headerTitle {
+        font-size: 42px;
+        font-weight: bold;
+    }
+        
+    #headerDate {
+        margin-top: auto;
+    }
+    
+#headerRightText {
+    margin-left: auto;
+    display: flex;
+    flex-direction: column;
+}
+    
+#headerUsername {
+    text-align: right;
+    font-weight: bold;
+}
+
+#headerLogin {
+
+}
+
+    #headerLogin:hover {
+        cursor: pointer;
+    }
+
+#headerLoginText {
+    display: none;
+}
 
 .headerProfile {
     position: relative;
     margin-top: auto;
+    margin-bottom: auto;
+    user-select: none;
 }
 
 .headerProfileNav {
@@ -211,12 +238,10 @@ body {
 /* LINKS */
 a {
     text-decoration: none;
-    color: #D0904C;
     color: #1F3853;
 }
 
     a:hover {
-        color: #1F3853;
         color: #D0904C;
     }
     
@@ -224,9 +249,9 @@ a {
     color: #D0904C;
 }
 
-#footer a:hover {
-    text-decoration: underline;
-}
+    #footer a:hover {
+        text-decoration: underline;
+    }
     
 input, select {
     font-size: 22px;
@@ -347,10 +372,8 @@ input, select {
 
 .ui-widget-content a {
     color: #1F3853;
-    /*color: #D0904C;*/
 }
 
 .ui-widget-content a:hover {
     color: #D0904C;
-    /*color: #1F3853;*/
 }

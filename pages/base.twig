@@ -33,21 +33,22 @@
                 <div id="headerLeftDiv">
 
                     <div id="headerLeftText">
-                        <div id="headerTitle">Gatriex</div>
-                        <div id="headerDate"></div>
+						<div>
+							<a class="headerLink" href="/"><i class="fa fa-fw fa-home"></i><span class="headerLinkText">Home</span></a><a class="headerLink" href="/tabletop/initiativetracker"><i class="fa fa-fw fa-list-ol"></i><span class="headerLinkText">Initiative Tracker</span></a>
+						</div>
                     </div>
                 </div>
                 <div id="headerRightDiv">
                     <span id="headerRightText">
 						<div class="headerProfile">
 							{% if Username is empty %}
-								<div id="headerLogin"><i class="fa fa-sign-in"></i> Login</div>
+								<div id="headerLogin"><i class="fa fa-fw fa-sign-in"></i><span id="headerLoginText">Login</span></div>
 							{% else %}
-								<div id="headerUsername">{{ Username }}</div>
+								<div><i class="fa fa-fw fa-user-o"></i><span id="headerUsername">{{ Username }}</span></div>
 								<div class="headerProfileNav">
 									<ul>
-										<a href="/account/profile.php"><li id="headerProfile"><i class="fa fa-gear"></i> Settings</li></a>
-										<li id="headerLogout"><i class="fa fa-sign-out"></i> Logout</li>
+										<a href="/account/profile.php"><li id="headerProfile"><i class="fa fa-fw fa-gear"></i> Settings</li></a>
+										<li id="headerLogout"><i class="fa fa-fw fa-sign-out"></i> Logout</li>
 									</ul>
 								</div>
 							{% endif %}
@@ -65,7 +66,7 @@
                     <i class="fa fa-copyright"></i> <span style="padding-left: 5px;">Jacob Haas {{ year }}</span>
                 </div>
                 <div id="footerRight">
-                    <a href="/">HOME </a> | <a href="/about"> ABOUT </a> | <a href="/contact"> CONTACT</a>
+                    <a href="/about"> ABOUT </a> | <a href="/contact"> CONTACT</a>
                 </div>
             </div>
         </div>

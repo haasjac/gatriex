@@ -52,6 +52,14 @@ $(function () {
         		}
         	}
         });
+
+        $(".headerLink").hover(function () {
+            $(this).find(".headerLinkText").toggle();
+        });
+
+        $("#headerLogin").hover(function () {
+            $("#headerLoginText").toggle();
+        });
     }
     
     function login() {
