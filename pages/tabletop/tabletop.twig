@@ -1,0 +1,21 @@
+{% extends "base.twig" %}
+
+{% block title %}Tabletop{% endblock %}
+{% block head %}
+    <link rel="stylesheet" type="text/css" href="/pages/tabletop/tabletop.css">
+    <script src="/pages/tabletop/tabletop.js"></script>
+{% endblock %}
+
+{% block content %}
+    <div id="tabletop" class="section">
+        <div class="mainHeaderDiv">
+			<span class="mainHeader">Tabletop</span>
+        </div>
+        <div class="content">
+	        <a href="/tabletop/initiativetracker"><i class="fa fa-fw fa-list-ol"></i>Initiative Tracker</a>
+	    </div>
+	</div>
+{% endblock %}
+
+{% block dialog %}
+{% endblock %}
