@@ -18,7 +18,7 @@ $(function () {
         if (username && CampaignName) {
             dataRequester.apiCall('/api/tabletop/initiativetracker/GetCampaign.php', "GET", { "CampaignName": CampaignName }, function (response) {
                 if (response.valid) {
-                    contentData = response.data.Campaign;
+                    contentData = response.data.InitiativeTracker;
                     dataReady();
                 } else {
                     $('#dialogMessage').html('<i class="fa fa-exclamation-triangle"></i> Error: ' + response.data.Error);
@@ -191,11 +191,11 @@ $(function () {
     function saveChanges() {
         $('#dialogMessage').html('<i class="fa fa-spin fa-circle-o-notch"></i>');
 
-        var campaign = {};
+        var InitiativeTracker = {};
 
-        campaign.list_count = list_count;
+        InitiativeTracker.list_count = list_count;
 
-        campaign.players = [];
+        InitiativeTracker.players = [];
 
         var initList = $('#initList');
 
@@ -209,13 +209,13 @@ $(function () {
             player.name = $(element).find(".playerName").val();
             player.initiative = $(element).find(".playerInitiative").val();
 
-            campaign.players.push(player);
+            InitiativeTracker.players.push(player);
         });
         
         var data = {};
 
-        data.name = CampaignName;
-        data.campaign = campaign;
+        data.CampaignName = CampaignName;
+        data.InitiativeTracker = InitiativeTracker;
 
         var postData = {
             "data": data

@@ -34,6 +34,13 @@
             return bin2hex(openssl_random_pseudo_bytes(32));
         }
 
+		function generate_guid(): string {
+			$hex = bin2hex(openssl_random_pseudo_bytes(16));
+			$arr = str_split($hex, 4);
+			$result = "{" . $arr[0] . $arr[1] . "-" . $arr[2] . "-" . $arr[3] . "-" . $arr[4] . "-" . $arr[5] . $arr[6] . $arr[7] . "}";
+			return $result;
+		}
+
 
         //User Functions
 

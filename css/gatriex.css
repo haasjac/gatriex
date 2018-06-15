@@ -2,9 +2,11 @@
 /* CSS Document */
 
 /* 
-	yellow - D0904C
-	blue - 1F3853
-*/
+	yellow    #D0904C
+	blue      #1F3853
+    green     #008000
+    red       #8b0000
+*/ 
 
 html {
 	background-color: #1F3853;
@@ -44,6 +46,10 @@ body {
     flex-direction: column;
     flex: 1;
     margin: 0 50px;
+}
+
+.hide {
+    display: none;
 }
 
 /* HEADER */

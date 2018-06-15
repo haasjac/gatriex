@@ -15,6 +15,16 @@
                 <span class="mainHeader">Initiative Tracker - {{ CampaignName }}</span>
             {% endif %}
 			<input id="CampaignName" type="hidden" value="{{ CampaignName }}"/>
+
+			<!--button type="button" class="ui-button" id="editButton"><i class="fa fa-plus"></i>Select Campaign</button-->
+
+			{% if Username is not empty %}
+				<a href="/tabletop/campaigns">
+					<button type="button" class="ui-button" id="manageCampaignsButton">
+						<i class="fa fa-map-signs"></i> Manage Campaigns
+					</button>
+				</a>
+			{% endif %}
         </div>
         <div class="content">
 	        <form id="form" style="margin-bottom:0;">

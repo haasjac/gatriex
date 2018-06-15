@@ -1,0 +1,37 @@
+{% extends "base.twig" %}
+
+{% block title %}Campaigns{% endblock %}
+{% block head %}
+    <link rel="stylesheet" type="text/css" href="/pages/tabletop/campaigns/campaigns.css">
+    <script src="/pages/tabletop/campaigns/campaigns.js"></script>
+{% endblock %}
+
+{% block content %}
+    <div id="edit" class="section">
+        <div class="mainHeaderDiv">
+            <span class="mainHeader">Campaigns</span>
+        </div>
+        <div class="content">
+	        <form id="form" style="margin-bottom:0;">
+	            <div id="listDiv">
+					<ul id="addList">
+						<li id="addCampaign" class="ui-state-default campaign">
+                            <div>
+                                Add Campaign: <input type="text" name="addCampaignName" id="addCampaignName" placeholder="Campaign Name" />
+                                <button type="button" class="ui-button ui-button-fa addCampaignButton"><span class="greenButton"><i class="fa fa-plus"></i> Add</span></button>
+		                    </div>
+	                    </li>
+					</ul>
+		            <ul id="campaignList">
+					</ul> 
+			    </div>
+		    </form>
+	    </div>
+	    <div class="formButtons">
+            <div id="dialogMessage"></div>
+	    </div>
+	</div>
+{% endblock %}
+
+{% block dialog %}
+{% endblock %}

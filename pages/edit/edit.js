@@ -227,7 +227,7 @@ $(function () {
         
         dataRequester.apiCall('/api/edit/SetLinks.php', "POST", postData, function (response) {
             if (response.valid) {
-                $('#dialogMessage').html('<i class="fa fa-check-circle"></i> Changes were successfully saved.');
+                $('#dialogMessage').html('<i class="fa fa-check-circle"></i> Changes saved.');
             } else {
                 $('#dialogMessage').html('<i class="fa fa-exclamation-triangle"></i> Error: ' + response.data.Error);
             }

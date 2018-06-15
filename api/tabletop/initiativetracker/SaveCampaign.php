@@ -19,18 +19,18 @@
 
 	$user = $result->data["Username"];
     
-    $name = $data["name"];
-	$campaign = json_encode($data["campaign"]);
+    $CampaignName = $data["CampaignName"];
+	$InitiativeTracker = json_encode($data["InitiativeTracker"]);
     
     try {
         $db->beginTransaction();
 
-		$sql = "UPDATE InitiativeTracker_Campaigns SET Campaign=? WHERE Username = ? AND Name=?";
+		$sql = "UPDATE Tabletop_Campaigns SET InitiativeTracker=? WHERE Username = ? AND CampaignName=?";
         $stmt = $db->prepare($sql);
-        $stmt->execute(array($campaign, $user, $name));
+        $stmt->execute(array($InitiativeTracker, $user, $CampaignName));
         if ($stmt->rowCount() <= 0) {
-            $stmt = $db->prepare("INSERT INTO InitiativeTracker_Campaigns (Username, Name, Campaign) VALUES (?,?,?)");
-            $stmt->execute(array($user, $name, $campaign));
+            $stmt = $db->prepare("INSERT INTO Tabletop_Campaigns (Username, CampaignName, InitiativeTracker) VALUES (?,?,?)");
+            $stmt->execute(array($user, $CampaignName, $InitiativeTracker));
         }
         
         $db->commit();
@@ -41,7 +41,7 @@
     } catch (PDOException $ex) {
         http_response_code(500);
         $log->error("Database error in SaveCampaign.php", $ex->getMessage());
-        echo "Error handling request." . "a";
+        echo "Error handling request.";
         $db->rollBack();
     }
 ?>

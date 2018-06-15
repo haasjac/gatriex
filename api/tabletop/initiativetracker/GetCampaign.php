@@ -20,23 +20,20 @@
 	$user = $result->data["Username"];
     
     try {
-		$sql = "SELECT Campaign FROM InitiativeTracker_Campaigns WHERE Username = ? AND Name=?";
+		$sql = "SELECT InitiativeTracker FROM Tabletop_Campaigns WHERE Username = ? AND CampaignName=?";
         $stmt = $db->prepare($sql);
         $stmt->execute(array($user, $name));
-		if ($stmt->rowCount() > 1) {
-			$log->error("Mulitple campaigns found with user " . $user . " and name " . $name, "");
-		}
 
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         
         $response = new Response();
-		$response->data["Campaign"] = json_decode($row["Campaign"]);
+		$response->data["InitiativeTracker"] = json_decode($row["InitiativeTracker"]);
         $response->valid = true;
         echo json_encode($response);
         return;
     } catch (PDOException $ex) {
         http_response_code(500);
         $log->error("Database error in GetCampaign.php", $ex->getMessage());
-        echo "Error handling request." . "a";
+        echo "Error handling request.";
     }
 ?>

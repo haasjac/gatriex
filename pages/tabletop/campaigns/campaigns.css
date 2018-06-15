@@ -1,0 +1,60 @@
+.content {
+    border-top: 1px solid #1F3853;
+    border-bottom: 1px solid #1F3853;
+    padding: 20px 0;
+}
+
+#campaignList, #addList {
+    list-style-type: none;
+    margin: 0;
+    padding: 0 50px;
+    font-size: 22px;
+}
+    #campaignList input, #addList input {
+        font-size: 20px;
+        font-family: 'kingsbridgeregular';
+    }
+
+#addList {
+    user-select: none;
+    padding-bottom: 20px;
+}
+
+#addCampaignName {
+    margin-left: 10px;
+}
+
+.campaign {
+    padding: 10px;
+    margin: 10px 0;
+}
+
+.deleteCampaignButton, .addCampaignButton, .editCampaignButton, .cancelEditButton, .saveEditButton {
+    float: right;
+}
+
+.editCampaignButton, .saveEditButton {
+    margin-right: 10px;
+}
+
+.ui-button-fa {
+    font-size: 0.75em;
+    padding: 0.2em 0.5em;
+    font-family: 'kingsbridgeregular';
+}
+
+.addCampaignButton, .addCampaignButton:hover, .saveEditButton, .saveEditButton:hover {
+    color: #008000;
+}
+
+.deleteCampaignButton, .deleteCampaignButton:hover, .cancelEditButton, .cancelEditButton:hover {
+    color: #8b0000;
+}
+
+.greenButton {
+    color: #008000;
+}
+
+.redButton {
+    color: #8b0000;
+}

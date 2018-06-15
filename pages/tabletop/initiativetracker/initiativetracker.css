@@ -4,6 +4,10 @@
     padding: 20px 0;
 }
 
+#manageCampaignsButton {
+    float: right;
+}
+
 #initList, #addList {
     list-style-type: none;
     margin: 0;
@@ -34,10 +38,6 @@
 
 .playerDiv {
     padding: 0 15px;
-}
-
-.hide {
-    display: none;
 }
 
 .initSelected {
