@@ -31,7 +31,7 @@ $(function () {
 			var header = $('<div>' +
 				'<i class="fa fa-arrows-v"></i>' +
 				' Category: <input type="text" name="header_' + list_num + '" id="header_' + list_num + '" value="' + contentData[list_num].header + '" /> ' +
-				'<button class="ui-button collapseButton" data-num="' + list_num + '"><i class="fa fa-compress"></i> <span>Collaspe</span></button>' +
+				'<button class="ui-button collapseButton" data-num="' + list_num + '"><i class="fa fa-compress"></i> <span>Collapse</span></button>' +
 				'<button id="delete_button_' + list_num + '" class="ui-button deleteCategoryButton"><i class="fa fa-remove"></i></button>' +
 				'</div>');
 				
