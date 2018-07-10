@@ -1,0 +1,118 @@
+.content {
+    border-top: 1px solid #1F3853;
+    border-bottom: 1px solid #1F3853;
+    padding: 20px 0;
+}
+
+.factionDiv {
+    padding: 0 25px;
+    margin: 50px 0;
+}
+
+    .factionDiv:first-child {
+        margin-top: 0;
+    }
+
+    .factionDiv:last-child {
+        margin-bottom: 0;
+    }
+
+.factionHeader {
+    font-size: 26px;
+    font-weight: bold;
+    color: #1F3853;
+    border-bottom: solid 1px black;
+    margin: 10px 0;
+}
+
+.characterList {
+    list-style-type: none;
+    margin: 0;
+    padding: 0 0 0 50px;
+    font-size: 24px;
+}
+    
+.character, .editCharacter, .addCharacter {
+    padding: 10px;
+    margin: 10px 0;
+    color: #1F3853;
+    background: #EEE;
+}
+
+.editCharacter {
+    margin: -10px 0 10px 0;
+    background: #F5F5F5;
+}
+
+.characterInfo {
+    display: flex;
+}
+
+.editCharacterInfo {
+    font-weight: normal;
+}
+
+.characterName {
+    flex: 2;
+    padding: 5px 0;
+}
+
+.characterInitiative {
+    flex: 1;
+    padding: 5px 0;
+}
+
+#formButtons {
+    padding-top: 10px;
+}
+
+.ui-button-fa {
+    font-size: 0.75em;
+    padding: 0.2em 0.5em;
+    font-family: 'kingsbridgeregular';
+}
+
+#addHeader {
+    padding: 5px 0;
+}
+
+#addCharacterButtons {
+    float: right;
+}
+
+#addCharacterButton, #addCharacterButton:hover, .saveCharacterButton, .saveCharacterButton:hover {
+    color: #008000;
+}
+
+.removeCharacterButton, .removeCharacterButton:hover, .discardCharacterButton, .discardCharacterButton:hover {
+    color: #8b0000;
+}
+
+.greenButton {
+    color: #008000;
+}
+
+.redButton {
+    color: #8b0000;
+}
+
+.faction-Add {
+    color: #008000;
+}
+
+.faction-Player {
+    color: #3383bb;
+}
+
+.faction-Enemy {
+    color: #8b0000;
+}
+
+.faction-NPC {
+    color: #D0904C;
+}
+
+#removeCharacterDialogName {
+    color: #D0904C;
+    font-weight: bold;
+}

@@ -1,0 +1,87 @@
+{% extends "base.twig" %}
+
+{% block title %}Campaign{% endblock %}
+{% block head %}
+    <link rel="stylesheet" type="text/css" href="/pages/tabletop/campaign/campaign.css">
+    <script src="/pages/tabletop/campaign/campaign.js"></script>
+{% endblock %}
+
+{% block content %}
+    <div id="edit" class="section">
+        <div class="mainHeaderDiv">
+			{% if CampaignName is not empty %}
+				<span class="mainHeader">Campaign - {{ CampaignName }}</span>
+			{% else %}
+				<span class="mainHeader">Campaign not found.</span>
+			{% endif %}
+        </div>
+        <div class="content">
+	        <form id="form" style="margin-bottom:0;">
+	            <div id="listDiv">
+					<div id="addDiv" class="factionDiv">
+						<div id="addHeader" class="factionHeader">
+							<i class="fa fa-fw fa-user-plus faction-Add"></i> Add New Character
+							<span id="addCharacterButtons">
+								<button id="addCharacterButton" class="ui-button ui-button-fa">
+									<span class="greenButton"><i class="fa fa-fw fa-plus"></i> Add</span>
+								</button>
+								<button id="saveAddCharacterButton" class="ui-button ui-button-fa saveCharacterButton hide">
+									<span class="greenButton"><i class="fa fa-fw fa-check"></i> Save</span>
+								</button>
+								<button id="discardAddCharacterButton" class="ui-button ui-button-fa discardCharacterButton hide">
+									<span class="redButton"><i class="fa fa-fw fa-ban"></i> Discard</span>
+								</button>
+							</span>
+						</div>
+						<ul id="addList" class="characterList">							
+							<li id="editAddCharacter" class="ui-state-default editCharacter hide">
+								<div class="editCharacterInfo">
+									<div class="characterName">
+										<i id="editAddFactionIcon" class="fa fa-fw fa-users faction-Add"></i>
+										<span>Faction: </span>
+										<select name="editAddCharacterFaction" id="editAddCharacterFaction">
+										</select>
+									</div>
+									<div class="characterName">
+										<i id="editAddNameIcon" class="fa fa-fw fa-user-plus faction-Add"></i>
+										<span>Name: </span>
+										<input name="editAddCharacterName" id="editAddCharacterName" type="text" value="Barry Bluejeans" />
+									</div>
+									<div class="characterInitiative">
+										<i id="editAddInitBonusIcon" class="fa fa-fw fa-hourglass faction-Add"></i>
+										<span>Initiative Bonus: </span>
+										<input name="editAddCharacterInitBonus" id="editAddCharacterInitBonus" type="number" value="0" />
+									</div>
+									<div class="characterInitiative">
+										<i id="editAddInitAdvantageIcon" class="fa fa-fw fa-trophy faction-Add"></i>
+										<span>Initiative Advantage: </span>
+										<i class="fa fa-square-o fakeCheck" data-realcheck="editAddCharacterInitAdvantage" id="fakeeditAddCharacterInitAdvantage"></i>
+										<input type="checkbox" name="editAddCharacterInitAdvantage" id="editAddCharacterInitAdvantage" style = "display:none" />
+									</div>
+								</div>
+							</li>
+						</ul>
+					</div>
+				</div>
+		    </form>
+	    </div>
+	    <div id="formButtons">
+            <div id="dialogMessage"></div>
+	    </div>
+	</div>
+{% endblock %}
+
+{% block dialog %}
+    <div id="removeCharacterDialogBox" title="Confirm Remove Character">
+		<div id="removeCharacterDialogMessage">
+			You are about to remove:
+		</div>
+		<br />
+		<div id="removeCharacterDialogName">
+		</div>
+		<br />
+		<div>
+			Are you sure?
+		</div>
+	</div>
+{% endblock %}

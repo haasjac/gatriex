@@ -18,19 +18,42 @@
     }
 
 	$user = $result->data["Username"];
-    
-    $CampaignName = $data["CampaignName"];
-	$InitiativeTracker = json_encode($data["InitiativeTracker"]);
+	    
+    $CampaignGuid = $data["CampaignGuid"];
+	$CharacterInfo = json_encode($data["CharacterInfo"]);
+	$CurrentCharacter = $data["CurrentCharacter"];
+
+	try {
+		$sql = "SELECT COUNT(*) FROM Tabletop_Campaigns WHERE Username = ? AND Guid=?";
+        $stmt = $db->prepare($sql);
+        $stmt->execute(array($user, $CampaignGuid));
+
+        $row = $stmt->fetchColumn();
+
+		if ($row <= 0) {
+			$response = new Response();
+			$response->data["Error"] = "Permission denied.";
+			$response->valid = false;
+			echo json_encode($response);
+			return;
+		}
+        
+    } catch (PDOException $ex) {
+        http_response_code(500);
+        $log->error("Database error in AddCampaign.php", $ex->getMessage());
+        echo "Error handling request.";
+		return;
+    }
     
     try {
         $db->beginTransaction();
 
-		$sql = "UPDATE Tabletop_Campaigns SET InitiativeTracker=? WHERE Username = ? AND CampaignName=?";
+		$sql = "UPDATE Tabletop_InitiativeTracker SET CharacterInfo=? WHERE CampaignGuid=?";
         $stmt = $db->prepare($sql);
-        $stmt->execute(array($InitiativeTracker, $user, $CampaignName));
+        $stmt->execute(array($CharacterInfo, $CampaignGuid));
         if ($stmt->rowCount() <= 0) {
-            $stmt = $db->prepare("INSERT INTO Tabletop_Campaigns (Username, CampaignName, InitiativeTracker) VALUES (?,?,?)");
-            $stmt->execute(array($user, $CampaignName, $InitiativeTracker));
+            $stmt = $db->prepare("INSERT INTO Tabletop_InitiativeTracker (CampaignGuid, CharacterInfo) VALUES (?,?)");
+            $stmt->execute(array($CampaignGuid, $CharacterInfo));
         }
         
         $db->commit();

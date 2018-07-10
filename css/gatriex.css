@@ -1,5 +1,4 @@
-﻿@charset "utf-8";
-/* CSS Document */
+﻿/* CSS Document */
 
 /* 
 	yellow    #D0904C
@@ -49,6 +48,10 @@ body {
 }
 
 .hide {
+    display: none;
+}
+
+#twig_options {
     display: none;
 }
 
@@ -125,10 +128,6 @@ body {
     font-weight: bold;
 }
 
-#headerLogin {
-
-}
-
     #headerLogin:hover {
         cursor: pointer;
     }
@@ -149,7 +148,7 @@ body {
     position: absolute;
     right: 0;
     z-index: 1;
-    box-shadow: 0px 8px 16px 0px rgba(20,45,70, 0.7);
+    box-shadow: 0 8px 16px 0 rgba(20,45,70, 0.7);
     background-color: #E8E7E6;
 }
 
@@ -187,7 +186,7 @@ body {
     margin-right: auto;
     margin: 10px 0;
     box-sizing: border-box;
-	box-shadow: 0px 0px 10px 5px rgb(20,45,70);
+	box-shadow: 0 0 10px 5px rgb(20,45,70);
 	min-height: min-content;
 }
 
@@ -304,7 +303,7 @@ input, select {
 }
 
 #loginDialogMessage {
-    padding: 5px 0px;
+    padding: 5px 0;
 }
 
 #loginDialogBottom {

@@ -1,25 +1,20 @@
-/* global dataRequester, username */
-
-"use strict";
+/* global dataRequester */
 
 $(function () {
-	var contentData = {}, list_count = 0, editMode = false, pendingChanges = false, CampaignName = "";
+    "use strict";
 
-    setEventHandlers();
+	var listCount = 0, editMode = false, pendingChanges = false;
 
-    getContent();
-
-	function dataReady() {
-	    createInitList();
-	}
-
+    function init() {
+        setEventHandlers();
+        getContent();
+    }
+    
     function getContent() {
-        CampaignName = $("#CampaignName").val();
-        if (username && CampaignName) {
-            dataRequester.apiCall('/api/tabletop/initiativetracker/GetCampaign.php', "GET", { "CampaignName": CampaignName }, function (response) {
+        if (TwigOptions.CampaignGuid) {
+            dataRequester.apiCall('/api/tabletop/initiativetracker/GetCampaign.php', "GET", { "CampaignGuid": TwigOptions.CampaignGuid }, function (response) {
                 if (response.valid) {
-                    contentData = response.data.InitiativeTracker;
-                    dataReady();
+                    createInitList(response.data.Campaign.CharacterInfo, response.data.Campaign.CurrentCharacter);
                 } else {
                     $('#dialogMessage').html('<i class="fa fa-exclamation-triangle"></i> Error: ' + response.data.Error);
                 }
@@ -27,15 +22,15 @@ $(function () {
         }
 	}
 
-    function createInitList() {
-        if (!contentData) {
+    function createInitList(CharacterInfo, CurrentCharacter) {
+        if (!CharacterInfo) {
             return;
         }
 
-        list_count = Number(contentData.list_count) || 0;
+        listCount = Number(CharacterInfo.listCount) || 0;
 
-        $.each(contentData.players, function (index, player) {
-            addPlayer(player.id, player);
+        $.each(CharacterInfo.players, function (index, player) {
+            addPlayer(player.id, player, CurrentCharacter === player.id);
         });
         
         setSortable();
@@ -44,36 +39,36 @@ $(function () {
     function setSortable() {
         if (editMode) {
             $("#initList").sortable({
-    			placeholder: "ui-state-highlight",
-    			start: function (e, ui) {
-    				ui.placeholder.height(ui.item.height());
+                placeholder: "ui-state-highlight",
+                start: function (e, ui) {
+                    ui.placeholder.height(ui.item.height());
                 },
-                update: function (e, ui) {
+                update: function () {
                     setPendingChanges();
                 },
-    			disabled: false
-    		});
+                disabled: false
+            });
         }
         else {
             $("#initList").sortable({
-    			placeholder: "ui-state-highlight",
-    			start: function (e, ui) {
-    				ui.placeholder.height(ui.item.height());
-    			},
-    			disabled: true
-    		});
+                placeholder: "ui-state-highlight",
+                start: function (e, ui) {
+                    ui.placeholder.height(ui.item.height());
+                },
+                disabled: true
+            });
         }
     }
 
 	function setEventHandlers() {
-	    $("#form").submit(function (e) {
-			e.preventDefault();
-			return false;
-		});
-	    
-		$(".addCategoryButton").click(function () {
-            list_count += 1;
-            addPlayer(list_count);
+        $("#form").submit(function (e) {
+            e.preventDefault();
+            return false;
+        });
+        
+        $(".addCategoryButton").click(function () {
+            listCount += 1;
+            addPlayer(listCount);
             setSortable();
             setPendingChanges();
         });
@@ -91,30 +86,34 @@ $(function () {
 		});
 		
 		$("#initList").on("click", "li", function () {
-		    if (!editMode) {
-    			$("#initList li").each(function () {
+            if (!editMode) {
+                $("#initList li").each(function () {
                     $(this).removeClass("initSelected");
                     $(this).find(".playerSelected").val(false);
-    		    });
+                });
                 $(this).addClass("initSelected");
                 $(this).find(".playerSelected").val(true);
-		    }
-		});
-		
-		$("#editButton").click(function () {
-	        editMode = !editMode;
-	        setSortable();
-		    $(".addCategoryButton").toggleClass("hide"); 
-            $(".deleteCategoryButton").toggleClass("hide");
-            $("#sortButton").toggleClass("hide");
-
-            if (!editMode && username && CampaignName && pendingChanges) {
-                saveChanges();
             }
 		});
 		
+		$("#editButton").click(function () {
+            editMode = !editMode;
+            setSortable();
+            $(".addCategoryButton").toggleClass("hide"); 
+            $(".deleteCategoryButton").toggleClass("hide");
+            $("#sortButton").toggleClass("hide");
+
+            if (!editMode && TwigOptions.CampaignOwner && pendingChanges) {
+                saveChanges();
+            }
+        });
+
+        if (TwigOptions.CampaignOwner) {
+            $("#editButton").removeClass("hide");
+        }
+		
 		$("#initList").on("click", ".profile", function () {
-		    if (editMode) {
+            if (editMode) {
                 $(this).toggleClass("red blue");
                 if ($(this).hasClass("blue")) {
                     $(this).find(".playerTeam").val("blue");
@@ -122,12 +121,14 @@ $(function () {
                 else {
                     $(this).find(".playerTeam").val("red");
                 }
-		    }
+            }
         });
 
         $("#initList").on("change", "input", function () {
             setPendingChanges();
         });
+
+        
 	}
 
     function sortList() {
@@ -148,41 +149,36 @@ $(function () {
                 return teamA ? -1 : 1;
             }
             else {
-                return (initA < initB) ? 1 : -1;
+                return initA < initB ? 1 : -1;
             }
         });
 
         initList.append(listitems);
     }
 
-    function addPlayer(number, data) {
-        if (Number.isNaN(number)) {
-            return;
-        }
-        
+    function addPlayer(id, data, selected) {        
         data = data || {};
-        var playerSelectedValue = data.selected === "true";
         var playerTeamValue = data.team || "blue";
         var playerNameValue = data.name || "";
         var playerInitiativeValue = Number(data.initiative || 0);
         
-        var playerId = '<input class="playerId" name="playerId_' + number + '" type="hidden" value="' + number + '" />';
-        var playerSelected = '<input class="playerSelected" name="playerSelected_' + number + '" type="hidden" value="' + playerSelectedValue + '" />';
-        var playerTeam = '<input class="playerTeam" name="playerTeam_' + number + '" type="hidden" value="' + playerTeamValue + '" />';
-        var playerName = '<input class="playerName" name="playerName_' + number + '" style="width:50%" type="text" value="' + playerNameValue + '" placeholder="Player Name" />';
-        var playerInitiative = '<input class="playerInitiative" name="playerInitiative_' + number + '" style="width:10%" type="number" value="' + playerInitiativeValue + '" />';
+        var playerId = '<input class="playerId" name="playerId_' + id + '" type="hidden" value="' + id + '" />';
+        var playerSelected = '<input class="playerSelected" name="playerSelected_' + id + '" type="hidden" value="' + selected + '" />';
+        var playerTeam = '<input class="playerTeam" name="playerTeam_' + id + '" type="hidden" value="' + playerTeamValue + '" />';
+        var playerName = '<input class="playerName" name="playerName_' + id + '" style="width:50%" type="text" value="' + playerNameValue + '" placeholder="Player Name" />';
+        var playerInitiative = '<input class="playerInitiative" name="playerInitiative_' + id + '" style="width:10%" type="number" value="' + playerInitiativeValue + '" />';
 
-        var item = $('<li id="li_' + number + '" class="ui-state-default' + (playerSelectedValue ? ' initSelected' : '') + '"></li>');
+        var item = $('<li id="li_' + id + '" class="ui-state-default' + (selected ? ' initSelected' : '') + '"></li>');
         var div = $('<div class="person"></div>');
         var img = $('<i class="fa fa-user fa-2x profile ' + playerTeamValue + '">' + playerTeam + '</i>');
         var name = $('<div class="playerDiv">' + playerName + ' ' + playerInitiative + '</div>');
-        var removeButton = $(' <button id="button_' + number + '" class="ui-button deleteCategoryButton' + (editMode ? '' : ' hide') + '"><i class="fa fa-minus"></i></button>');
+        var removeButton = $(' <button id="button_' + id + '" class="ui-button deleteCategoryButton' + (editMode ? '' : ' hide') + '"><i class="fa fa-minus"></i></button>');
         div.append(playerId).append(playerSelected).append(img).append(name).append(removeButton);
         $('#initList').append(item.append(div));
     }
 
     function setPendingChanges() {
-        if (username && CampaignName) {
+        if (TwigOptions.CampaignOwner) {
             $('#dialogMessage').html('<i class="fa fa-spin fa-circle-o"></i>');
             pendingChanges = true;
         }
@@ -191,11 +187,12 @@ $(function () {
     function saveChanges() {
         $('#dialogMessage').html('<i class="fa fa-spin fa-circle-o-notch"></i>');
 
-        var InitiativeTracker = {};
+        var CharacterInfo = {};
+        var CurrentCharacter;
 
-        InitiativeTracker.list_count = list_count;
+        CharacterInfo.listCount = listCount;
 
-        InitiativeTracker.players = [];
+        CharacterInfo.players = [];
 
         var initList = $('#initList');
 
@@ -204,18 +201,23 @@ $(function () {
         $.each(listitems, function (index, element) {
             var player = {};
             player.id = $(element).find(".playerId").val();
-            player.selected = $(element).find(".playerSelected").val();
             player.team = $(element).find(".playerTeam").val();
             player.name = $(element).find(".playerName").val();
             player.initiative = $(element).find(".playerInitiative").val();
 
-            InitiativeTracker.players.push(player);
+            CharacterInfo.players.push(player);
+
+
+            if ($(element).find(".playerSelected").val()) {
+                CurrentCharacter = player.id;
+            }
         });
         
         var data = {};
 
-        data.CampaignName = CampaignName;
-        data.InitiativeTracker = InitiativeTracker;
+        data.CampaignGuid = TwigOptions.CampaignGuid;
+        data.CharacterInfo = CharacterInfo;
+        data.CurrentCharacter = CurrentCharacter;
 
         var postData = {
             "data": data
@@ -230,5 +232,7 @@ $(function () {
                 $('#dialogMessage').html('<i class="fa fa-exclamation-triangle"></i> Error: ' + response.data.Error);
             }
         });
-	}
+    }
+
+    init();
 });

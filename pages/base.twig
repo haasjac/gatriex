@@ -15,6 +15,7 @@
     <script src="/touch-punch/jquery.ui.touch-punch.min.js"></script>
     <script src="/jquery-validation-1.17.0/dist/jquery.validate.min.js"></script>
     <script src="/jquery-validation-1.17.0/dist/additional-methods.min.js"></script>
+	<script src="/js/twig.js"></script>
     <script src="/js/dataRequester.js"></script>
     <script src="/js/dialog.js"></script>
     <script src="/js/checkbox.js"></script>
@@ -24,6 +25,7 @@
 </head>
 
 <body>
+	<input id="twig_options" type="hidden" value="{{ _context|json_encode() }}">
     <div id="wrapper">
         <div id="inner-wrapper">
             <div id="header">
@@ -34,7 +36,7 @@
 
                     <div id="headerLeftText">
 						<div>
-							<a class="headerLink" href="/"><i class="fa fa-fw fa-home"></i><span class="headerLinkText">Home</span></a><a class="headerLink" href="/tabletop/initiativetracker"><i class="fa fa-fw fa-list-ol"></i><span class="headerLinkText">Initiative Tracker</span></a>
+							<a class="headerLink" href="/"><i class="fa fa-fw fa-home"></i><span class="headerLinkText">Home</span></a><a class="headerLink" href="/tabletop/mycampaigns"><i class="fa fa-fw fa-map-signs"></i><span class="headerLinkText">My Campaigns</span></a><a class="headerLink" href="/tabletop/initiativetracker"><i class="fa fa-fw fa-list-ol"></i><span class="headerLinkText">Initiative Tracker</span></a>
 						</div>
                     </div>
                 </div>
@@ -76,9 +78,9 @@
         <div id="loginDialogDiv">
             <div id="loginDialogTop">
                 <form id="loginForm" class="flexForm">
-                        {{ flexForm.input('Username', 'loginUsername', 'text') }}
-                        {{ flexForm.input('Password', 'loginPassword', 'password') }}
-                        {{ flexForm.inputCheckbox('Remember Me', 'loginRemember') }}
+                    {{ flexForm.input('Username', 'loginUsername', 'text') }}
+                    {{ flexForm.input('Password', 'loginPassword', 'password') }}
+                    {{ flexForm.inputCheckbox('Remember Me', 'loginRemember') }}
                 </form>
                 <div id="loginDialogMessage"></div>
             </div>

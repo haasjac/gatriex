@@ -1,12 +1,15 @@
 /* global dataRequester */
 
-"use strict";
-
 $(function () {
+    "use strict";
+
     var contentData = {};
 
-    setEventHandlers();
-    getContent();
+    function init() {
+        setEventHandlers();
+        getContent();
+    }
+
     function dataReady(callback) {
         createCampaignList();
         if (callback) {
@@ -15,7 +18,7 @@ $(function () {
     }
 
     function getContent(callback) {
-        dataRequester.apiCall('/api/tabletop/campaigns/GetCampaigns.php', "GET", null, function (response) {
+        dataRequester.apiCall('/api/tabletop/mycampaigns/GetCampaigns.php', "GET", null, function (response) {
             if (response.valid) {
                 contentData = response.data.Campaigns;
                 dataReady(callback);
@@ -32,7 +35,13 @@ $(function () {
             var campaign = $('<li id="campaign_' + index + '" class="ui-state-default campaign"></li>');
 
             var div = $('<div>' +
-                '<span id="campaignDisplay_' + index + '"><a href="/tabletop/initiativetracker?CampaignName=' + Campaign.CampaignName + '">' + Campaign.CampaignName + '</a></span>' +
+                '<span id="campaignDisplay_' + index + '">' + Campaign.CampaignName + '</span>' +
+                ' <a href="/tabletop/campaign?id=' + Campaign.Guid + '" data-index="' + index + '" class="ui-button ui-button-fa linkCampaignButton campaignButton_' + index + '">' +
+                '<i class="fa fa-users"></i>' +
+                '</a>' +
+                ' <a href="/tabletop/initiativeTracker?id=' + Campaign.Guid + '" data-index="' + index + '" class="ui-button ui-button-fa linkCampaignButton campaignButton_' + index + '">' +
+                '<i class="fa fa-list-ol"></i>' +
+                '</a>' +
                 '<input name="campaignName_' + index + '" id="campaignName_' + index + '" type="hidden" value="' + Campaign.CampaignName + '" />' +
                 '<input name="campaignGuid_' + index + '" id="campaignGuid_' + index + '" type="hidden" value="' + Campaign.Guid + '" />' +
                 '</div>');
@@ -70,7 +79,7 @@ $(function () {
 
             var postData = { "data": data };
             
-            dataRequester.apiCall('/api/tabletop/campaigns/AddCampaign.php', "POST", postData, function (response) {
+            dataRequester.apiCall('/api/tabletop/mycampaigns/AddCampaign.php', "POST", postData, function (response) {
                 if (response.valid) {
                     getContent(function () {
                         $('#dialogMessage').html('<i class="fa fa-check-circle"></i> Changes saved.');
@@ -98,7 +107,7 @@ $(function () {
             data.Guid = $('#campaignGuid_' + index).val();
             
             var postData = { "data": data };
-            dataRequester.apiCall('/api/tabletop/campaigns/RemoveCampaign.php', "POST", postData, function (response) {
+            dataRequester.apiCall('/api/tabletop/mycampaigns/RemoveCampaign.php', "POST", postData, function (response) {
                 if (response.valid) {
                     $('#campaign_' + index).remove();
                     $('#dialogMessage').html('<i class="fa fa-check-circle"></i> Changes saved.');
@@ -117,7 +126,7 @@ $(function () {
             data.Guid = $('#campaignGuid_' + index).val();
 
             var postData = { "data": data };
-            dataRequester.apiCall('/api/tabletop/campaigns/EditCampaign.php', "POST", postData, function (response) {
+            dataRequester.apiCall('/api/tabletop/mycampaigns/EditCampaign.php', "POST", postData, function (response) {
                 if (response.valid) {
                     $('#campaignName_' + index).attr("type", "hidden");
                     $('#campaignDisplay_' + index).text($('#campaignName_' + index).val());
@@ -135,10 +144,12 @@ $(function () {
             var index = $(this).attr("data-index");
 
             $('#campaignName_' + index).attr("type", "hidden");
-            $('#campaignName_' + index).val($('#campaignDisplay_' + index).text())
+            $('#campaignName_' + index).val($('#campaignDisplay_' + index).text());
 
             $('#campaignDisplay_' + index).toggle();
             $('.campaignButton_' + index).toggle();
         });
     }
+
+    init();
 });

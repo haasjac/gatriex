@@ -1,36 +1,51 @@
 <?php
     require_once($_SERVER['DOCUMENT_ROOT'] . '/library/libraries.php');
     
-    $name = $_REQUEST["CampaignName"];
+    $Guid = $_REQUEST["CampaignGuid"];
     
-    if (!isset($name)) {
+    if (!isset($Guid)) {
         $response = new Response();
-        $response->data["Error"] = "Campaign name is required.";
+        $response->data["Error"] = "Campaign not found.";
         $response->valid = false;
         echo json_encode($response);
         return;
     }
-    
-    $result = $authentication->validateUserFromToken($input->getCookie("Auth_Id"), $input->getCookie("Auth_Token"));
-    if (!$result->valid) {
-        echo json_encode($result);
-        return;
-    }
-
-	$user = $result->data["Username"];
-    
-    try {
-		$sql = "SELECT InitiativeTracker FROM Tabletop_Campaigns WHERE Username = ? AND CampaignName=?";
-        $stmt = $db->prepare($sql);
-        $stmt->execute(array($user, $name));
-
-        $row = $stmt->fetch(PDO::FETCH_ASSOC);
         
+    try {
+		$Campaign = new stdClass();
+		$Characters = new stdClass();
+
+		$sql = "SELECT CharacterInfo, CurrentCharacter FROM Tabletop_InitiativeTracker WHERE CampaignGuid = ?";
+        $stmt = $db->prepare($sql);
+        $stmt->execute(array($Guid));
+
+		if ($stmt->rowCount() <= 0) {
+			$response = new Response();
+			$response->data["Error"] = "Campaign not found.";
+			$response->valid = false;
+			echo json_encode($response);
+			return;
+		}
+
+		$row = $stmt->fetch(PDO::FETCH_ASSOC);
+			
+		$Campaign->CharacterInfo = json_decode($row["CharacterInfo"]);
+		$Campaign->CurrentCharacter = $row["CurrentCharacter"];
+
+		$sql = "SELECT Guid, Name, Faction, InitiativeBonus, InitiativeAdvantage FROM Tabletop_Characters WHERE CampaignGuid = ?";
+        $stmt = $db->prepare($sql);
+        $stmt->execute(array($Guid));
+
+		while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+			$rowGuid = $row["Guid"];
+			$Characters->$rowGuid = $row;
+        }
+				        
         $response = new Response();
-		$response->data["InitiativeTracker"] = json_decode($row["InitiativeTracker"]);
+		$response->data["Campaign"] = $Campaign;
+		$response->data["Characters"] = $Characters;
         $response->valid = true;
         echo json_encode($response);
-        return;
     } catch (PDOException $ex) {
         http_response_code(500);
         $log->error("Database error in GetCampaign.php", $ex->getMessage());

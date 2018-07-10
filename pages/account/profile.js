@@ -1,18 +1,16 @@
-/* global dataRequester, username */
-
-"use strict";
-
-//global variables
-
+/* global dataRequester, TwigOptions */
 
 //On load
 $(function () {
-    
+    "use strict";
+
 	var validator;
-    
-    setValidator();
-	setEventHandlers();
-    
+
+    function init() {
+        setValidator();
+        setEventHandlers();
+    }
+
     function setValidator() {
         $.validator.messages.required = "Required.";
         
@@ -50,8 +48,8 @@ $(function () {
                     remote: "This Email is unavailable."
                 }
             },
-            showErrors: function(errorMap, errorList) {
-                for (var i = 0; i < errorList.length; i++) {
+            showErrors: function (errorMap, errorList) {
+                for (var i = 0; i < errorList.length; i += 1) {
                     errorList[i].message = "<i class='fa fa-exclamation-triangle'></i> " + errorList[i].message;
                 }
                 this.defaultShowErrors();
@@ -62,7 +60,7 @@ $(function () {
     function setEventHandlers() {
         
         $("#profileForm").submit(function () {
-           return false; 
+            return false; 
         });
         
         $(".profileEdit").click(function () {
@@ -104,7 +102,7 @@ $(function () {
     
     function updateField(id) {
         var data = {
-            username: username,
+            username: TwigOptions.Username,
             value: $("#" + id + "Input").val(),
             field: $("#" + id + "Field").val(),
             confirmValue: $("#" + id + "Confirm").val()
@@ -122,4 +120,6 @@ $(function () {
             }
         });
     }
+
+    init();
 });
