@@ -382,3 +382,9 @@ input, select {
 .ui-widget-content a:hover {
     color: #D0904C;
 }
+
+.ui-button-fa {
+    font-size: 0.75em;
+    padding: 0.2em 0.5em;
+    font-family: 'kingsbridgeregular';
+}

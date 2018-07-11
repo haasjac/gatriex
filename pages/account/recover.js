@@ -26,9 +26,9 @@ $(function () {
             };
             dataRequester.apiCall('/api/account/recoverusername.php', "POST", data, function (response) {
                 if (response.valid) {
-                    $("#recoverUsernameMessage").html("<i class='fa fa-check-circle'></i> Email Sent.");
+                    $("#recoverUsernameMessage").html("<i class='fas fa-check-circle'></i> Email Sent.");
                 } else {
-                    $("#recoverUsernameMessage").html("<i class='fa fa-exclamation-triangle'></i> " + response.data.Error);
+                    $("#recoverUsernameMessage").html("<i class='fas fa-exclamation-triangle'></i> " + response.data.Error);
                 }
             });
         });
@@ -40,9 +40,9 @@ $(function () {
             };
             dataRequester.apiCall('/api/account/recoverpassword.php', "POST", data, function (response) {
                 if (response.valid) {
-                    $("#recoverPasswordMessage").html("<i class='fa fa-check-circle'></i> Email Sent.");
+                    $("#recoverPasswordMessage").html("<i class='fas fa-check-circle'></i> Email Sent.");
                 } else {
-                    $("#recoverPasswordMessage").html("<i class='fa fa-exclamation-triangle'></i> " + response.data.Error);
+                    $("#recoverPasswordMessage").html("<i class='fas fa-exclamation-triangle'></i> " + response.data.Error);
                 }
             });
         });

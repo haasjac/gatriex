@@ -37,7 +37,7 @@ $(function () {
             },
             showErrors: function(errorMap, errorList) {
                 for (var i = 0; i < errorList.length; i++) {
-                    errorList[i].message = "<i class='fa fa-exclamation-triangle'></i> " + errorList[i].message;
+                    errorList[i].message = "<i class='fas fa-exclamation-triangle'></i> " + errorList[i].message;
                 }
                 this.defaultShowErrors();
             }
@@ -89,7 +89,7 @@ $(function () {
         data.message = data.message.replace(/(?:\r\n|\r|\n)/g, '<br />');
         dataRequester.apiCall("/api/log/contact.php", "POST", data, function (response) {
             if (response.valid) {
-                var message = '<i class="fa fa-check-circle"></i> Thank you for the feedback!';
+                var message = '<i class="fas fa-check-circle"></i> Thank you for the feedback!';
                 if (!$("#contactAnon").prop("checked")) {
                     message += " You should receive a reply within a couple of days.";
                 }
@@ -97,7 +97,7 @@ $(function () {
                 $("#contactForm").hide();
             } else {
                 console.log(response.data.Error);
-                var message = '<i class="fa fa-exclamation-triangle"></i> ' + response.data.Error;
+                var message = '<i class="fas fa-exclamation-triangle"></i> ' + response.data.Error;
                 $("#contactFeedbackMessage").html(message);                
             }
         });

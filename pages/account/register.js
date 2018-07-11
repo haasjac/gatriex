@@ -70,7 +70,7 @@ $(function () {
             },
             showErrors: function(errorMap, errorList) {
                 for (var i = 0; i < errorList.length; i++) {
-                    errorList[i].message = "<i class='fa fa-exclamation-triangle'></i> " + errorList[i].message;
+                    errorList[i].message = "<i class='fas fa-exclamation-triangle'></i> " + errorList[i].message;
                 }
                 this.defaultShowErrors();
             }

@@ -16,7 +16,7 @@ $(function () {
                 if (response.valid) {
                     createInitList(response.data.Campaign.CharacterInfo, response.data.Campaign.CurrentCharacter);
                 } else {
-                    $('#dialogMessage').html('<i class="fa fa-exclamation-triangle"></i> Error: ' + response.data.Error);
+                    $('#dialogMessage').html('<i class="fas fa-exclamation-triangle"></i> Error: ' + response.data.Error);
                 }
             });
         }
@@ -170,22 +170,22 @@ $(function () {
 
         var item = $('<li id="li_' + id + '" class="ui-state-default' + (selected ? ' initSelected' : '') + '"></li>');
         var div = $('<div class="person"></div>');
-        var img = $('<i class="fa fa-user fa-2x profile ' + playerTeamValue + '">' + playerTeam + '</i>');
+        var img = $('<i class="fas fa-user-tie profile ' + playerTeamValue + '">' + playerTeam + '</i>');
         var name = $('<div class="playerDiv">' + playerName + ' ' + playerInitiative + '</div>');
-        var removeButton = $(' <button id="button_' + id + '" class="ui-button deleteCategoryButton' + (editMode ? '' : ' hide') + '"><i class="fa fa-minus"></i></button>');
+        var removeButton = $(' <button id="button_' + id + '" class="ui-button deleteCategoryButton' + (editMode ? '' : ' hide') + '"><i class="fas fa-trash-alt"></i></button>');
         div.append(playerId).append(playerSelected).append(img).append(name).append(removeButton);
         $('#initList').append(item.append(div));
     }
 
     function setPendingChanges() {
         if (TwigOptions.CampaignOwner) {
-            $('#dialogMessage').html('<i class="fa fa-spin fa-circle-o"></i>');
+            $('#dialogMessage').html('<i class="far fa-spin fa-circle"></i>');
             pendingChanges = true;
         }
     }
 
     function saveChanges() {
-        $('#dialogMessage').html('<i class="fa fa-spin fa-circle-o-notch"></i>');
+        $('#dialogMessage').html('<i class="far fa-spin fa-circle-notch"></i>');
 
         var CharacterInfo = {};
         var CurrentCharacter;
@@ -225,11 +225,11 @@ $(function () {
 
         dataRequester.apiCall('/api/tabletop/initiativetracker/SaveCampaign.php', "POST", postData, function (response) {
             if (response.valid) {
-                $('#dialogMessage').html('<i class="fa fa-floppy-o"></i>');
+                $('#dialogMessage').html('<i class="far fa-save"></i>');
                 pendingChanges = false;
                 setTimeout(function () { $('#dialogMessage').html(''); }, 1000);
             } else {
-                $('#dialogMessage').html('<i class="fa fa-exclamation-triangle"></i> Error: ' + response.data.Error);
+                $('#dialogMessage').html('<i class="fas fa-exclamation-triangle"></i> Error: ' + response.data.Error);
             }
         });
     }

@@ -21,7 +21,7 @@ $(function () {
                     contentData = response.data;
                     dataReady();
                 } else {
-                    $('#dialogMessage').html('<i class="fa fa-exclamation-triangle"></i> Error: ' + response.data.Error);
+                    $('#dialogMessage').html('<i class="fas fa-exclamation-triangle"></i> Error: ' + response.data.Error);
                 }
             });
         }
@@ -36,7 +36,7 @@ $(function () {
             var factionDiv = $('<div id="' + faction.Name + 'Div" class="factionDiv"></div>');
 
             var factionHeader = $('<div id="' + faction.Name + 'Header" class="factionHeader">' +
-                '<i class="fa fa-fw ' + faction.Icon + ' faction-' + faction.Name + '"></i> ' + faction.Name +
+                '<i class="fas fa-fw ' + faction.Icon + ' faction-' + faction.Name + '"></i> ' + faction.Name +
                 '</div>');
 
             var factionul = $('<ul id="' + faction.Name + 'List" class="characterList"></ul>');
@@ -103,9 +103,9 @@ $(function () {
                     $('#addCharacterButton').toggle();
                     $('#saveAddCharacterButton').toggle();
                     $('#discardAddCharacterButton').toggle();
-                    $('#dialogMessage').html('<i class="fa fa-check-circle"></i> Changes saved.');
+                    $('#dialogMessage').html('<i class="fas fa-check-circle"></i> Changes saved.');
                 } else {
-                    $('#dialogMessage').html('<i class="fa fa-exclamation-triangle"></i> Error: ' + response.data.Error);
+                    $('#dialogMessage').html('<i class="fas fa-exclamation-triangle"></i> Error: ' + response.data.Error);
                 }
             });
         });
@@ -158,9 +158,9 @@ $(function () {
                             if (response.valid) {
                                 $('#character_' + guid).remove();
                                 $('#editCharacter_' + guid).remove();
-                                $('#dialogMessage').html('<i class="fa fa-check-circle"></i> Changes saved.');
+                                $('#dialogMessage').html('<i class="fas fa-check-circle"></i> Changes saved.');
                             } else {
-                                $('#dialogMessage').html('<i class="fa fa-exclamation-triangle"></i> Error: ' + response.data.Error);
+                                $('#dialogMessage').html('<i class="fas fa-exclamation-triangle"></i> Error: ' + response.data.Error);
                             }
                         });
                         $(this).dialog("close");
@@ -227,9 +227,9 @@ $(function () {
                     $('#removeCharacterButton_' + guid).toggle();
                     $('#saveCharacterButton_' + guid).toggle();
                     $('#discardCharacterButton_' + guid).toggle();
-                    $('#dialogMessage').html('<i class="fa fa-check-circle"></i> Changes saved.');
+                    $('#dialogMessage').html('<i class="fas fa-check-circle"></i> Changes saved.');
                 } else {
-                    $('#dialogMessage').html('<i class="fa fa-exclamation-triangle"></i> Error: ' + response.data.Error);
+                    $('#dialogMessage').html('<i class="fas fa-exclamation-triangle"></i> Error: ' + response.data.Error);
                 }
             });
         });
@@ -276,10 +276,10 @@ $(function () {
 
     function displayInitAdvantage(advantage) {
         if (advantage != 0) {
-            return '<i class="fa fa-fw fa-check-square-o"></i>';
+            return '<i class="far fa-fw fa-check-square"></i>';
         }
         else {
-            return '<i class="fa fa-fw fa-square-o"></i>';
+            return '<i class="far fa-fw fa-square"></i>';
         }
     }
 
@@ -291,37 +291,37 @@ $(function () {
 
             '<span class="characterName">' +
                 '<span id="characterFaction_' + guid + '" class="hide">' + character.FactionId + '</span>' +
-                '<i id="factionIcon_' + guid + '" class="fa fa-fw ' + character.FactionIcon + ' faction-' + character.FactionName + '"></i> ' +
+                '<i id="factionIcon_' + guid + '" class="fas fa-fw ' + character.FactionIcon + ' faction-' + character.FactionName + '"></i> ' +
                 '<span id="characterName_' + guid + '">' + character.Name + '</span>' +
             '</span>' +
 
             '<span class="characterInitiative">' +
                 '<span id="characterInitBonusValue_' + guid + '" class="hide">' + character.InitiativeBonus + '</span>' +
-                '<i id="initBonusIcon_' + guid + '" class="fa fa-fw fa-hourglass faction-' + character.FactionName + '"></i> ' +
+                '<i id="initBonusIcon_' + guid + '" class="fas fa-fw fa-hourglass-half faction-' + character.FactionName + '"></i> ' +
                 '<span id="characterInitBonus_' + guid + '">' + displayInitBonus(character.InitiativeBonus) + '</span>' +
             '</span>' +
 
             '<span class="characterInitiative">' +
                 '<span id="characterInitAdvantageValue_' + guid + '" class="hide">' + character.InitiativeAdvantage + '</span>' +
-                '<i id="initAdvantageIcon_' + guid + '" class="fa fa-fw fa-trophy faction-' + character.FactionName + '"></i> ' +
+                '<i id="initAdvantageIcon_' + guid + '" class="fas fa-fw fa-dice faction-' + character.FactionName + '"></i> ' +
                 '<span id="characterInitAdvantage_' + guid + '">' + displayInitAdvantage(character.InitiativeAdvantage) + '</span>' +
             '</span>' +
 
             '<span class="characterEdit">' +
                 '<button id="editCharacterButton_' + guid + '" data-guid="' + guid + '" class="ui-button ui-button-fa editCharacterButton">' + 
-                    '<i class="fa fa-fw fa-pencil"></i> Edit' + 
+                    '<i class="fas fa-fw fa-pencil-alt"></i> Edit' + 
                 '</button> ' +
 
                 '<button id="removeCharacterButton_' + guid + '" data-guid="' + guid + '" class="ui-button ui-button-fa removeCharacterButton">' +
-                    '<span class="redButton"><i class="fa fa-fw fa-remove"></i> Remove</span>' + 
+                    '<span class="redButton"><i class="fas fa-fw fa-trash-alt"></i> Remove</span>' + 
                 '</button>' +
 
                 '<button id="saveCharacterButton_' + guid + '" data-guid="' + guid + '" class="ui-button ui-button-fa hide saveCharacterButton">' + 
-                    '<span class="greenButton"><i class="fa fa-fw fa-check"></i> Save</span>' + 
+                    '<span class="greenButton"><i class="far fa-fw fa-save"></i> Save</span>' + 
                 '</button> ' +
 
                 '<button id="discardCharacterButton_' + guid + '" data-guid="' + guid + '" class="ui-button ui-button-fa hide discardCharacterButton">' + 
-                    '<span class="redButton"><i class="fa fa-fw fa-ban"></i> Discard</span>' + 
+                    '<span class="redButton"><i class="fas fa-fw fa-undo-alt"></i> Discard</span>' + 
                 '</button>' +
             '</span>' +
 
@@ -330,7 +330,7 @@ $(function () {
         var editDiv = $('<div class="editCharacterInfo">' +
 
             '<div class="characterName">' +
-                '<i id="editFactionIcon_' + guid + '" class="fa fa-fw fa-users faction-' + character.FactionName + '"></i> ' +
+                '<i id="editFactionIcon_' + guid + '" class="fas fa-fw fa-users faction-' + character.FactionName + '"></i> ' +
                 '<span>Faction: </span>' +
                 '<select name="editCharacterFaction_' + guid + '" id="editCharacterFaction_' + guid + '">' +
                 factionOptions +
@@ -338,21 +338,21 @@ $(function () {
             '</div>' +
 
             '<div class="characterName">' +
-                '<i id="editNameIcon_' + guid + '" class="fa fa-fw ' + character.FactionIcon + ' faction-' + character.FactionName + '"></i> ' +
+                '<i id="editNameIcon_' + guid + '" class="fas fa-fw ' + character.FactionIcon + ' faction-' + character.FactionName + '"></i> ' +
                 '<span>Name: </span>' +
                 '<input name="editCharacterName_' + guid + '" id="editCharacterName_' + guid + '" type="text" value="' + character.Name + '" />' +
             '</div>' +
 
             '<div class="characterInitiative">' +
-                '<i id="editInitBonusIcon_' + guid + '" class="fa fa-fw fa-hourglass faction-' + character.FactionName + '"></i> ' +
+                '<i id="editInitBonusIcon_' + guid + '" class="fas fa-fw fa-hourglass-half faction-' + character.FactionName + '"></i> ' +
                 '<span>Initiative Bonus: </span>' +
                 '<input name="editCharacterInitBonus_' + guid + '" id="editCharacterInitBonus_' + guid + '" type="number" value="' + character.InitiativeBonus + '" />' +
             '</div>' +
 
             '<div class="characterInitiative">' +
-                '<i id="editInitAdvantageIcon_' + guid + '" class="fa fa-fw fa-trophy faction-' + character.FactionName + '"></i> ' +
+                '<i id="editInitAdvantageIcon_' + guid + '" class="fas fa-fw fa-dice faction-' + character.FactionName + '"></i> ' +
                 '<span>Initiative Advantage: </span>' +
-                '<i class="fa ' + (character.InitiativeAdvantage != 0 ? 'fa-check-square-o' : 'fa-square-o') + ' fakeCheck" data-realcheck="editCharacterInitAdvantage_' + guid + '" id="fakeeditCharacterInitAdvantage_' + guid + '"></i>' +
+                '<i class="far ' + (character.InitiativeAdvantage != 0 ? 'fa-check-square' : 'fa-square') + ' fakeCheck" data-realcheck="editCharacterInitAdvantage_' + guid + '" id="fakeeditCharacterInitAdvantage_' + guid + '"></i>' +
                 '<input type="checkbox" name="editCharacterInitAdvantage_' + guid + '" id="editCharacterInitAdvantage_' + guid + '" ' + (character.InitiativeAdvantage != 0 ? 'checked = "checked"' : '') + ' style = "display:none" />' +
             '</div>' +
 

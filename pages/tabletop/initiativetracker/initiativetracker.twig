@@ -10,9 +10,9 @@
     <div id="edit" class="section">
         <div class="mainHeaderDiv">
 			{% if CampaignName is empty %}
-                <span class="mainHeader">Initiative Tracker</span>
+                <span class="mainHeader"><i class="fas fa-fw fa-sort"></i>Initiative Tracker</span>
             {% else %}
-                <span class="mainHeader">Initiative Tracker - {{ CampaignName }}</span>
+                <span class="mainHeader"><i class="fas fa-fw fa-sort"></i>Initiative Tracker - {{ CampaignName }}</span>
             {% endif %}
         </div>
         <div class="content">
@@ -24,9 +24,9 @@
 	    </div>
 	    <div class="formButtons">
             <div id="dialogMessage"></div>
-            <button type="button" class="ui-button hide" id="editButton">Edit</button>
-            <button type="button" class="ui-button addCategoryButton hide"><i class="fa fa-plus"></i></button>
-            <button type="button" class="ui-button hide" id="sortButton">Sort</button>
+            <button type="button" class="ui-button ui-button-fa hide" id="editButton">Edit</button>
+            <button type="button" class="ui-button ui-button-fa addCategoryButton hide"><i class="fas fa-fw fa-plus-circle"></i></button>
+            <button type="button" class="ui-button ui-button-fa hide" id="sortButton">Sort</button>
 	    </div>
 	</div>
 {% endblock %}

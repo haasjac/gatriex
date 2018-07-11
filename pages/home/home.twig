@@ -12,7 +12,7 @@
             <span class="mainHeader">Bookmarks</span>
             {% if Username is not empty %}
             <a href="/edit" class="iconRight">
-                <i class="fa fa-pencil"></i>
+                <i class="fas fa-pencil-alt"></i>
             </a>
             {% endif %}
         </div>
@@ -25,7 +25,7 @@
 	    <div id="SummonerStats" class="section">
     	    <div class="mainHeaderDiv">
                 <span class="mainHeader">Summoner Stats</span>
-                <i id="refreshSummoner" class="fa fa-refresh iconRight"></i>
+                <i id="refreshSummoner" class="fas fa-sync-alt iconRight"></i>
                 <span id="SummonerError" class="errorIcon iconRight"></span>
             </div>
     		<div class="content">
@@ -33,7 +33,7 @@
     		        <div>
                         <form id="searchForm">
                             <input type="text" name="searchSummonerName" placeholder="Summoner Name" id="searchSummonerName" />
-                            <button id="searchButton" class="ui-button">Search</button>
+                            <button id="searchButton" class="ui-button ui-button-fa"><i class="fas fa-search"></i> Search</button>
                         </form>
 		            </div>
     		        <div id="summonerFlexContainer">
@@ -62,17 +62,17 @@
 		</div>                        
 		<div id="ServerStatus" class="section">
     		<div class="mainHeaderDiv">
-                <span class="mainHeader">Server Status - 
+                <span class="mainHeader"> 
                     <div id="nameRegion">North America</div>
                     <select id="selectRegion" style="display:none">
                         {% for name, key in RegionList %}
                             <option {% if name == Region %} selected {% endif %} value="{{ key }}">{{ name }}</option>
                         {% endfor %}
                     </select>
-                    <i id="editRegion" class="fa fa-pencil"></i>
-                    <i id="cancelRegion" class="fa fa-times" style="display: none;"></i>
+                    <i id="editRegion" class="fas fa-exchange-alt"></i>
+                    <i id="cancelRegion" class="fas fa-times" style="display: none;"></i>
                 </span>
-                <i id="refreshStatus" class="fa fa-refresh iconRight"></i>
+                <i id="refreshStatus" class="fas fa-sync-alt iconRight"></i>
                 <span id="StatusError" class="errorIcon iconRight"></span>
             </div>
     		<div class="content">

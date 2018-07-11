@@ -50,7 +50,7 @@ $(function () {
             },
             showErrors: function (errorMap, errorList) {
                 for (var i = 0; i < errorList.length; i += 1) {
-                    errorList[i].message = "<i class='fa fa-exclamation-triangle'></i> " + errorList[i].message;
+                    errorList[i].message = "<i class='fas fa-exclamation-triangle'></i> " + errorList[i].message;
                 }
                 this.defaultShowErrors();
             }
@@ -115,7 +115,7 @@ $(function () {
                 }
                 hideEdit(id);
             } else {
-                $("#" + id + "Input-error").html("<i class='fa fa-exclamation-triangle'></i> " + response.data.Error);
+                $("#" + id + "Input-error").html("<i class='fas fa-exclamation-triangle'></i> " + response.data.Error);
                 $("#" + id + "Input-error").show();
             }
         });

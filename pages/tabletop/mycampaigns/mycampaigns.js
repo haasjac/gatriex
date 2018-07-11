@@ -23,7 +23,7 @@ $(function () {
                 contentData = response.data.Campaigns;
                 dataReady(callback);
             } else {
-                $('#dialogMessage').html('<i class="fa fa-exclamation-triangle"></i> Error: ' + response.data.Error);
+                $('#dialogMessage').html('<i class="fas fa-exclamation-triangle"></i> Error: ' + response.data.Error);
             }
         });
     }
@@ -35,12 +35,13 @@ $(function () {
             var campaign = $('<li id="campaign_' + index + '" class="ui-state-default campaign"></li>');
 
             var div = $('<div>' +
+                '<i class="fas fa-fw fa-book"></i> ' +
                 '<span id="campaignDisplay_' + index + '">' + Campaign.CampaignName + '</span>' +
                 ' <a href="/tabletop/campaign?id=' + Campaign.Guid + '" data-index="' + index + '" class="ui-button ui-button-fa linkCampaignButton campaignButton_' + index + '">' +
-                '<i class="fa fa-users"></i>' +
+                '<i class="fas fa-fw fa-user-edit"></i>' +
                 '</a>' +
                 ' <a href="/tabletop/initiativeTracker?id=' + Campaign.Guid + '" data-index="' + index + '" class="ui-button ui-button-fa linkCampaignButton campaignButton_' + index + '">' +
-                '<i class="fa fa-list-ol"></i>' +
+                '<i class="fas fa-fw fa-sort"></i>' +
                 '</a>' +
                 '<input name="campaignName_' + index + '" id="campaignName_' + index + '" type="hidden" value="' + Campaign.CampaignName + '" />' +
                 '<input name="campaignGuid_' + index + '" id="campaignGuid_' + index + '" type="hidden" value="' + Campaign.Guid + '" />' +
@@ -51,10 +52,10 @@ $(function () {
             var deleteButton = $('<button data-index="' + index + '" class="ui-button ui-button-fa deleteCampaignButton campaignButton_' + index + '"></button>');
             var editButton = $('<button data-index="' + index + '" class="ui-button ui-button-fa editCampaignButton campaignButton_' + index + '"></button>');
 
-            cancelButton.append('<span class="redButton"><i class="fa fa-ban"></i> Discard</span>');
-            saveButton.append('<span class="greenButton"><i class="fa fa-check"></i> Save</span>');
-            deleteButton.append('<span class="redButton"><i class="fa fa-remove"></i> Remove</span>');
-            editButton.append('<span class=""><i class="fa fa-pencil"></i> Edit</span>');
+            cancelButton.append('<span class="redButton"><i class="fas fa-fw fa-undo-alt"></i> Discard</span>');
+            saveButton.append('<span class="greenButton"><i class="far fa-fw fa-save"></i> Save</span>');
+            deleteButton.append('<span class="redButton"><i class="fas fa-fw fa-trash-alt"></i> Remove</span>');
+            editButton.append('<span class=""><i class="fas fa-fw fa-pencil-alt"></i> Edit</span>');
 
             div.append(cancelButton).append(saveButton).append(deleteButton).append(editButton);
 
@@ -73,7 +74,7 @@ $(function () {
             var data = {};
             data.CampaignName = $("#addCampaignName").val();
             if (data.CampaignName === "") {
-                $('#dialogMessage').html('<i class="fa fa-exclamation-triangle"></i> Campaign Name cannot be empty.');
+                $('#dialogMessage').html('<i class="fas fa-exclamation-triangle"></i> Campaign Name cannot be empty.');
                 return;
             }
 
@@ -82,10 +83,10 @@ $(function () {
             dataRequester.apiCall('/api/tabletop/mycampaigns/AddCampaign.php', "POST", postData, function (response) {
                 if (response.valid) {
                     getContent(function () {
-                        $('#dialogMessage').html('<i class="fa fa-check-circle"></i> Changes saved.');
+                        $('#dialogMessage').html('<i class="fas fa-check-circle"></i> Changes saved.');
                     });
                 } else {
-                    $('#dialogMessage').html('<i class="fa fa-exclamation-triangle"></i> Error: ' + response.data.Error);
+                    $('#dialogMessage').html('<i class="fas fa-exclamation-triangle"></i> Error: ' + response.data.Error);
                 }
             });
         });
@@ -110,9 +111,9 @@ $(function () {
             dataRequester.apiCall('/api/tabletop/mycampaigns/RemoveCampaign.php', "POST", postData, function (response) {
                 if (response.valid) {
                     $('#campaign_' + index).remove();
-                    $('#dialogMessage').html('<i class="fa fa-check-circle"></i> Changes saved.');
+                    $('#dialogMessage').html('<i class="fas fa-check-circle"></i> Changes saved.');
                 } else {
-                    $('#dialogMessage').html('<i class="fa fa-exclamation-triangle"></i> Error: ' + response.data.Error);
+                    $('#dialogMessage').html('<i class="fas fa-exclamation-triangle"></i> Error: ' + response.data.Error);
                 }
             });
 
@@ -133,9 +134,9 @@ $(function () {
 
                     $('#campaignDisplay_' + index).toggle();
                     $('.campaignButton_' + index).toggle();
-                    $('#dialogMessage').html('<i class="fa fa-check-circle"></i> Changes saved.');
+                    $('#dialogMessage').html('<i class="fas fa-check-circle"></i> Changes saved.');
                 } else {
-                    $('#dialogMessage').html('<i class="fa fa-exclamation-triangle"></i> Error: ' + response.data.Error);
+                    $('#dialogMessage').html('<i class="fas fa-exclamation-triangle"></i> Error: ' + response.data.Error);
                 }
             });
         });

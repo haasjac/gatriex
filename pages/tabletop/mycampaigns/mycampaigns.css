@@ -37,12 +37,6 @@
     margin-right: 10px;
 }
 
-.ui-button-fa {
-    font-size: 0.75em;
-    padding: 0.2em 0.5em;
-    font-family: 'kingsbridgeregular';
-}
-
 .addCampaignButton, .addCampaignButton:hover, .saveEditButton, .saveEditButton:hover {
     color: #008000;
 }

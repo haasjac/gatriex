@@ -18,7 +18,7 @@ $(function () {
                 contentData = response.data.Links;
                 dataReady();
             } else {
-				$('#dialogMessage').html('<i class="fa fa-exclamation-triangle"></i> Error: ' + response.data.Error);
+				$('#dialogMessage').html('<i class="fas fa-exclamation-triangle"></i> Error: ' + response.data.Error);
             }
         });
 	}
@@ -29,16 +29,16 @@ $(function () {
 			var category = $('<li id="category_' + list_num + '" class="ui-state-default category"></li>');
 			
 			var header = $('<div>' +
-				'<i class="fa fa-arrows-v"></i>' +
+				'<i class="fas fa-arrows-alt-v"></i>' +
 				' Category: <input type="text" name="header_' + list_num + '" id="header_' + list_num + '" value="' + contentData[list_num].header + '" /> ' +
-				'<button class="ui-button collapseButton" data-num="' + list_num + '"><i class="fa fa-compress"></i> <span>Collaspe</span></button>' +
-				'<button id="delete_button_' + list_num + '" class="ui-button deleteCategoryButton"><i class="fa fa-remove"></i></button>' +
+				'<button class="ui-button ui-button-fa collapseButton" data-num="' + list_num + '"><i class="fas fa-fw fa-compress-alt"></i> <span>Collaspe</span></button>' +
+                '<button id="delete_button_' + list_num + '" class="ui-button ui-button-fa deleteCategoryButton"><i class="fas fa-fw fa-times"></i></button>' +
 				'</div>');
 				
 			var addList = $('<ul class="addList" id="addList_' + list_num + '"></ul>');
 			var footer = $('<li class="ui-state-default item" id="list_' + list_num + '_add_item"></li>');
 			footer.append('Add Bookmark');
-			footer.append('<button type="button" id="button_' + list_num + '" class="ui-button addButton"><i class="fa fa-plus"></i></button>');
+            footer.append('<button type="button" id="button_' + list_num + '" class="ui-button ui-button-fa addButton"><i class="fas fa-fw fa-plus"></i></button>');
 			var footerdiv = $('<div class="entryInputs"></div>');
 			footerdiv.append('Text: <input type="text" id="list_' + list_num + '_add_text" placeholder="Gatriex" />');
 			footerdiv.append('<br />Link: <input class="inputLink" type="text" id="list_' + list_num + '_add_link" placeholder="https://gatriex.com" />');
@@ -49,8 +49,8 @@ $(function () {
 
 			for (var i = 0; i < contentData[list_num].items.length; i++) {
 				var item = $('<li class="ui-state-default item" id="list_' + list_num + '_item_' + i + '"></li>');
-				item.append('<i class="fa fa-arrows-v"></i> Bookmark');
-				item.append('<button type="button" id="list_' + list_num + '_button_' + i + '" class="ui-button deleteButton"><i class="fa fa-remove"></i></button>');
+				item.append('<i class="fas fa-arrows-alt-v"></i> Bookmark');
+                item.append('<button type="button" id="list_' + list_num + '_button_' + i + '" class="ui-button ui-button-fa deleteButton"><i class="fas fa-fw fa-times"></i></button>');
 				var div = $('<div class="entryInputs"></div>');
 				div.append('Text: <input type="text" name="list_' + list_num + '_text_' + i + '" id="list_' + list_num + '_text_' + i + '" value="' + contentData[list_num].items[i].text + '" />');
 				div.append('<br />Link: <input class="inputLink" type="text" name="list_' + list_num + '_link_' + i + '" id="list_' + list_num + '_link_' + i + '" value="' + contentData[list_num].items[i].link + '" />');
@@ -103,8 +103,8 @@ $(function () {
 			var list_num = $(this).attr("id").replace(/button_/g, "");
 			
 			var item = $('<li class="ui-state-default item" id="list_' + list_num + '_item_' + item_count[list_num] + '"></li>');
-			item.append('<i class="fa fa-arrows-v"></i> Bookmark');
-			item.append('<button type="button" id="list_' + list_num + '_button_' + item_count[list_num] + '" class="ui-button deleteButton"><i class="fa fa-remove"></i></button>');
+			item.append('<i class="fas fa-arrows-alt-v"></i> Bookmark');
+            item.append('<button type="button" id="list_' + list_num + '_button_' + item_count[list_num] + '" class="ui-button ui-button-fa deleteButton"><i class="fas fa-fw fa-times"></i></button>');
 			var div = $('<div class="entryInputs"></div>');
 			div.append('Text: <input type="text" name="list_' + list_num + '_text_' + item_count[list_num] + '" id="list_' + list_num + '_text_' + item_count[list_num] + '" value="' + $('#list_' + list_num + '_add_text').val() + '" />');
 			div.append('<br />Link: <input class="inputLink" type="text" name="list_' + list_num + '_link_' + item_count[list_num] + '" id="list_' + list_num + '_link_' + item_count[list_num] + '" value="' + $('#list_' + list_num + '_add_link').val() + '" />');
@@ -125,16 +125,16 @@ $(function () {
 			var category = $('<li id="category_' + list_count + '" class="ui-state-default category"></li>');
 			
 			var header = $('<div>' +
-				'<i class="fa fa-arrows-v"></i>' +
+				'<i class="fas fa-arrows-alt-v"></i>' +
 				' Category: <input type="text" name="header_' + list_count + '" id="header_' + list_count + '" placeholder="Category" value="' + $('#addCategoryText').val() + '"/> ' +
-				'<button class="ui-button collapseButton" data-num="' + list_count + '"><i class="fa fa-compress"></i> <span>Collaspe</span></button>' +
-				'<button type="button" id="delete_button_' + list_count + '" class="ui-button deleteCategoryButton"><i class="fa fa-remove"></i></button>' +
+                '<button class="ui-button ui-button-fa collapseButton" data-num="' + list_count + '"><i class="fas fa-fw fa-compress-alt"></i> <span>Collaspe</span></button>' +
+                '<button type="button" id="delete_button_' + list_count + '" class="ui-button ui-button-fa deleteCategoryButton"><i class="fas fa-fw fa-times"></i></button>' +
 				'</div>');
 				
 			var addList = $('<ul class="addList" id="addList_' + list_count + '"></ul>');
 			var footer = $('<li class="ui-state-default item" id="list_' + list_count + '_add_item"></li>');
 			footer.append('Add Bookmark');
-			footer.append('<button type="button" id="button_' + list_count + '" class="ui-button addButton"><i class="fa fa-plus"></i></button>');
+            footer.append('<button type="button" id="button_' + list_count + '" class="ui-button ui-button-fa addButton"><i class="fas fa-fw fa-plus"></i></button>');
 			var footerdiv = $('<div class="entryInputs"></div>');
 			footerdiv.append('Text: <input type="text" id="list_' + list_count + '_add_text" placeholder="Gatriex" />');
 			footerdiv.append('<br />Link: <input class="inputLink" type="text" id="list_' + list_count + '_add_link" placeholder="https://gatriex.com" />');
@@ -161,20 +161,20 @@ $(function () {
 			var list_num = $(this).attr("data-num");
 			var i = $(this).find("i");
 			var span = $(this).find("span");
-			if (i.hasClass("fa-compress")) {
+			if (i.hasClass("fa-compress-alt")) {
 			    span.html("Expand");
 			} else {
 			    span.html("Collapse");
 			}
-			i.toggleClass("fa-compress");
-			i.toggleClass("fa-expand");
+			i.toggleClass("fa-compress-alt");
+			i.toggleClass("fa-expand-alt");
 			$("#list_" + list_num).toggle();
 			$("#addList_" + list_num).toggle();
 		});
 		
 		$("#collapseAll").click(function () {
 		    $.each($(".collapseButton"), function() {
-		        if ($(this).find("i").hasClass("fa-compress")) {
+		        if ($(this).find("i").hasClass("fa-compress-alt")) {
 		            $(this).click(); 
 		        }
 		    });
@@ -182,7 +182,7 @@ $(function () {
 		
 		$("#expandAll").click(function () {
 		    $.each($(".collapseButton"), function() {
-		        if ($(this).find("i").hasClass("fa-expand")) {
+		        if ($(this).find("i").hasClass("fa-expand-alt")) {
 		            $(this).click(); 
 		        }
 		    });
@@ -211,11 +211,11 @@ $(function () {
 				category.items.push(obj);
 			}
 			if (category.header === "") {
-			    $('#dialogMessage').html('<i class="fa fa-exclamation-triangle"></i> Error: Categories must have a name.');
+			    $('#dialogMessage').html('<i class="fas fa-exclamation-triangle"></i> Error: Categories must have a name.');
 			    return false;
 			}
 			if (category.items.length <= 0) {
-			    $('#dialogMessage').html('<i class="fa fa-exclamation-triangle"></i> Error: Category "' + category.header + '" contains no bookmarks.');
+			    $('#dialogMessage').html('<i class="fas fa-exclamation-triangle"></i> Error: Category "' + category.header + '" contains no bookmarks.');
 			    return false;
 			}
 			data.push(category);
@@ -227,9 +227,9 @@ $(function () {
         
         dataRequester.apiCall('/api/edit/SetLinks.php', "POST", postData, function (response) {
             if (response.valid) {
-                $('#dialogMessage').html('<i class="fa fa-check-circle"></i> Changes saved.');
+                $('#dialogMessage').html('<i class="fas fa-check-circle"></i> Changes saved.');
             } else {
-                $('#dialogMessage').html('<i class="fa fa-exclamation-triangle"></i> Error: ' + response.data.Error);
+                $('#dialogMessage').html('<i class="fas fa-exclamation-triangle"></i> Error: ' + response.data.Error);
             }
         });
 	}

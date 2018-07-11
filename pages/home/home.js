@@ -107,7 +107,7 @@ $(function () {
             if (response.valid) {
                 displaySummoner(response.data);
             } else {
-                $('#SummonerError').html('<i class="fa fa-exclamation-triangle"></i>');
+                $('#SummonerError').html('<i class="fas fa-exclamation-triangle"></i>');
                 $('#SummonerError').attr('data-message', response.data.Error);
             }
             
@@ -136,7 +136,7 @@ $(function () {
             if (response.valid) {
                 displayStatus(response.data.Response);
             } else {
-                $('#StatusError').html('<i class="fa fa-exclamation-triangle"></i>');
+                $('#StatusError').html('<i class="fas fa-exclamation-triangle"></i>');
                 $('#StatusError').attr('data-message', response.data.Error);
             }
             
@@ -153,7 +153,7 @@ $(function () {
         var services = data.services;
         
         for (var serviceIndex = 0; serviceIndex < services.length; serviceIndex += 1) {
-            var status = '<i class="fa fa-li ' + (services[serviceIndex].status === "online" ? "fa-check-circle" : "fa-question-circle") + '" data-status="' + services[serviceIndex].status + '"></i>';
+            var status = '<i class="fas fa-li ' + (services[serviceIndex].status === "online" ? "fa-check-circle" : "fa-question-circle") + '" data-status="' + services[serviceIndex].status + '"></i>';
             var service = $('<li>' + status + '<span class="service">' + services[serviceIndex].name + " - " + capitalize(services[serviceIndex].status) + '</span></li>');
             var incidentsList = $('<ul class="incidents fa-ul"></ul>');
             var incidents = services[serviceIndex].incidents;
@@ -179,7 +179,7 @@ $(function () {
                             fa = "fa-question-circle";
                             break;
                     }
-                    var severity = '<i class="fa fa-li ' + fa + '" data-severity="' + updates[0].severity + '"></i>';
+                    var severity = '<i class="fas fa-li ' + fa + '" data-severity="' + updates[0].severity + '"></i>';
                     var timestamp = formatTime(updates[0]);    
                     
                     var incident = $("<li>" + severity + " <span>" + addHTML(updates[0].content) + "</span>" + timestamp + "</li>");
@@ -187,7 +187,7 @@ $(function () {
                     
                     for (var updateIndex = 1; updateIndex < updates.length; updateIndex += 1) {
                         var sev = updates[updateIndex].severity === "info" ? "fa-info-circle" : "fa-question-circle";
-                        severity = '<i class="fa fa-li ' + sev + '" data-severity="' + updates[updateIndex].severity + '"></i>';
+                        severity = '<i class="fas fa-li ' + sev + '" data-severity="' + updates[updateIndex].severity + '"></i>';
                         timestamp = formatTime(updates[updateIndex]);
                         updatesList.append("<li>" + severity + " <span>" + addHTML(updates[updateIndex].content) + "</span>" + timestamp + "</li>");
                     }
@@ -221,9 +221,9 @@ $(function () {
         if (leagueIndex >= 0) {
             if (data.League[leagueIndex].miniSeries) {
                 mini = data.League[leagueIndex].miniSeries.progress;
-                mini = mini.replace(/W/g, "<i class='fa fa-check-circle'></i> ");
-                mini = mini.replace(/N/g, "<i class='fa fa-minus-circle'></i> ");
-                mini = mini.replace(/L/g, "<i class='fa fa-times-circle'></i> ");
+                mini = mini.replace(/W/g, "<i class='fas fa-check-circle'></i> ");
+                mini = mini.replace(/N/g, "<i class='fas fa-minus-circle'></i> ");
+                mini = mini.replace(/L/g, "<i class='fas fa-times-circle'></i> ");
                 mini = mini.trim();
             } else {
                 mini = data.League[leagueIndex].leaguePoints + " LP";
@@ -258,21 +258,21 @@ $(function () {
             if (response.valid) {
                 for (var i = 0; i < response.data.Links.length; i += 1) {
                     var data = response.data.Links[i];
-                    $('#navList').append('<dt data-catid="' + i + '" class="navButton"><i class="fa fa-caret-right fa-fw"></i> ' + data.header + '</dt>');
+                    $('#navList').append('<dt data-catid="' + i + '" class="navButton"><i class="fas fa-caret-right fa-fw"></i> ' + data.header + '</dt>');
                     for (var j = 0; j < data.items.length; j += 1) {
                         var item = data.items[j];
-                        var link = '<dd class="item item' + i + '" style="display:none;"><a href=' + item.link + ' target="_blank" ><i class="fa fa-bookmark-o"></i> ' + item.text + '</a></dd>';
+                        var link = '<dd class="item item' + i + '" style="display:none;"><a href=' + item.link + ' target="_blank" ><i class="far fa-bookmark"></i> ' + item.text + '</a></dd>';
                         $('#navList').append(link);
                     }
                 }
                 
                 $('.navButton').click(function () {
                     $('.item' + $(this).attr('data-catid')).toggle();
-                    $(this).find(".fa").toggleClass("fa-caret-right");
-                    $(this).find(".fa").toggleClass("fa-caret-down");
+                    $(this).find(".fas").toggleClass("fa-caret-right");
+                    $(this).find(".fas").toggleClass("fa-caret-down");
                 });
             } else {
-                $('#navList').html('<i class="fa fa-exclamation-triangle"></i> ' + response.data.Error);
+                $('#navList').html('<i class="fas fa-exclamation-triangle"></i> ' + response.data.Error);
             }
         });
     }
@@ -289,7 +289,7 @@ $(function () {
     }
     
     function formatTime(update) {
-        var timestamp = $("<div class='timestamp'><i class='fa fa-clock-o'></i> </div>");
+        var timestamp = $("<div class='timestamp'><i class='far fa-clock'></i> </div>");
 
         /*ignore jslint start*/
         var time = "";

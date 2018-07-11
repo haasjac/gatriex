@@ -40,7 +40,7 @@ $(function () {
             },
             showErrors: function(errorMap, errorList) {
                 for (var i = 0; i < errorList.length; i++) {
-                    errorList[i].message = "<i class='fa fa-exclamation-triangle'></i> " + errorList[i].message;
+                    errorList[i].message = "<i class='fas fa-exclamation-triangle'></i> " + errorList[i].message;
                 }
                 this.defaultShowErrors();
             }
@@ -60,11 +60,11 @@ $(function () {
                 };
                 dataRequester.apiCall('/api/account/resetpassword.php', "POST", data, function (response) {
                     if (response.valid) {
-                        $("#resetMessage").html("<i class='fa fa-check-circle'></i> Password Reset.");
+                        $("#resetMessage").html("<i class='fas fa-check-circle'></i> Password Reset.");
                         $("#resetPassword").val("");
                         $("#resetConfirmPassword").val("");
                     } else {
-                        $("#resetMessage").html("<i class='fa fa-exclamation-triangle'></i> " + response.data.Error);
+                        $("#resetMessage").html("<i class='fas fa-exclamation-triangle'></i> " + response.data.Error);
                     }
                 });
             }

@@ -75,7 +75,7 @@ $(function () {
             success: function (data) {
                 var result = JSON.parse(data);
                 if (!result.valid) {
-                    $("#loginDialogMessage").html("<i class='fa fa-exclamation-triangle'></i> Invalid Username/Password."); 
+                    $("#loginDialogMessage").html("<i class='fas fa-exclamation-triangle'></i> Invalid Username/Password."); 
                 } else {
                     location.reload(true);
                 }
