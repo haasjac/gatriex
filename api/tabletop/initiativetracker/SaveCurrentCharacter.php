@@ -19,25 +19,20 @@
 
 	$user = $result->data["Username"];
 	    
-    $CampaignGuid = $data["CampaignGuid"];
-	if (isset($data["CharacterInfo"])) {
-		$CharacterInfo = json_encode($data["CharacterInfo"]);
-	} else {
-		$CharacterInfo = NULL;
-	}
+	$CampaignGuid = $data["CampaignGuid"];
 
 	if (isset($data["CurrentCharacter"])) {
 		$CurrentCharacter = $data["CurrentCharacter"];
 	} else {
 		$CurrentCharacter = NULL;
 	}
-    
+	    
     try {
         $db->beginTransaction();
 
-		$sql = "UPDATE Tabletop_InitiativeTracker I JOIN Tabletop_Campaigns C ON I.CampaignGuid = C.Guid SET I.CharacterInfo = ?, I.CurrentCharacter = ? WHERE C.Username = ? AND I.CampaignGuid = ?";
+		$sql = "UPDATE Tabletop_InitiativeTracker I JOIN Tabletop_Campaigns C ON I.CampaignGuid = C.Guid SET I.CurrentCharacter = ? WHERE C.Username = ? AND I.CampaignGuid = ?";
         $stmt = $db->prepare($sql);
-        $stmt->execute(array($CharacterInfo, $CurrentCharacter, $user, $CampaignGuid));
+        $stmt->execute(array($CurrentCharacter, $user, $CampaignGuid));
         
         $db->commit();
         $response = new Response();
@@ -46,7 +41,7 @@
         return;
     } catch (PDOException $ex) {
         http_response_code(500);
-        $log->error("Database error in SaveCampaign.php", $ex->getMessage());
+        $log->error("Database error in SaveCurrentCharacter.php", $ex->getMessage());
         echo "Error handling request.";
         $db->rollBack();
     }

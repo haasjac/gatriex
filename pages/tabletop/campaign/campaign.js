@@ -148,6 +148,7 @@ $(function () {
             $("#removeCharacterDialogBox").dialog({
                 autoOpen: false,
                 modal: true,
+                width: 500,
                 buttons: {
                     Remove: function () {
                         var data = {};
@@ -303,7 +304,7 @@ $(function () {
 
             '<span class="characterInitiative">' +
                 '<span id="characterInitAdvantageValue_' + guid + '" class="hide">' + character.InitiativeAdvantage + '</span>' +
-                '<i id="initAdvantageIcon_' + guid + '" class="fas fa-fw fa-dice faction-' + character.FactionName + '"></i> ' +
+                '<i id="initAdvantageIcon_' + guid + '" class="fas fa-fw fa-chevron-double-up faction-' + character.FactionName + '"></i> ' +
                 '<span id="characterInitAdvantage_' + guid + '">' + displayInitAdvantage(character.InitiativeAdvantage) + '</span>' +
             '</span>' +
 
@@ -317,7 +318,7 @@ $(function () {
                 '</button>' +
 
                 '<button id="saveCharacterButton_' + guid + '" data-guid="' + guid + '" class="ui-button ui-button-fa hide saveCharacterButton">' + 
-                    '<span class="greenButton"><i class="far fa-fw fa-save"></i> Save</span>' + 
+                    '<span class="greenButton"><i class="fas fa-fw fa-save"></i> Save</span>' + 
                 '</button> ' +
 
                 '<button id="discardCharacterButton_' + guid + '" data-guid="' + guid + '" class="ui-button ui-button-fa hide discardCharacterButton">' + 
@@ -350,7 +351,7 @@ $(function () {
             '</div>' +
 
             '<div class="characterInitiative">' +
-                '<i id="editInitAdvantageIcon_' + guid + '" class="fas fa-fw fa-dice faction-' + character.FactionName + '"></i> ' +
+            '<i id="editInitAdvantageIcon_' + guid + '" class="fas fa-fw fa-chevron-double-up faction-' + character.FactionName + '"></i> ' +
                 '<span>Initiative Advantage: </span>' +
                 '<i class="far ' + (character.InitiativeAdvantage != 0 ? 'fa-check-square' : 'fa-square') + ' fakeCheck" data-realcheck="editCharacterInitAdvantage_' + guid + '" id="fakeeditCharacterInitAdvantage_' + guid + '"></i>' +
                 '<input type="checkbox" name="editCharacterInitAdvantage_' + guid + '" id="editCharacterInitAdvantage_' + guid + '" ' + (character.InitiativeAdvantage != 0 ? 'checked = "checked"' : '') + ' style = "display:none" />' +

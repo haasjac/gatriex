@@ -12,7 +12,8 @@
     }
         
     try {
-		$Campaign = new stdClass();
+		$CharacterInfo = array();
+		$CurrentCharacter = NULL;
 		$Characters = new stdClass();
 
 		$sql = "SELECT CharacterInfo, CurrentCharacter FROM Tabletop_InitiativeTracker WHERE CampaignGuid = ?";
@@ -29,10 +30,10 @@
 
 		$row = $stmt->fetch(PDO::FETCH_ASSOC);
 			
-		$Campaign->CharacterInfo = json_decode($row["CharacterInfo"]);
-		$Campaign->CurrentCharacter = $row["CurrentCharacter"];
+		$CharacterInfo = json_decode($row["CharacterInfo"]);
+		$CurrentCharacter = $row["CurrentCharacter"];
 
-		$sql = "SELECT Guid, Name, Faction, InitiativeBonus, InitiativeAdvantage FROM Tabletop_Characters WHERE CampaignGuid = ?";
+		$sql = "SELECT C.Guid, C.Name, F.Id As FactionId, F.Name As FactionName, F.Icon As FactionIcon, F.Precedence As FactionPrecedence, C.InitiativeBonus, C.InitiativeAdvantage FROM Tabletop_Characters C Join Tabletop_Factions F ON C.Faction = F.Id WHERE C.CampaignGuid = ?";
         $stmt = $db->prepare($sql);
         $stmt->execute(array($Guid));
 
@@ -40,10 +41,23 @@
 			$rowGuid = $row["Guid"];
 			$Characters->$rowGuid = $row;
         }
+
+		$sql = "SELECT Id, Name, Precedence FROM Tabletop_Factions";
+		$stmt = $db->prepare($sql);
+		$stmt->execute(array($Guid));
+
+		$Factions = new stdClass();
+
+		while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+			$factionId = $row["Id"];
+			$Factions->$factionId = $row;
+		}
 				        
         $response = new Response();
-		$response->data["Campaign"] = $Campaign;
+		$response->data["CharacterInfo"] = $CharacterInfo;
+		$response->data["CurrentCharacter"] = $CurrentCharacter;
 		$response->data["Characters"] = $Characters;
+		$response->data["Factions"] = $Factions;
         $response->valid = true;
         echo json_encode($response);
     } catch (PDOException $ex) {

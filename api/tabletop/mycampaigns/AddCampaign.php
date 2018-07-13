@@ -49,6 +49,9 @@
         $stmt = $db->prepare("INSERT INTO Tabletop_Campaigns (Guid, CampaignName, Username) VALUES (?,?,?)");
         $stmt->execute(array($Guid, $CampaignName, $User));
 
+		$stmt = $db->prepare("INSERT INTO Tabletop_InitiativeTracker (CampaignGuid) VALUES (?)");
+        $stmt->execute(array($Guid));
+
         $response = new Response();
         $response->valid = true;
         echo json_encode($response);

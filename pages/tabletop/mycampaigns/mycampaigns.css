@@ -10,10 +10,14 @@
     padding: 0 50px;
     font-size: 24px;
 }
-    #campaignList input, #addList input {
-        font-size: 20px;
-        font-family: 'kingsbridgeregular';
-    }
+
+.campaignDiv {
+    display: flex;
+}
+
+.campaignSpan {
+    flex: 1;
+}
 
 #addList {
     user-select: none;
@@ -27,10 +31,8 @@
 .campaign {
     padding: 10px;
     margin: 10px 0;
-}
-
-.deleteCampaignButton, .addCampaignButton, .editCampaignButton, .cancelEditButton, .saveEditButton {
-    float: right;
+    color: #1F3853;
+    background: #EEE;
 }
 
 .editCampaignButton, .saveEditButton {
@@ -51,4 +53,9 @@
 
 .redButton {
     color: #8b0000;
+}
+
+#removeCampaignDialogName {
+    color: #D0904C;
+    font-weight: bold;
 }

@@ -18,7 +18,7 @@
 						<li id="addCampaign" class="ui-state-default campaign">
                             <div>
                                 Add Campaign: <input type="text" name="addCampaignName" id="addCampaignName" placeholder="Campaign Name" />
-                                <button type="button" class="ui-button ui-button-fa addCampaignButton"><span class="greenButton"><i class="far fa-fw fa-plus-circle"></i> Add</span></button>
+                                <button type="button" class="ui-button ui-button-fa addCampaignButton"><span class="greenButton"><i class="fas fa-fw fa-plus-circle"></i> Add</span></button>
 		                    </div>
 	                    </li>
 					</ul>
@@ -34,4 +34,16 @@
 {% endblock %}
 
 {% block dialog %}
+    <div id="removeCampaignDialogBox" title="Confirm Remove Campaign">
+		<div id="removeCampaignDialogMessage">
+			You are about to remove:
+		</div>
+		<br />
+		<div id="removeCampaignDialogName">
+		</div>
+		<br />
+		<div>
+			Are you sure?
+		</div>
+	</div>
 {% endblock %}

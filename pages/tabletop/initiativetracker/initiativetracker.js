@@ -3,7 +3,7 @@
 $(function () {
     "use strict";
 
-	var listCount = 0, editMode = false, pendingChanges = false;
+    var Characters = {}, CharacterInfo = [], Factions = {}, selectedCharacter;
 
     function init() {
         setEventHandlers();
@@ -14,210 +14,392 @@ $(function () {
         if (TwigOptions.CampaignGuid) {
             dataRequester.apiCall('/api/tabletop/initiativetracker/GetCampaign.php', "GET", { "CampaignGuid": TwigOptions.CampaignGuid }, function (response) {
                 if (response.valid) {
-                    createInitList(response.data.Campaign.CharacterInfo, response.data.Campaign.CurrentCharacter);
+                    Characters = response.data.Characters;
+                    CharacterInfo = response.data.CharacterInfo || [];
+                    Factions = response.data.Factions;
+                    if (response.data.CurrentCharacter !== null) {
+                        selectedCharacter = Number(response.data.CurrentCharacter);
+                    }
+                    createFactionList();
+                    createCharacterList();
+                    createInitList();
+                } else {
+                    $('#dialogMessage').html('<i class="fas fa-exclamation-triangle"></i> Error: ' + response.data.Error);
+                }
+            });
+        } else {
+            dataRequester.apiCall('/api/tabletop/mycampaigns/GetCampaigns.php', "GET", null, function (response) {
+                if (response.valid) {
+                    createCampaignList(response.data.Campaigns);
                 } else {
                     $('#dialogMessage').html('<i class="fas fa-exclamation-triangle"></i> Error: ' + response.data.Error);
                 }
             });
         }
+    }
+
+    function createFactionList() {
+        $.each(Factions, function (id, faction) {
+            $("#addCharacterSelect").append('<optgroup id="optgroup_' + faction.Name + '" label="' + faction.Name + '" class="faction-' + faction.Name + '"></optgroup>');
+        });
+    }
+
+    function createInitList() {
+        if (!CharacterInfo) {
+            return;
+        }
+        
+        $.each(CharacterInfo, function (index, character) {
+            addCharacter(Characters[character.Guid], character.Initiative);
+        });
+
+        if (selectedCharacter >= 0 && selectedCharacter < CharacterInfo.length) {
+            $("#li_" + CharacterInfo[selectedCharacter].Guid).addClass("initSelected");
+        }
+    }
+
+    function createCharacterList() {
+        $.each(Characters, function (guid, character) {
+            $("#optgroup_" + character.FactionName).append('<option value="' + guid + '">' + character.Name + '</option>');
+        });        
+    }
+
+    function createCampaignList(Campaigns) {
+        if (!Campaigns) {
+            return;
+        }
+
+        $.each(Campaigns, function (index, Campaign) {
+            addCampaign(Campaign);
+        });
+    }
+
+	function setEventHandlers() {
+        $("#addCharacterButton").click(function () {
+            $("#addCharacterButton").toggle();
+            $("#addSaveCharacterButton").toggle();
+            $("#addDiscardCharacterButton").toggle();
+            $("#addCharacterSelect").toggle();
+        });
+
+        $("#addSaveCharacterButton").click(function () {
+            var guid = $("#addCharacterSelect").val();
+            if (!guid) {
+                return;
+            }
+
+            CharacterInfo.push({ "Guid": guid, "Initiative": "0" });
+            addCharacter(Characters[guid], 0);
+            saveCampaign();
+
+            $("#addCharacterButton").toggle();
+            $("#addSaveCharacterButton").toggle();
+            $("#addDiscardCharacterButton").toggle();
+            $("#addCharacterSelect").toggle();
+        });
+
+        $("#addDiscardCharacterButton").click(function () {
+            $("#addCharacterSelect option[value='']").prop("selected", true);
+
+            $("#addCharacterButton").toggle();
+            $("#addSaveCharacterButton").toggle();
+            $("#addDiscardCharacterButton").toggle();
+            $("#addCharacterSelect").toggle();
+        });
+        
+        $("#rollInitButton").click(function () {
+            rollInit();
+            sortList();
+            saveCampaign();
+        });
+
+        $("#nextInitButton").click(function () {
+            if (!CharacterInfo) {
+                return;
+            }
+
+            if (selectedCharacter === undefined) {
+                selectedCharacter = CharacterInfo.length - 1;
+            }
+
+            $("#li_" + CharacterInfo[selectedCharacter].Guid).removeClass("initSelected");
+            selectedCharacter += 1;
+            if (selectedCharacter >= CharacterInfo.length) {
+                selectedCharacter = 0;
+            }
+            $("#li_" + CharacterInfo[selectedCharacter].Guid).addClass("initSelected");
+            saveSelected();
+        });
+
+        $("#prevInitButton").click(function () {
+            if (!CharacterInfo) {
+                return;
+            }
+
+            if (selectedCharacter === undefined) {
+                selectedCharacter = 0;
+            }
+
+            $("#li_" + CharacterInfo[selectedCharacter].Guid).removeClass("initSelected");
+            selectedCharacter -= 1;
+            if (selectedCharacter < 0) {
+                selectedCharacter = CharacterInfo.length - 1;
+            }
+            $("#li_" + CharacterInfo[selectedCharacter].Guid).addClass("initSelected");
+            saveSelected();
+        });
+
+        $("#clearInitButton").click(function () {
+            if (!CharacterInfo) {
+                return;
+            }
+
+            clearInitSelected();
+            saveSelected();
+        });
+
+        $("#initList").on("click", ".editCharacterButton", function () {
+            var guid = $(this).attr("data-guid");
+
+            $("#editCharacterButton_" + guid).toggle();
+            $("#removeCharacterButton_" + guid).toggle();
+            $("#saveCharacterButton_" + guid).toggle();
+            $("#discardCharacterButton_" + guid).toggle();
+
+            $("#characterInit_" + guid).toggle();
+            $("#characterInitInput_" + guid).toggle();
+        });
+        
+        $("#initList").on("click", ".removeCharacterButton", function () {
+            var guid = $(this).attr("data-guid");
+            $.each(CharacterInfo, function (index, character) {
+                if (character.Guid === guid) {
+                    if (selectedCharacter !== undefined) {
+                        if (selectedCharacter === index) {
+                            clearInitSelected();
+                        } else if (selectedCharacter > index) {
+                            selectedCharacter -= 1;
+                        }                        
+                    }
+                    CharacterInfo.splice(index, 1);
+                    return false;
+                }
+            });
+
+            $("#li_" + guid).remove();
+            $("#addCharacterSelect option[value='" + guid + "']").prop("hidden", false);
+            saveCampaign();
+        });
+
+        $("#initList").on("click", ".saveCharacterButton", function () {
+            var guid = $(this).attr("data-guid");
+
+            $("#characterInit_" + guid).text($("#characterInitInput_" + guid).val());
+            $.each(CharacterInfo, function (index, character) {
+                if (character.Guid = guid) {
+                    character.Initiative = $("#characterInitInput_" + guid).val();
+                    return false;
+                }
+            });
+
+            $("#editCharacterButton_" + guid).toggle();
+            $("#removeCharacterButton_" + guid).toggle();
+            $("#saveCharacterButton_" + guid).toggle();
+            $("#discardCharacterButton_" + guid).toggle();
+
+            $("#characterInit_" + guid).toggle();
+            $("#characterInitInput_" + guid).toggle();
+
+            sortList();
+            saveCampaign();
+        });
+
+        $("#initList").on("click", ".discardCharacterButton", function () {
+            var guid = $(this).attr("data-guid");
+
+            $("#characterInitInput_" + guid).val($("#characterInit_" + guid).text());
+
+            $("#editCharacterButton_" + guid).toggle();
+            $("#removeCharacterButton_" + guid).toggle();
+            $("#saveCharacterButton_" + guid).toggle();
+            $("#discardCharacterButton_" + guid).toggle();
+
+            $("#characterInit_" + guid).toggle();
+            $("#characterInitInput_" + guid).toggle();
+        }); 
+
+        $("#initList").on("keydown", ".characterInit", function (e) {
+            if (e.which == 13) {
+                var guid = $(this).attr("data-guid");
+                $("#saveCharacterButton_" + guid).click();
+            }
+        });  
 	}
 
-    function createInitList(CharacterInfo, CurrentCharacter) {
+    function sortList() {
         if (!CharacterInfo) {
             return;
         }
 
-        listCount = Number(CharacterInfo.listCount) || 0;
-
-        $.each(CharacterInfo.players, function (index, player) {
-            addPlayer(player.id, player, CurrentCharacter === player.id);
-        });
-        
-        setSortable();
-	}
-
-    function setSortable() {
-        if (editMode) {
-            $("#initList").sortable({
-                placeholder: "ui-state-highlight",
-                start: function (e, ui) {
-                    ui.placeholder.height(ui.item.height());
-                },
-                update: function () {
-                    setPendingChanges();
-                },
-                disabled: false
-            });
-        }
-        else {
-            $("#initList").sortable({
-                placeholder: "ui-state-highlight",
-                start: function (e, ui) {
-                    ui.placeholder.height(ui.item.height());
-                },
-                disabled: true
-            });
-        }
-    }
-
-	function setEventHandlers() {
-        $("#form").submit(function (e) {
-            e.preventDefault();
-            return false;
-        });
-        
-        $(".addCategoryButton").click(function () {
-            listCount += 1;
-            addPlayer(listCount);
-            setSortable();
-            setPendingChanges();
-        });
-
-        $("#sortButton").click(function () {
-            sortList();
-            setSortable();
-            setPendingChanges();
-        });
-        
-		$("#initList").on("click", ".deleteCategoryButton", function () {
-			var item = $(this).attr("id").replace(/button/g, "li");
-            $('#' + item).remove();
-            setPendingChanges();
-		});
-		
-		$("#initList").on("click", "li", function () {
-            if (!editMode) {
-                $("#initList li").each(function () {
-                    $(this).removeClass("initSelected");
-                    $(this).find(".playerSelected").val(false);
-                });
-                $(this).addClass("initSelected");
-                $(this).find(".playerSelected").val(true);
-            }
-		});
-		
-		$("#editButton").click(function () {
-            editMode = !editMode;
-            setSortable();
-            $(".addCategoryButton").toggleClass("hide"); 
-            $(".deleteCategoryButton").toggleClass("hide");
-            $("#sortButton").toggleClass("hide");
-
-            if (!editMode && TwigOptions.CampaignOwner && pendingChanges) {
-                saveChanges();
-            }
-        });
-
-        if (TwigOptions.CampaignOwner) {
-            $("#editButton").removeClass("hide");
-        }
-		
-		$("#initList").on("click", ".profile", function () {
-            if (editMode) {
-                $(this).toggleClass("red blue");
-                if ($(this).hasClass("blue")) {
-                    $(this).find(".playerTeam").val("blue");
-                }
-                else {
-                    $(this).find(".playerTeam").val("red");
-                }
-            }
-        });
-
-        $("#initList").on("change", "input", function () {
-            setPendingChanges();
-        });
-
-        
-	}
-
-    function sortList() {
         var initList = $('#initList');
 
         var listitems = $('li', initList);
-
+        
         listitems.sort(function (a, b) {
-            var initA = Number($(a).find(".playerInitiative").val());
-            var initB = Number($(b).find(".playerInitiative").val());
+            var A = {}, B = {};
 
-            if (initA === initB) {
-                var teamA = $(a).find(".playerTeam").hasClass("blue");
-                var teamB = $(b).find(".playerTeam").hasClass("blue");
-                if (teamA === teamB) {
-                    return 0;
-                }
-                return teamA ? -1 : 1;
+            A.Guid = $(a).attr("data-guid");
+            A.Init = Number($("#characterInitInput_" + A.Guid).val());
+            A.Faction = Number(Characters[A.Guid].FactionPrecedence);
+            A.Bonus = Number(Characters[A.Guid].InitiativeBonus);
+
+            B.Guid = $(b).attr("data-guid");
+            B.Init = Number($("#characterInitInput_" + B.Guid).val());
+            B.Faction = Number(Characters[B.Guid].FactionPrecedence);
+            B.Bonus = Number(Characters[B.Guid].InitiativeBonus);
+
+            if (A.Init !== B.Init) {
+                return A.Init < B.Init ? 1 : -1;
+            }
+            else if (A.Faction !== B.Faction) {
+                return A.Faction < B.Faction ? 1 : -1;
             }
             else {
-                return initA < initB ? 1 : -1;
+                return A.Bonus < B.Bonus ? 1 : -1;
             }
         });
+
+        var charInfo = [];
+
+        $.each(listitems, function (index, element) {
+            var character = {};
+            character.Guid = $(element).attr("data-guid");
+            character.Initiative = $("#characterInitInput_" + character.Guid).val();
+            
+            charInfo.push(character);
+
+            if ($(element).hasClass("initSelected")) {
+                selectedCharacter = charInfo.length - 1;
+            }
+        });
+
+        CharacterInfo = charInfo;
 
         initList.append(listitems);
     }
 
-    function addPlayer(id, data, selected) {        
-        data = data || {};
-        var playerTeamValue = data.team || "blue";
-        var playerNameValue = data.name || "";
-        var playerInitiativeValue = Number(data.initiative || 0);
-        
-        var playerId = '<input class="playerId" name="playerId_' + id + '" type="hidden" value="' + id + '" />';
-        var playerSelected = '<input class="playerSelected" name="playerSelected_' + id + '" type="hidden" value="' + selected + '" />';
-        var playerTeam = '<input class="playerTeam" name="playerTeam_' + id + '" type="hidden" value="' + playerTeamValue + '" />';
-        var playerName = '<input class="playerName" name="playerName_' + id + '" style="width:50%" type="text" value="' + playerNameValue + '" placeholder="Player Name" />';
-        var playerInitiative = '<input class="playerInitiative" name="playerInitiative_' + id + '" style="width:10%" type="number" value="' + playerInitiativeValue + '" />';
-
-        var item = $('<li id="li_' + id + '" class="ui-state-default' + (selected ? ' initSelected' : '') + '"></li>');
-        var div = $('<div class="person"></div>');
-        var img = $('<i class="fas fa-user-tie profile ' + playerTeamValue + '">' + playerTeam + '</i>');
-        var name = $('<div class="playerDiv">' + playerName + ' ' + playerInitiative + '</div>');
-        var removeButton = $(' <button id="button_' + id + '" class="ui-button deleteCategoryButton' + (editMode ? '' : ' hide') + '"><i class="fas fa-trash-alt"></i></button>');
-        div.append(playerId).append(playerSelected).append(img).append(name).append(removeButton);
-        $('#initList').append(item.append(div));
-    }
-
-    function setPendingChanges() {
-        if (TwigOptions.CampaignOwner) {
-            $('#dialogMessage').html('<i class="far fa-spin fa-circle"></i>');
-            pendingChanges = true;
+    function rollInit() {
+        if (!CharacterInfo) {
+            return;
         }
-    }
-
-    function saveChanges() {
-        $('#dialogMessage').html('<i class="far fa-spin fa-circle-notch"></i>');
-
-        var CharacterInfo = {};
-        var CurrentCharacter;
-
-        CharacterInfo.listCount = listCount;
-
-        CharacterInfo.players = [];
 
         var initList = $('#initList');
 
         var listitems = $('li', initList);
 
-        $.each(listitems, function (index, element) {
-            var player = {};
-            player.id = $(element).find(".playerId").val();
-            player.team = $(element).find(".playerTeam").val();
-            player.name = $(element).find(".playerName").val();
-            player.initiative = $(element).find(".playerInitiative").val();
+        $.each(CharacterInfo, function (index, character) {
+            var roll = rollDice(20);
+            var advantage = !!Number(Characters[character.Guid].InitiativeAdvantage);
+            var bonus = Number(Characters[character.Guid].InitiativeBonus);
+            
+            if (advantage) {
+                roll = Math.max(roll, rollDice(20));
+            }
 
-            CharacterInfo.players.push(player);
+            roll = roll + bonus;
 
+            character.Initiative = roll;
+            $("#characterInit_" + character.Guid).text(roll);
+            $("#characterInitInput_" + character.Guid).val(roll);
+        });
 
-            if ($(element).find(".playerSelected").val()) {
-                CurrentCharacter = player.id;
+        clearInitSelected();
+    }
+
+    function clearInitSelected() {
+        $(".initSelected").removeClass("initSelected");
+        selectedCharacter = undefined;
+    }
+
+    function rollDice(sides) {
+        var min = 1;
+        var max = sides;
+
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    function addCharacter(character, initiative) {
+        $("#addCharacterSelect option[value='" + character.Guid + "']").prop("hidden", true);
+        $("#addCharacterSelect option[value='']").prop("selected", true);
+
+        var item = $('<li id="li_' + character.Guid + '" class="ui-state-default" data-guid="' + character.Guid + '"></li>');
+        var div = $('<div class="characterDiv">' +
+            '<span class="characterSpan">' +
+            '<i class="fas ' + character.FactionIcon + ' faction-' + character.FactionName + '"></i> ' +
+            '<span class="characterName">' + character.Name + ' </span>' +
+            '</span>' +
+
+            '<span class="characterInitSpan">' +
+            '<i class="fas fa-dice faction-' + character.FactionName + '"></i> ' +
+            '<span id="characterInit_' + character.Guid + '">' + initiative + '</span>' +
+            '<input id="characterInitInput_' + character.Guid + '" type="number" class="characterInit hide" value="' + initiative + '" data-guid="' + character.Guid + '" />' +
+            '</span>' +
+
+            '<span class="characterButtonSpan">' +
+            '<button id="editCharacterButton_' + character.Guid + '" class="ui-button editCharacterButton" data-guid="' + character.Guid + '">' +
+                '<i class="fas fa-pencil-alt"></i>' +
+            '</button>' +
+            ' <button id="removeCharacterButton_' + character.Guid + '" class="ui-button removeCharacterButton" data-guid="' + character.Guid + '">' +
+                '<i class="fas fa-trash-alt redButton"></i>' +
+            '</button>' +
+            '<button id="saveCharacterButton_' + character.Guid + '" class="ui-button saveCharacterButton hide" data-guid="' + character.Guid + '">' +
+                '<i class="fas fa-save greenButton"></i>' +
+            '</button>' +
+            ' <button id="discardCharacterButton_' + character.Guid + '" class="ui-button discardCharacterButton hide" data-guid="' + character.Guid + '">' +
+                '<i class="fas fa-undo-alt redButton"></i>' +
+            '</button>' +
+            '</span>' +
+
+            '</div>');
+        $('#initList').append(item.append(div));
+    }
+
+    function addCampaign(Campaign) {
+        var item = $('<li id="li_' + Campaign.Guid + '" class="ui-state-default"></li>');
+        var div = $('<a href="?id=' + Campaign.Guid + '">' +
+            '<div class="campaignDiv">' +            
+            '<span class="campaignSpan">' +
+            '<i class="fas fa-book"></i>' +
+            '<span class="campaignName"> ' + Campaign.CampaignName + '</span>' +
+            '</span>' +
+            '</div>' +
+            '</a>');
+        $('#campaignList').append(item.append(div));
+    }
+
+    function saveSelected() {
+        var data = {};
+
+        data.CampaignGuid = TwigOptions.CampaignGuid;
+        data.CurrentCharacter = selectedCharacter;
+
+        var postData = {
+            "data": data
+        };
+
+        dataRequester.apiCall('/api/tabletop/initiativetracker/SaveCurrentCharacter.php', "POST", postData, function (response) {
+            if (!response.valid) {
+                $('#dialogMessage').html('<i class="fas fa-exclamation-triangle"></i> Error: ' + response.data.Error);
             }
         });
-        
+    }
+
+    function saveCampaign() {        
         var data = {};
 
         data.CampaignGuid = TwigOptions.CampaignGuid;
         data.CharacterInfo = CharacterInfo;
-        data.CurrentCharacter = CurrentCharacter;
+        data.CurrentCharacter = selectedCharacter;
 
         var postData = {
             "data": data
@@ -225,9 +407,8 @@ $(function () {
 
         dataRequester.apiCall('/api/tabletop/initiativetracker/SaveCampaign.php', "POST", postData, function (response) {
             if (response.valid) {
-                $('#dialogMessage').html('<i class="far fa-save"></i>');
-                pendingChanges = false;
-                setTimeout(function () { $('#dialogMessage').html(''); }, 1000);
+                //$('#dialogMessage').html('<i class="fas fa-save"></i>');
+                //setTimeout(function () { $('#dialogMessage').html(''); }, 1000);
             } else {
                 $('#dialogMessage').html('<i class="fas fa-exclamation-triangle"></i> Error: ' + response.data.Error);
             }

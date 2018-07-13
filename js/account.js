@@ -66,7 +66,7 @@ $(function () {
         var data = { 
             "username": $("#loginUsername").val(), 
             "password": $("#loginPassword").val(),
-            "remember": $("#loginRemember").val() 
+            "remember": $("#loginRemember:checked").val() 
         };
         $.ajax({
             url: "/api/account/login.php",

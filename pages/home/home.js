@@ -247,6 +247,7 @@ $(function () {
     
     function clearSummonerData() {
         $("#MiniSeries").html("");
+        $("#SummonerLevel").html("");
         $("#SummonerName").html("");
         $("#League").html("");
         $("#SummonerIcon").attr("src", "/images/Logo.png");

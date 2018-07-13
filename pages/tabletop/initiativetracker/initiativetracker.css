@@ -4,11 +4,22 @@
     padding: 20px 0;
 }
 
-#manageCampaignsButton {
-    float: right;
+.mainHeaderDiv {
+    display: flex;
 }
 
-#initList, #addList {
+.mainHeader {
+    flex: 1;
+}
+
+#buttonDiv {
+    font-size: 32px;
+    display: flex;
+    justify-content: space-between;
+    margin: 0 50px 20px 50px;
+}
+
+#initList, #addList, #campaignList {
     list-style-type: none;
     margin: 0;
     padding: 0 50px;
@@ -22,38 +33,92 @@
         background: none;
     }
 
-#initList {
+    .characterInit {
+        width: 2em;
+    }
+
+#initList, #campaignList {
     user-select: none;
 }
 
-#initList li {
-    margin: 10px;
+#initList li, #campaignList li {
+    margin: 10px 0;
 }
 
-.person {
-    font-size: 36px;
-    display: flex;
-    align-items: center;
-    padding: 10px;
+#campaignList li .campaignDiv {
+    color: #1F3853;
 }
 
-.playerDiv {
-    padding: 0 15px;
-}
-
-.initSelected {
-    background: #1F3853;
-}
-
-
-#initList .initSelected input {
+#campaignList li:hover .campaignDiv {
     color: #D0904C;
 }
 
-.blue {
+.campaignDiv, .characterDiv {
+    font-size: 36px;
+    padding: 10px;
+    background: #EEE;
+    color: #1F3853;
+    display: flex;
+}
+
+.campaignDiv {
+    font-size: 24px;
+}
+
+.characterSpan {
+    flex: 2;
+}
+
+.characterInitSpan {
+    flex: 1;
+}
+
+.characterButtonSpan {
+    font-size: 28px;
+}
+
+#addCharacterButtons {
+    text-align: right;
+}
+
+#addCharacterSelect {
+    color: #1F3853;
+    background: #EEE;
+}
+
+#addCharacterSelect option {
+    color: #1F3853;
+}
+
+.initSelected .characterDiv {
+    border: 5px solid #D0904C;
+    padding: 5px;
+}
+
+.greenButton {
+    color: #008000;
+}
+
+.redButton {
+    color: #8b0000;
+}
+
+.blueButton {
+    color: #1F3853;
+}
+
+.faction-Add {
+    color: #008000;
+}
+
+.faction-Player {
     color: #3383bb;
 }
 
-.red {
+.faction-Enemy {
     color: #8b0000;
+}
+
+.faction-NPC {
+    color: #D0904C;
 }

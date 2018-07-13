@@ -208,8 +208,7 @@ body {
 }
 
 .mainHeaderDiv {
-    margin-bottom: 15px;
-    line-height: 24px;
+    margin-bottom: 5px;
 }
 
 .content {
@@ -259,7 +258,7 @@ a {
     }
     
 input, select {
-    font-size: 22px;
+    font-size: 0.8em;
     font-family: 'kingsbridgeregular';
 }
 
@@ -363,7 +362,8 @@ input, select {
 
 .ui-button {
     font-family: 'kingsbridgeregular';
-    font-size: 16px;
+    font-size: 0.75em;
+    padding: 0.2em 0.5em;
 }
 
 .ui-dialog .ui-dialog-buttonpane button {
@@ -381,10 +381,4 @@ input, select {
 
 .ui-widget-content a:hover {
     color: #D0904C;
-}
-
-.ui-button-fa {
-    font-size: 0.75em;
-    padding: 0.2em 0.5em;
-    font-family: 'kingsbridgeregular';
 }
