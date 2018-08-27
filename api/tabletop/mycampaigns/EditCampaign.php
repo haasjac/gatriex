@@ -17,35 +17,35 @@
         return;
     }
 
-	$User = $result->data["Username"];
+    $User = $result->data["Username"];
     
     $CampaignName = $data["CampaignName"];
 
-	$Guid = $data["Guid"];
+    $Guid = $data["Guid"];
 
-	try {
-		$sql = "SELECT Guid FROM Tabletop_Campaigns WHERE Username = ? AND CampaignName=?";
+    try {
+        $sql = "SELECT Guid FROM Tabletop_Campaigns WHERE Username = ? AND CampaignName=?";
         $stmt = $db->prepare($sql);
         $stmt->execute(array($User, $CampaignName));
 
         $row = $stmt->fetchColumn();
 
-		if ($row && $row != $Guid) {
-			$response = new Response();
-			$response->data["Error"] = "Campaign \"" . $CampaignName . "\" already exists.";
-			$response->valid = false;
-			echo json_encode($response);
-			return;
-		}
+        if ($row && $row != $Guid) {
+            $response = new Response();
+            $response->data["Error"] = "Campaign \"" . $CampaignName . "\" already exists.";
+            $response->valid = false;
+            echo json_encode($response);
+            return;
+        }
         
     } catch (PDOException $ex) {
         http_response_code(500);
         $log->error("Database error in EditCampaign.php", $ex->getMessage());
         echo "Error handling request.";
-		return;
+        return;
     }
     
-    try {				
+    try {                
         $stmt = $db->prepare("UPDATE Tabletop_Campaigns SET CampaignName=? WHERE Guid=? AND Username=?");
         $stmt->execute(array($CampaignName, $Guid, $User));
 

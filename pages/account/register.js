@@ -11,7 +11,7 @@ $(function () {
     var validator;
     
     setValidator();
-	setEventHandlers();
+    setEventHandlers();
     
     function setValidator() {
         $.validator.messages.required = "Required.";
@@ -86,14 +86,14 @@ $(function () {
         });
         
         $("#createDialogBox").dialog({
-        	autoOpen: false,
-        	modal: true,
-        	buttons: {
-        		Close: function () {
-        			$(this).dialog("close");
-        			$("#createDialogMessage").html("");
-        		}
-        	}
+            autoOpen: false,
+            modal: true,
+            buttons: {
+                Close: function () {
+                    $(this).dialog("close");
+                    $("#createDialogMessage").html("");
+                }
+            }
         });
     }
     

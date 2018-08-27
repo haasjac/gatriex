@@ -5,12 +5,12 @@
 #content {
     display: flex;
     flex-direction: column;
-	flex: 2;
+    flex: 2;
     overflow: auto;
 }
 
 .content {
-	padding-left: 25px;
+    padding-left: 25px;
 }
 
 .iconRight {
@@ -79,14 +79,14 @@
 }
 
 #SummonerIcon {
-	width: 150px;
-	height: 150px;	
+    width: 150px;
+    height: 150px;    
 }
 
 #services {
     list-style-type:none;
-	margin: 0;
-	padding: 0;
+    margin: 0;
+    padding: 0;
 }
 
     #services li:not(:first-child) {

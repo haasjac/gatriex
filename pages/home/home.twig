@@ -21,47 +21,47 @@
         </div>
     </div>
 
-	<div id="content" >
-	    <div id="SummonerStats" class="section">
-    	    <div class="mainHeaderDiv">
+    <div id="content" >
+        <div id="SummonerStats" class="section">
+            <div class="mainHeaderDiv">
                 <span class="mainHeader">Summoner Stats</span>
                 <i id="refreshSummoner" class="fas fa-sync-alt iconRight"></i>
                 <span id="SummonerError" class="errorIcon iconRight"></span>
             </div>
-    		<div class="content">
-    		    <div>
-    		        <div>
+            <div class="content">
+                <div>
+                    <div>
                         <form id="searchForm">
                             <input type="text" name="searchSummonerName" placeholder="Summoner Name" id="searchSummonerName" />
                             <button id="searchButton" class="ui-button ui-button-fa"><i class="fas fa-search"></i> Search</button>
                         </form>
-		            </div>
-    		        <div id="summonerFlexContainer">
-    		            <div class="summonerFlex">
-            				<img id="SummonerIcon" src="/images/Logo.png">
-            			</div>
-            			<div class="summonerFlex" id="summonerFlexDiv">
-            			    <div class="summonerInnerFlex">
-            			        <div id="SummonerLevel"></div>
-            			    </div>
-            			    <div class="summonerInnerFlex">
-                				<div id="SummonerName"></div>
-                				<div id="League"></div>
-                				<div id="MiniSeries"></div>
-            			    </div>
-            			</div>
+                    </div>
+                    <div id="summonerFlexContainer">
+                        <div class="summonerFlex">
+                            <img id="SummonerIcon" src="/images/Logo.png">
+                        </div>
+                        <div class="summonerFlex" id="summonerFlexDiv">
+                            <div class="summonerInnerFlex">
+                                <div id="SummonerLevel"></div>
+                            </div>
+                            <div class="summonerInnerFlex">
+                                <div id="SummonerName"></div>
+                                <div id="League"></div>
+                                <div id="MiniSeries"></div>
+                            </div>
+                        </div>
                         <div class="summonerFlex">
                             <img id="champ0" class="champ">
                             <img id="champ1" class="champ">
                             <img id="champ2" class="champ">
                         </div>
-            			<div style="clear: both;"></div>
-    		        </div>
-    			</div>
-    		</div>
-		</div>                        
-		<div id="ServerStatus" class="section">
-    		<div class="mainHeaderDiv">
+                        <div style="clear: both;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>                        
+        <div id="ServerStatus" class="section">
+            <div class="mainHeaderDiv">
                 <span class="mainHeader"> 
                     <div id="nameRegion">North America</div>
                     <select id="selectRegion" style="display:none">
@@ -75,17 +75,17 @@
                 <i id="refreshStatus" class="fas fa-sync-alt iconRight"></i>
                 <span id="StatusError" class="errorIcon iconRight"></span>
             </div>
-    		<div class="content">
-    		    <div id="Incidents"></div>
-    		</div>
-		</div>
-	</div>
-	
-	<div style="clear: both;"></div>
+            <div class="content">
+                <div id="Incidents"></div>
+            </div>
+        </div>
+    </div>
+    
+    <div style="clear: both;"></div>
 {% endblock %}
 
 {% block dialog %}
     <div id="dialogBox" title="Error Fetching Data">
-		<div id="dialogMessage"></div>
-	</div>
+        <div id="dialogMessage"></div>
+    </div>
 {% endblock %}

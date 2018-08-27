@@ -1,7 +1,7 @@
 <?php
     require_once($_SERVER['DOCUMENT_ROOT'] . '/library/libraries.php');
        
-	$data = $_REQUEST["data"];
+    $data = $_REQUEST["data"];
     
     if (!isset($data)) {
         $response = new Response();
@@ -17,18 +17,18 @@
         return;
     }
 
-	$User = $result->data["Username"];
+    $User = $result->data["Username"];
     
-	try {	
-		$stmt = $db->prepare("DELETE FROM Tabletop_Characters WHERE Guid = ? AND Username = ?");
+    try {    
+        $stmt = $db->prepare("DELETE FROM Tabletop_Characters WHERE Guid = ? AND Username = ?");
         $stmt->execute(array($data["Guid"], $User));
 
         $response = new Response();
         $response->valid = true;
         echo json_encode($response);
-	} catch (PDOException $ex) {
+    } catch (PDOException $ex) {
         http_response_code(500);
         $log->error("Database error in campaign/RemoveCharacter.php", $ex->getMessage());
         echo "Error handling request.";
-	}
+    }
 ?>

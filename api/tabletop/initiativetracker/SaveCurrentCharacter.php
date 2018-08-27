@@ -17,20 +17,20 @@
         return;
     }
 
-	$user = $result->data["Username"];
-	    
-	$CampaignGuid = $data["CampaignGuid"];
+    $user = $result->data["Username"];
+        
+    $CampaignGuid = $data["CampaignGuid"];
 
-	if (isset($data["CurrentCharacter"])) {
-		$CurrentCharacter = $data["CurrentCharacter"];
-	} else {
-		$CurrentCharacter = NULL;
-	}
-	    
+    if (isset($data["CurrentCharacter"])) {
+        $CurrentCharacter = $data["CurrentCharacter"];
+    } else {
+        $CurrentCharacter = NULL;
+    }
+        
     try {
         $db->beginTransaction();
 
-		$sql = "UPDATE Tabletop_InitiativeTracker I JOIN Tabletop_Campaigns C ON I.CampaignGuid = C.Guid SET I.CurrentCharacter = ? WHERE C.Username = ? AND I.CampaignGuid = ?";
+        $sql = "UPDATE Tabletop_InitiativeTracker I JOIN Tabletop_Campaigns C ON I.CampaignGuid = C.Guid SET I.CurrentCharacter = ? WHERE C.Username = ? AND I.CampaignGuid = ?";
         $stmt = $db->prepare($sql);
         $stmt->execute(array($CurrentCharacter, $user, $CampaignGuid));
         

@@ -16,7 +16,7 @@
     <script src="/touch-punch/jquery.ui.touch-punch.min.js"></script>
     <script src="/jquery-validation-1.17.0/dist/jquery.validate.min.js"></script>
     <script src="/jquery-validation-1.17.0/dist/additional-methods.min.js"></script>
-	<script src="/js/twig.js"></script>
+    <script src="/js/twig.js"></script>
     <script src="/js/dataRequester.js"></script>
     <script src="/js/dialog.js"></script>
     <script src="/js/checkbox.js"></script>
@@ -26,7 +26,7 @@
 </head>
 
 <body>
-	<input id="twig_options" type="hidden" value="{{ _context|json_encode() }}">
+    <input id="twig_options" type="hidden" value="{{ _context|json_encode() }}">
     <div id="wrapper">
         <div id="inner-wrapper">
             <div id="header">
@@ -36,26 +36,26 @@
                 <div id="headerLeftDiv">
 
                     <div id="headerLeftText">
-						<div>
-							<a class="headerLink" href="/"><i class="fas fa-fw fa-home"></i><span class="headerLinkText">Home</span></a><a class="headerLink" href="/tabletop/mycampaigns"><i class="fas fa-fw fa-book"></i><span class="headerLinkText">My Campaigns</span></a><a class="headerLink" href="/tabletop/initiativetracker"><i class="fas fa-fw fa-sort"></i><span class="headerLinkText">Initiative Tracker</span></a>
-						</div>
+                        <div>
+                            <a class="headerLink" href="/"><i class="fas fa-fw fa-home"></i><span class="headerLinkText">Home</span></a><a class="headerLink" href="/tabletop/mycampaigns"><i class="fas fa-fw fa-book"></i><span class="headerLinkText">My Campaigns</span></a><a class="headerLink" href="/tabletop/initiativetracker"><i class="fas fa-fw fa-sort"></i><span class="headerLinkText">Initiative Tracker</span></a>
+                        </div>
                     </div>
                 </div>
                 <div id="headerRightDiv">
                     <span id="headerRightText">
-						<div class="headerProfile">
-							{% if Username is empty %}
-								<div id="headerLogin"><i class="fas fa-fw fa-sign-in-alt"></i><span id="headerLoginText">Login</span></div>
-							{% else %}
-								<div><i class="fas fa-fw fa-user-circle"></i> <span id="headerUsername">{{ Username }}</span></div>
-								<div class="headerProfileNav">
-									<ul>
-										<a href="/account/profile.php"><li id="headerProfile"><i class="fas fa-fw fa-cog"></i> Settings</li></a>
-										<li id="headerLogout"><i class="fas fa-fw fa-sign-out-alt"></i> Logout</li>
-									</ul>
-								</div>
-							{% endif %}
-						</div>
+                        <div class="headerProfile">
+                            {% if Username is empty %}
+                                <div id="headerLogin"><i class="fas fa-fw fa-sign-in-alt"></i><span id="headerLoginText">Login</span></div>
+                            {% else %}
+                                <div><i class="fas fa-fw fa-user-circle"></i> <span id="headerUsername">{{ Username }}</span></div>
+                                <div class="headerProfileNav">
+                                    <ul>
+                                        <a href="/account/profile.php"><li id="headerProfile"><i class="fas fa-fw fa-cog"></i> Settings</li></a>
+                                        <li id="headerLogout"><i class="fas fa-fw fa-sign-out-alt"></i> Logout</li>
+                                    </ul>
+                                </div>
+                            {% endif %}
+                        </div>
                     </span>
                 </div>
             </div>
@@ -98,16 +98,16 @@
                 </div>
             </div>
         </div>
-	</div>
-	<div id="logoutDialogBox" title="Logout">
-		<div id="logoutDialogMessage">
-		    Are you sure you want to logout?
-		</div>
-	</div>
+    </div>
+    <div id="logoutDialogBox" title="Logout">
+        <div id="logoutDialogMessage">
+            Are you sure you want to logout?
+        </div>
+    </div>
     <div id="dataRequesterDialogBox" title="Error">
         <div id="dataRequesterDialogError"></div>
-		<div id="dataRequesterDialogMessage"></div>
-	</div>
-	{% block dialog %}{% endblock %}
+        <div id="dataRequesterDialogMessage"></div>
+    </div>
+    {% block dialog %}{% endblock %}
 </body>
 </html>

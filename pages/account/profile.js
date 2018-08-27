@@ -4,7 +4,7 @@
 $(function () {
     "use strict";
 
-	var validator;
+    var validator;
 
     function init() {
         setValidator();

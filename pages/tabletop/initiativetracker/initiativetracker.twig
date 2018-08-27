@@ -9,44 +9,44 @@
 {% block content %}
     <div id="edit" class="section">
         <div class="mainHeaderDiv">
-			{% if CampaignName is empty %}
+            {% if CampaignName is empty %}
                 <span class="mainHeader"><i class="fas fa-fw fa-sort"></i>Initiative Tracker - Select a Campaign</span>
             {% else %}
                 <span class="mainHeader"><i class="fas fa-fw fa-sort"></i>Initiative Tracker - {{ CampaignName }}</span>
             {% endif %}
         </div>
         <div class="content">
-			{% if CampaignName is not empty %}
-				<div id="buttonDiv">
-					<span id="initButtons">
-						<button id="rollInitButton" class="ui-button ui-button-fa" type="button"><span class="blueButton"><i class="fas fa-fw fa-dice"></i> Roll</span></button>
-						<button id="prevInitButton" class="ui-button ui-button-fa"><span class=""><i class="fas fa-fw fa-arrow-alt-left"></i></span></button>
-						<button id="clearInitButton" class="ui-button ui-button-fa"><span class=""><i class="fas fa-fw fa-eraser"></i></span></button>
-						<button id="nextInitButton" class="ui-button ui-button-fa"><span class=""><i class="fas fa-fw fa-arrow-alt-right"></i></span></button>
-					</span>
-					<span id="addCharacterButtons" class="buttonSpan">
-						<select id="addCharacterSelect" class="hide">
-							<option value="" selected disabled hidden>Select a character</option>
-						</select>
-						<button id="addCharacterButton" class="ui-button"><span class="greenButton"><i class="fas fa-fw fa-plus-circle"></i></span></button>
-						<button id="addSaveCharacterButton" class="ui-button hide"><span class="greenButton"><i class="fas fa-fw fa-save"></i></span></button>
-						<button id="addDiscardCharacterButton" class="ui-button hide"><span class="redButton"><i class="fas fa-fw fa-undo-alt"></i></span></button>
-					</span>
-				</div>
-			{% else %}
-				<!--div id="selectCampaign" class="ui-state-default campaignDiv">
-					Select a Campaign
-				</div-->
-			{% endif %}
-			<div id="listDiv">
-				<ul id="initList"></ul> 
-				<ul id="campaignList"></ul> 
-			</div>
-	    </div>
-	    <div class="formButtons">
+            {% if CampaignName is not empty %}
+                <div id="buttonDiv">
+                    <span id="initButtons">
+                        <button id="rollInitButton" class="ui-button ui-button-fa" type="button"><span class="blueButton"><i class="fas fa-fw fa-dice"></i> Roll</span></button>
+                        <button id="prevInitButton" class="ui-button ui-button-fa"><span class=""><i class="fas fa-fw fa-arrow-alt-left"></i></span></button>
+                        <button id="clearInitButton" class="ui-button ui-button-fa"><span class=""><i class="fas fa-fw fa-eraser"></i></span></button>
+                        <button id="nextInitButton" class="ui-button ui-button-fa"><span class=""><i class="fas fa-fw fa-arrow-alt-right"></i></span></button>
+                    </span>
+                    <span id="addCharacterButtons" class="buttonSpan">
+                        <select id="addCharacterSelect" class="hide">
+                            <option value="" selected disabled hidden>Select a character</option>
+                        </select>
+                        <button id="addCharacterButton" class="ui-button"><span class="greenButton"><i class="fas fa-fw fa-plus-circle"></i></span></button>
+                        <button id="addSaveCharacterButton" class="ui-button hide"><span class="greenButton"><i class="fas fa-fw fa-save"></i></span></button>
+                        <button id="addDiscardCharacterButton" class="ui-button hide"><span class="redButton"><i class="fas fa-fw fa-undo-alt"></i></span></button>
+                    </span>
+                </div>
+            {% else %}
+                <!--div id="selectCampaign" class="ui-state-default campaignDiv">
+                    Select a Campaign
+                </div-->
+            {% endif %}
+            <div id="listDiv">
+                <ul id="initList"></ul> 
+                <ul id="campaignList"></ul> 
+            </div>
+        </div>
+        <div class="formButtons">
             <div id="dialogMessage"></div>
-	    </div>
-	</div>
+        </div>
+    </div>
 {% endblock %}
 
 {% block dialog %}

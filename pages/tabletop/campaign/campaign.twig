@@ -9,79 +9,79 @@
 {% block content %}
     <div id="edit" class="section">
         <div class="mainHeaderDiv">
-			{% if CampaignName is not empty %}
-				<span class="mainHeader"><i class="fas fa-fw fa-book"></i> Campaign - {{ CampaignName }}</span>
-			{% else %}
-				<span class="mainHeader"><i class="fas fa-fw fa-book"></i> Campaign not found.</span>
-			{% endif %}
+            {% if CampaignName is not empty %}
+                <span class="mainHeader"><i class="fas fa-fw fa-book"></i> Campaign - {{ CampaignName }}</span>
+            {% else %}
+                <span class="mainHeader"><i class="fas fa-fw fa-book"></i> Campaign not found.</span>
+            {% endif %}
         </div>
         <div class="content">
-	        <form id="form" style="margin-bottom:0;">
-	            <div id="listDiv">
-					<div id="addDiv" class="factionDiv">
-						<div id="addHeader" class="factionHeader">
-							<i class="fas fa-fw fa-user-plus faction-Add"></i> Add New Character
-							<span id="addCharacterButtons">
-								<button id="addCharacterButton" class="ui-button ui-button-fa">
-									<span class="greenButton"><i class="fas fa-fw fa-plus-circle"></i> Add</span>
-								</button>
-								<button id="saveAddCharacterButton" class="ui-button ui-button-fa saveCharacterButton hide">
-									<span class="greenButton"><i class="fas fa-fw fa-save"></i> Save</span>
-								</button>
-								<button id="discardAddCharacterButton" class="ui-button ui-button-fa discardCharacterButton hide">
-									<span class="redButton"><i class="fas fa-fw fa-undo-alt"></i> Discard</span>
-								</button>
-							</span>
-						</div>
-						<ul id="addList" class="characterList">							
-							<li id="editAddCharacter" class="ui-state-default editCharacter hide">
-								<div class="editCharacterInfo">
-									<div class="characterName">
-										<i id="editAddFactionIcon" class="fas fa-fw fa-users faction-Add"></i>
-										<span>Faction: </span>
-										<select name="editAddCharacterFaction" id="editAddCharacterFaction">
-										</select>
-									</div>
-									<div class="characterName">
-										<i id="editAddNameIcon" class="fas fa-fw fa-user-plus faction-Add"></i>
-										<span>Name: </span>
-										<input name="editAddCharacterName" id="editAddCharacterName" type="text" value="Barry Bluejeans" />
-									</div>
-									<div class="characterInitiative">
-										<i id="editAddInitBonusIcon" class="fas fa-fw fa-hourglass-half faction-Add"></i>
-										<span>Initiative Bonus: </span>
-										<input name="editAddCharacterInitBonus" id="editAddCharacterInitBonus" type="number" value="0" />
-									</div>
-									<div class="characterInitiative">
-										<i id="editAddInitAdvantageIcon" class="fas fa-fw fa-chevron-double-up faction-Add"></i>
-										<span>Initiative Advantage: </span>
-										<i class="far fa-square fakeCheck" data-realcheck="editAddCharacterInitAdvantage" id="fakeeditAddCharacterInitAdvantage"></i>
-										<input type="checkbox" name="editAddCharacterInitAdvantage" id="editAddCharacterInitAdvantage" style = "display:none" />
-									</div>
-								</div>
-							</li>
-						</ul>
-					</div>
-				</div>
-		    </form>
-	    </div>
-	    <div id="formButtons">
+            <form id="form" style="margin-bottom:0;">
+                <div id="listDiv">
+                    <div id="addDiv" class="factionDiv">
+                        <div id="addHeader" class="factionHeader">
+                            <i class="fas fa-fw fa-user-plus faction-Add"></i> Add New Character
+                            <span id="addCharacterButtons">
+                                <button id="addCharacterButton" class="ui-button ui-button-fa">
+                                    <span class="greenButton"><i class="fas fa-fw fa-plus-circle"></i> Add</span>
+                                </button>
+                                <button id="saveAddCharacterButton" class="ui-button ui-button-fa saveCharacterButton hide">
+                                    <span class="greenButton"><i class="fas fa-fw fa-save"></i> Save</span>
+                                </button>
+                                <button id="discardAddCharacterButton" class="ui-button ui-button-fa discardCharacterButton hide">
+                                    <span class="redButton"><i class="fas fa-fw fa-undo-alt"></i> Discard</span>
+                                </button>
+                            </span>
+                        </div>
+                        <ul id="addList" class="characterList">                            
+                            <li id="editAddCharacter" class="ui-state-default editCharacter hide">
+                                <div class="editCharacterInfo">
+                                    <div class="characterName">
+                                        <i id="editAddFactionIcon" class="fas fa-fw fa-users faction-Add"></i>
+                                        <span>Faction: </span>
+                                        <select name="editAddCharacterFaction" id="editAddCharacterFaction">
+                                        </select>
+                                    </div>
+                                    <div class="characterName">
+                                        <i id="editAddNameIcon" class="fas fa-fw fa-user-plus faction-Add"></i>
+                                        <span>Name: </span>
+                                        <input name="editAddCharacterName" id="editAddCharacterName" type="text" value="Barry Bluejeans" />
+                                    </div>
+                                    <div class="characterInitiative">
+                                        <i id="editAddInitBonusIcon" class="fas fa-fw fa-hourglass-half faction-Add"></i>
+                                        <span>Initiative Bonus: </span>
+                                        <input name="editAddCharacterInitBonus" id="editAddCharacterInitBonus" type="number" value="0" />
+                                    </div>
+                                    <div class="characterInitiative">
+                                        <i id="editAddInitAdvantageIcon" class="fas fa-fw fa-chevron-double-up faction-Add"></i>
+                                        <span>Initiative Advantage: </span>
+                                        <i class="far fa-square fakeCheck" data-realcheck="editAddCharacterInitAdvantage" id="fakeeditAddCharacterInitAdvantage"></i>
+                                        <input type="checkbox" name="editAddCharacterInitAdvantage" id="editAddCharacterInitAdvantage" style = "display:none" />
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div id="formButtons">
             <div id="dialogMessage"></div>
-	    </div>
-	</div>
+        </div>
+    </div>
 {% endblock %}
 
 {% block dialog %}
     <div id="removeCharacterDialogBox" title="Confirm Remove Character">
-		<div id="removeCharacterDialogMessage">
-			You are about to remove:
-		</div>
-		<br />
-		<div id="removeCharacterDialogName">
-		</div>
-		<br />
-		<div>
-			Are you sure?
-		</div>
-	</div>
+        <div id="removeCharacterDialogMessage">
+            You are about to remove:
+        </div>
+        <br />
+        <div id="removeCharacterDialogName">
+        </div>
+        <br />
+        <div>
+            Are you sure?
+        </div>
+    </div>
 {% endblock %}

@@ -7,20 +7,20 @@
         return;
     }
 
-	$User = $result->data["Username"];
+    $User = $result->data["Username"];
     
-    try {				
+    try {                
         $stmt = $db->prepare("SELECT Guid, CampaignName FROM Tabletop_Campaigns WHERE Username=?");
         $stmt->execute(array($User));
 
-		$Campaigns = array();
-		while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $Campaigns = array();
+        while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             array_push($Campaigns, $row);
         }
 
         $response = new Response();
         $response->valid = true;
-		$response->data["Campaigns"] = $Campaigns;
+        $response->data["Campaigns"] = $Campaigns;
         echo json_encode($response);
         return;
     } catch (PDOException $ex) {

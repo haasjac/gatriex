@@ -8,7 +8,7 @@
 //On load
 $(function () {
     
-	setEventHandlers();
+    setEventHandlers();
 
     function setEventHandlers() {        
         $("#recoverUsernameForm").submit(function () {

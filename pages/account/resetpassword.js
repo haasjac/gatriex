@@ -11,7 +11,7 @@ $(function () {
     var validator;
     
     setValidator();
-	setEventHandlers();
+    setEventHandlers();
     
     function setValidator() {
         $.validator.messages.required = "Required.";

@@ -14,7 +14,7 @@ $(function() {
             var a = arr[i];
             var t = jv.test(a);
             if (t) {
-                var data = data.replace(a, function (original) {
+                data = data.replace(a, function (original) {
                     return "<a href='" + original + "'>" + original + "</a>";
                 });
             }

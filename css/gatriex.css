@@ -1,16 +1,16 @@
 ﻿/* CSS Document */
 
 /* 
-	yellow    #D0904C
-	blue      #1F3853
+    yellow    #D0904C
+    blue      #1F3853
     green     #008000
     red       #8b0000
 */ 
 
 html {
-	background-color: #1F3853;
-	background-image: url("/images/background.png");
-	height: 100%;
+    background-color: #1F3853;
+    background-image: url("/images/background.png");
+    height: 100%;
 }
 /* FONT FACE */
 @font-face {
@@ -27,14 +27,14 @@ body {
     height: 100%;
     margin: 0;
     padding: 0;
-	font-family: 'kingsbridgeregular' !important;
-	font-size: 22px;
+    font-family: 'kingsbridgeregular' !important;
+    font-size: 22px;
 }
 
 #wrapper {
     min-height: 100%;
     max-width: 1400px;
-	margin-left: auto;
+    margin-left: auto;
     margin-right: auto;
     display: flex;
     flex-direction: column;
@@ -81,7 +81,7 @@ body {
 }
 
 #headerRightDiv {
-    flex: 1;	
+    flex: 1;    
 }
 
 #headerLeftText {
@@ -182,23 +182,23 @@ body {
     display: flex;
     flex: 1;
     flex-direction: column;
-	margin-left: auto;
+    margin-left: auto;
     margin-right: auto;
     margin: 10px 0;
     box-sizing: border-box;
-	box-shadow: 0 0 10px 5px rgb(20,45,70);
-	min-height: min-content;
+    box-shadow: 0 0 10px 5px rgb(20,45,70);
+    min-height: min-content;
 }
 
 .section {
     display: flex;
-	flex-direction: column;
-	flex: 1;
-	padding: 20px;
+    flex-direction: column;
+    flex: 1;
+    padding: 20px;
     font-size:22px;
-	border: 1px solid #1F3853;
-	box-sizing: border-box;
-	min-height: min-content;
+    border: 1px solid #1F3853;
+    box-sizing: border-box;
+    min-height: min-content;
 }
 
 .mainHeader {

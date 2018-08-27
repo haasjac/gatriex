@@ -8,11 +8,11 @@
 //On load
 $(function () {
     
-	var validator;
+    var validator;
     var lastName = "", lastEmail = "";
     
     setValidator();
-	setEventHandlers();
+    setEventHandlers();
     
     function setValidator() {
         $.validator.messages.required = "Required.";
@@ -97,7 +97,7 @@ $(function () {
                 $("#contactForm").hide();
             } else {
                 console.log(response.data.Error);
-                var message = '<i class="fas fa-exclamation-triangle"></i> ' + response.data.Error;
+                message = '<i class="fas fa-exclamation-triangle"></i> ' + response.data.Error;
                 $("#contactFeedbackMessage").html(message);                
             }
         });

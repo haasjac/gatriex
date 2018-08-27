@@ -9,10 +9,10 @@
         
         $curl = curl_init();
         curl_setopt_array($curl, array(
-        	CURLOPT_URL => $url,
-        	CURLOPT_SSL_VERIFYPEER => FALSE,
-        	CURLOPT_RETURNTRANSFER => TRUE,
-        	CURLOPT_HTTPHEADER => array('X-Riot-Token: ' . $api_token)
+            CURLOPT_URL => $url,
+            CURLOPT_SSL_VERIFYPEER => FALSE,
+            CURLOPT_RETURNTRANSFER => TRUE,
+            CURLOPT_HTTPHEADER => array('X-Riot-Token: ' . $api_token)
         ));
         
         $result = curl_exec($curl);

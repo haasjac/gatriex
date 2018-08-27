@@ -17,39 +17,39 @@
         return;
     }
 
-	$User = $result->data["Username"];
+    $User = $result->data["Username"];
     
     $CampaignName = $data["CampaignName"];
 
-	$Guid = $authentication->generate_guid();
+    $Guid = $authentication->generate_guid();
 
-	try {
-		$sql = "SELECT COUNT(*) FROM Tabletop_Campaigns WHERE Username = ? AND CampaignName=?";
+    try {
+        $sql = "SELECT COUNT(*) FROM Tabletop_Campaigns WHERE Username = ? AND CampaignName=?";
         $stmt = $db->prepare($sql);
         $stmt->execute(array($User, $CampaignName));
 
         $row = $stmt->fetchColumn();
 
-		if ($row > 0) {
-			$response = new Response();
-			$response->data["Error"] = "Campaign \"" . $CampaignName . "\" already exists.";
-			$response->valid = false;
-			echo json_encode($response);
-			return;
-		}
+        if ($row > 0) {
+            $response = new Response();
+            $response->data["Error"] = "Campaign \"" . $CampaignName . "\" already exists.";
+            $response->valid = false;
+            echo json_encode($response);
+            return;
+        }
         
     } catch (PDOException $ex) {
         http_response_code(500);
         $log->error("Database error in AddCampaign.php", $ex->getMessage());
         echo "Error handling request.";
-		return;
+        return;
     }
     
-    try {				
+    try {                
         $stmt = $db->prepare("INSERT INTO Tabletop_Campaigns (Guid, CampaignName, Username) VALUES (?,?,?)");
         $stmt->execute(array($Guid, $CampaignName, $User));
 
-		$stmt = $db->prepare("INSERT INTO Tabletop_InitiativeTracker (CampaignGuid) VALUES (?)");
+        $stmt = $db->prepare("INSERT INTO Tabletop_InitiativeTracker (CampaignGuid) VALUES (?)");
         $stmt->execute(array($Guid));
 
         $response = new Response();
