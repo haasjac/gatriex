@@ -1,5 +1,5 @@
-credentials/
-/nbproject/private/
+/credentials/
 /web.config
 /.vs/
 /TODO.txt
+/.ftpquota

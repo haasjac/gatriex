@@ -12,12 +12,13 @@
 				'mysql:host=' . _Database::ServerName . ';dbname=' . _Database::DBName . ';charset=utf8mb4',
 				_Database::UserName,
 				_Database::Password,
-				array(PDO::MYSQL_ATTR_FOUND_ROWS => true)
+				array(
+					PDO::MYSQL_ATTR_FOUND_ROWS => true,
+				    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+				    PDO::ATTR_EMULATE_PREPARES => false,
+				    PDO::ATTR_STRINGIFY_FETCHES => false
+				)
 			);
-			Database::$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-			Database::$db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
-			Database::$db->setAttribute(PDO::ATTR_STRINGIFY_FETCHES, false);
-
 		}
 
 		public static function Get() {
