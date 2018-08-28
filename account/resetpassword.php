@@ -5,7 +5,7 @@
     $template = $twig->load('account/resetpassword.twig');
     $twig_options = getTwigOptions();
         
-    $token = $input->getGet("token");
+    $token = Input::GetGet("token");
     
     $twig_options["token"] = $token;
     

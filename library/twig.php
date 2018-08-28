@@ -8,11 +8,9 @@
         //'cache' => 'compilation_cache',
     ));
     
-    function getTwigOptions(): Array {
-        global $authentication;
-        
+    function getTwigOptions(): Array {        
         $twig_options = array();
-        $user = $authentication->getCurrentUser();
+        $user = Authentication::GetCurrentUser();
         
         $twig_options["Username"] = $user;
         $twig_options["year"] = date("Y");

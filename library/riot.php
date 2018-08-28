@@ -1,7 +1,8 @@
 <?php
     
-    class myRiot {
-        function getRegionArray():Array {
+    class Riot {
+
+        public static function GetRegionArray():Array {
             $regions = array(
                 "Russia" => "ru",
                 "Republic of Korea" => "kr",
@@ -19,12 +20,12 @@
             return $regions;
         }
         
-        function getRegions():Array {
-            $regions = array_keys($this->getRegionArray());       
+        public static function GetRegions():Array {
+            $regions = array_keys(Riot::GetRegionArray());       
             
             return $regions;
         }
+
     }
-    
-    $riot = new myRiot();
+
 ?>

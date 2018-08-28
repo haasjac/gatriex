@@ -11,43 +11,43 @@
         return;
     }
     
-    $result = $authentication->validateUserFromToken($input->getCookie("Auth_Id"), $input->getCookie("Auth_Token"));
+    $result = Authentication::ValidateUserFromToken();
     if (!$result->valid) {
         echo json_encode($result);
         return;
     }
 
-	$user = $result->data["Username"];
-	    
+    $user = $result->data["Username"];
+        
     $CampaignGuid = $data["CampaignGuid"];
-	if (isset($data["CharacterInfo"])) {
-		$CharacterInfo = json_encode($data["CharacterInfo"]);
-	} else {
-		$CharacterInfo = NULL;
-	}
+    if (isset($data["CharacterInfo"])) {
+        $CharacterInfo = json_encode($data["CharacterInfo"]);
+    } else {
+        $CharacterInfo = NULL;
+    }
 
-	if (isset($data["CurrentCharacter"])) {
-		$CurrentCharacter = $data["CurrentCharacter"];
-	} else {
-		$CurrentCharacter = NULL;
-	}
+    if (isset($data["CurrentCharacter"])) {
+        $CurrentCharacter = $data["CurrentCharacter"];
+    } else {
+        $CurrentCharacter = NULL;
+    }
     
     try {
-        $db->beginTransaction();
+        Database::Get()->beginTransaction();
 
-		$sql = "UPDATE Tabletop_InitiativeTracker I JOIN Tabletop_Campaigns C ON I.CampaignGuid = C.Guid SET I.CharacterInfo = ?, I.CurrentCharacter = ? WHERE C.Username = ? AND I.CampaignGuid = ?";
-        $stmt = $db->prepare($sql);
+        $sql = "UPDATE Tabletop_InitiativeTracker I JOIN Tabletop_Campaigns C ON I.CampaignGuid = C.Guid SET I.CharacterInfo = ?, I.CurrentCharacter = ? WHERE C.Username = ? AND I.CampaignGuid = ?";
+        $stmt = Database::Get()->prepare($sql);
         $stmt->execute(array($CharacterInfo, $CurrentCharacter, $user, $CampaignGuid));
         
-        $db->commit();
+        Database::Get()->commit();
         $response = new Response();
         $response->valid = true;
         echo json_encode($response);
         return;
     } catch (PDOException $ex) {
         http_response_code(500);
-        $log->error("Database error in SaveCampaign.php", $ex->getMessage());
+        Log::Error("Database error in SaveCampaign.php", $ex->getMessage());
         echo "Error handling request.";
-        $db->rollBack();
+        Database::Get()->rollBack();
     }
 ?>

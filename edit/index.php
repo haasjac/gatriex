@@ -4,13 +4,8 @@
     
     $template = $twig->load('edit/edit.twig');
     $twig_options = getTwigOptions();
-    
-    /*if ($twig_options["Username"] === "") {
-        $errorPage->render(403);
-        exit();
-    }*/
-    
-    $redirect->requireUser($twig_options["Username"]);
+        
+    Redirect::RequireUser($twig_options["Username"]);
     
     echo $template->render($twig_options);
 ?>

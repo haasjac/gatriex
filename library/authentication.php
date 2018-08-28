@@ -6,35 +6,32 @@
     require_once($_SERVER['DOCUMENT_ROOT'] . '/library/log.php');
     require_once($_SERVER['DOCUMENT_ROOT'] . '/credentials/authentication.php');
 
-    class myAuthentication {
-        function encrypt_auth ($data): string {
-            global $secret_key, $iv_size, $encrypt_method;
+    class Authentication {
 
-            $iv = openssl_random_pseudo_bytes($iv_size);
+        private static function EncryptAuth ($data): string {
+            $iv = openssl_random_pseudo_bytes(_Authentication::GetIvSize());
 
-            $encrypted_data = openssl_encrypt( $data, $encrypt_method, $secret_key, 0, $iv);
+            $encrypted_data = openssl_encrypt( $data, _Authentication::EncryptMethod, _Authentication::SecretKey, 0, $iv);
 
             $token = bin2hex($iv) . $encrypted_data;
 
             return $token;
         }
 
-        function decrypt_auth ($token): string {
-            global $secret_key, $iv_size, $encrypt_method;
+        private static function DecryptAuth ($token): string {
+            $iv = hex2bin(substr($token, 0, _Authentication::GetIvSize() * 2));
+            $data = substr($token, _Authentication::GetIvSize() * 2);
 
-            $iv = hex2bin(substr($token, 0, $iv_size * 2));
-            $data = substr($token, $iv_size * 2);
-
-            $decrypted_data = openssl_decrypt( $data, $encrypt_method, $secret_key, 0, $iv);
+            $decrypted_data = openssl_decrypt( $data, _Authentication::EncryptMethod, _Authentication::SecretKey, 0, $iv);
 
             return $decrypted_data;
         }
 
-        function generate_token(): string {
+        private static function GenerateToken(): string {
             return bin2hex(openssl_random_pseudo_bytes(32));
         }
 
-        function generate_guid(): string {
+        public static function GenerateGuid(): string {
             $hex = bin2hex(openssl_random_pseudo_bytes(16));
             $arr = str_split($hex, 4);
             $result = $arr[0] . $arr[1] . "-" . $arr[2] . "-" . $arr[3] . "-" . $arr[4] . "-" . $arr[5] . $arr[6] . $arr[7];
@@ -44,35 +41,34 @@
 
         //User Functions
 
-        function createUser($username, $password, $email, $summoner, $region): Response {
-            global $db, $log;
+        public static function CreateUser($username, $password, $email, $summoner, $region): Response {
             $response = new Response();
 
-            $token = $this->generate_token();
+            $token = Authentication::GenerateToken();
 
             $hash_password = password_hash($password, PASSWORD_DEFAULT);
 
-            $encrypt_user = $this->encrypt_auth($username);
-            $encrypt_token = $this->encrypt_auth($token);
+            $encrypt_user = Authentication::EncryptAuth($username);
+            $encrypt_token = Authentication::EncryptAuth($token);
 
             try {
-                $db->beginTransaction();
+                Database::Get()->beginTransaction();
 
-                $stmt = $db->prepare("INSERT INTO User_Auth (Username, Password, Auth_Token) VALUES (?,?,?)");
+                $stmt = Database::Get()->prepare("INSERT INTO User_Auth (Username, Password, Auth_Token) VALUES (?,?,?)");
                 $stmt->execute(array($username, $hash_password, $token));
 
-                $stmt = $db->prepare("INSERT INTO User_Info (Username, Email, Summoner_Name, Region) VALUES (?,?,?,?)");
+                $stmt = Database::Get()->prepare("INSERT INTO User_Info (Username, Email, Summoner_Name, Region) VALUES (?,?,?,?)");
                 $stmt->execute(array($username, $email, $summoner, $region));
                 
-                $stmt = $db->prepare("INSERT INTO Links (Username, Text, Link, Header) (SELECT ?, Text, Link, Header FROM Links WHERE Username = 'admin')");
+                $stmt = Database::Get()->prepare("INSERT INTO Links (Username, Text, Link, Header) (SELECT ?, Text, Link, Header FROM Links WHERE Username = 'admin')");
                 $stmt->execute(array($username));
 
-                $db->commit();
+                Database::Get()->commit();
             } catch(PDOException $ex) {
-                $log->error("Database error in Authentication.php createUser", $ex->getMessage());
+                Log::Error("Database error in Authentication.php createUser", $ex->getMessage());
                 $response->data["Error"] = "Error handling request.";
                 $response->valid = false;
-                $db->rollBack();
+                Database::Get()->rollBack();
 
                 return $response;
             }
@@ -84,20 +80,19 @@
             return $response;
         }
 
-        function regenerateToken($username): Response {
-            global $db, $log;
+        private static function RegenerateToken($username): Response {
             $response = new Response();
 
-            $token = $this->generate_token();
+            $token = Authentication::GenerateToken();
 
-            $encrypt_user = $this->encrypt_auth($username);
-            $encrypt_token = $this->encrypt_auth($token);
+            $encrypt_user = Authentication::EncryptAuth($username);
+            $encrypt_token = Authentication::EncryptAuth($token);
 
             try {
-                $stmt = $db->prepare("UPDATE User_Auth SET Auth_Token=? WHERE Username = ?");
+                $stmt = Database::Get()->prepare("UPDATE User_Auth SET Auth_Token=? WHERE Username = ?");
                 $stmt->execute(array($token, $username));
             } catch(PDOException $ex) {
-                $log->error("Database error in Authentication.php regenerateToken", $ex->getMessage());
+                Log::Error("Database error in Authentication.php regenerateToken", $ex->getMessage());
                 $response->data["Error"] = "Error handling request.";
                 $response->valid = false;
                 return $response;
@@ -110,16 +105,15 @@
             return $response;
         }
 
-        function validateUserFromPassword($username, $password): Response {
-            global $db, $log;
+        private static function ValidateUserFromPassword($username, $password): Response {
             $response = new Response();
 
             try {
-                $stmt = $db->prepare("SELECT Username, Password, Auth_Token FROM User_Auth WHERE Username = ?");
+                $stmt = Database::Get()->prepare("SELECT Username, Password, Auth_Token FROM User_Auth WHERE Username = ?");
                 $stmt->execute(array($username));
                 $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
             } catch(PDOException $ex) {
-                $log->error("Database error in Authentication.php validateUserFromPassword", $ex->getMessage());
+                Log::Error("Database error in Authentication.php validateUserFromPassword", $ex->getMessage());
                 $response->data["Error"] = "Error handling request.";
                 $response->valid = false;
                 return $response;
@@ -136,7 +130,7 @@
             $valid = password_verify($password, $hash_password);
 
             if ($valid) {
-                $this->updateHash($username, $password, $hash_password, "Password");
+                Authentication::UpdateHash($username, $password, $hash_password, "Password");
                 $response->data["Username"] = $rows[0]["Username"];
                 $response->data["Auth_Token"] = $rows[0]["Auth_Token"];
             }
@@ -146,13 +140,15 @@
             return $response;
         }
 
-        function validateUserFromToken($username, $token): Response {
-            global $db, $log;
+        public static function ValidateUserFromToken(): Response {
+			$username = Input::GetCookie("Auth_Id");
+			$token = Input::GetCookie("Auth_Token");
+
             $response = new Response();
 
             try {
-                $decrypt_user = $this->decrypt_auth($username);
-                $decrypt_token = $this->decrypt_auth($token);
+                $decrypt_user = Authentication::DecryptAuth($username);
+                $decrypt_token = Authentication::DecryptAuth($token);
             } catch (Exception $ex) {
                 $response->data["Error"] = "Credentials have expired.";
                 $response->valid = false;
@@ -160,11 +156,11 @@
             }
 
             try {
-                $stmt = $db->prepare("SELECT Username, Auth_Token FROM User_Auth WHERE Username = ?");
+                $stmt = Database::Get()->prepare("SELECT Username, Auth_Token FROM User_Auth WHERE Username = ?");
                 $stmt->execute(array($decrypt_user));
                 $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
             } catch(PDOException $ex) {
-                $log->error("Database error in Authentication.php validateUserFromToken", $ex->getMessage());
+                Log::Error("Database error in Authentication.php validateUserFromToken", $ex->getMessage());
                 $response->data["Error"] = "Error handling request.";
                 $response->valid = false;
                 return $response;
@@ -191,27 +187,23 @@
             return $response;
         }
 
-        function updateHash($username, $value, $hash, $type) {
-            global $db, $log;
-
+        private static function UpdateHash($username, $value, $hash, $type) {
             if (password_needs_rehash($hash, PASSWORD_DEFAULT)) {
                 $new_hash = password_hash($value, PASSWORD_DEFAULT);
                 try {
-                    $stmt = $db->prepare("UPDATE User_Auth SET " . $type . " = ? WHERE Username = ?");
+                    $stmt = Database::Get()->prepare("UPDATE User_Auth SET " . $type . " = ? WHERE Username = ?");
                     $stmt->execute(array($new_hash, $username));
                 } catch(PDOException $ex) {
-                    $log->error("Database error in Authentication.php updateHash", $ex->getMessage());
+                    Log::Error("Database error in Authentication.php updateHash", $ex->getMessage());
                 }
             }
         }
 
-        function getCurrentUser(): String {
-            global $input, $session;
-            
-            $session->startSession();
+        public static function GetCurrentUser(): String {            
+            Session::StartSession();
             $user = "";
             
-            $result = $this->validateUserFromToken($input->getCookie("Auth_Id"), $input->getCookie("Auth_Token"));
+            $result = Authentication::ValidateUserFromToken();
             if ($result->valid) {
                 $user = $result->data["Username"];
             }
@@ -222,23 +214,22 @@
 
         // Forgotten Password
 
-        function generateForgetToken($username): Response {
-            global $db, $log;
+        public static function GenerateForgetToken($username): Response {
             $response = new Response();
 
-            $token = $this->generate_token();
+            $token = Authentication::GenerateToken();
 
             $hash_token = password_hash($token, PASSWORD_DEFAULT);
 
-            $encrypt_token = $this->encrypt_auth($token);
+            $encrypt_token = Authentication::EncryptAuth($token);
 
             $time = date("Y-m-d H:i:s", time() + 60*60*24); // one day
 
             try {
-                $stmt = $db->prepare("UPDATE User_Auth SET Forget_Token=?, Forget_Token_Expiry=? WHERE Username = ?");
+                $stmt = Database::Get()->prepare("UPDATE User_Auth SET Forget_Token=?, Forget_Token_Expiry=? WHERE Username = ?");
                 $stmt->execute(array($hash_token, $time, $username));
             } catch(PDOException $ex) {
-                $log->error("Database error in Authentication.php generateForgetToken", $ex->getMessage());
+                Log::Error("Database error in Authentication.php generateForgetToken", $ex->getMessage());
                 $response->data["Error"] = "Error handling request.";
                 $response->valid = false;
                 return $response;
@@ -250,18 +241,17 @@
             return $response;
         }
 
-        function resetPasswordFromForgetToken($username, $password, $token): Response {
-            global $db, $log;
+        public static function ResetPasswordFromForgetToken($username, $password, $token): Response {
             $response = new Response();
 
-            $decrypt_token = $this->decrypt_auth($token);
+            $decrypt_token = Authentication::DecryptAuth($token);
 
             try {
-                $stmt = $db->prepare("SELECT Forget_Token, Forget_Token_Expiry FROM User_Auth WHERE Username = ?");
+                $stmt = Database::Get()->prepare("SELECT Forget_Token, Forget_Token_Expiry FROM User_Auth WHERE Username = ?");
                 $stmt->execute(array($username));
                 $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
             } catch(PDOException $ex) {
-                $log->error("Database error in Authentication.php resetPasswordFromForgetToken", $ex->getMessage());
+                Log::Error("Database error in Authentication.php resetPasswordFromForgetToken", $ex->getMessage());
                 $response->data["Error"] = "Error handling request.";
                 $response->valid = false;
                 return $response;
@@ -289,16 +279,16 @@
             if ($valid) {
                 try {
                     $hash_password = password_hash($password, PASSWORD_DEFAULT);
-                    $stmt = $db->prepare("UPDATE User_Auth SET Forget_Token = ?, Forget_Token_Expiry = ?, Password = ? WHERE Username = ?");
+                    $stmt = Database::Get()->prepare("UPDATE User_Auth SET Forget_Token = ?, Forget_Token_Expiry = ?, Password = ? WHERE Username = ?");
                     $stmt->execute(array("", "", $hash_password, $username));
                 } catch(PDOException $ex) {
-                    $log->error("Database error in Authentication.php resetPasswordFromForgetToken", $ex->getMessage());
+                    Log::Error("Database error in Authentication.php resetPasswordFromForgetToken", $ex->getMessage());
                     $response->data["Error"] = "Error handling request.";
                     $response->valid = false;
                     return $response;
                 }
 
-                $this->regenerateToken($username);
+                Authentication::RegenerateToken($username);
                 $response->valid = true;
                 return $response;
             } else {
@@ -310,22 +300,20 @@
 
         //Front End
 
-        function login($username, $password, $remember): Response {
-            global $session, $auth_domain;
-            
+        public static function Login($username, $password, $remember): Response {            
             $response = new Response();
 
             $user = "";
-            $result = $this->validateUserFromPassword($username, $password);
+            $result = Authentication::ValidateUserFromPassword($username, $password);
 
             if ($result->valid) {
                 $user = $result->data["Username"];
                 $token = $result->data["Auth_Token"];
 
                 $time = ($remember ? time() + 60*60*24*365 : 0); // 1 year or session
-                setcookie("Auth_Id", $this->encrypt_auth($user), $time, "/", $auth_domain, true, true);
-                setcookie("Auth_Token", $this->encrypt_auth($token), $time, "/", $auth_domain, true, true);
-                $session->startSession();
+                setcookie("Auth_Id", Authentication::EncryptAuth($user), $time, "/", _Authentication::AuthDomain, true, true);
+                setcookie("Auth_Token", Authentication::EncryptAuth($token), $time, "/", _Authentication::AuthDomain, true, true);
+                Session::StartSession();
             }
 
             $response->data["Username"] = $user;
@@ -333,18 +321,14 @@
             return $response;
         }
 
-        function logout() {
-            global $session, $auth_domain;
-            
+        public static function Logout() {            
             $time = time() - 3600;
-            setrawcookie("Auth_Id", "", $time, "/", $auth_domain, true, true);
-            setrawcookie("Auth_Token", "", $time, "/", $auth_domain, true, true);
-            $session->endSession();
+            setrawcookie("Auth_Id", "", $time, "/", _Authentication::AuthDomain, true, true);
+            setrawcookie("Auth_Token", "", $time, "/", _Authentication::AuthDomain, true, true);
+            Session::EndSession();
         }
         
-        function updateField($username, $value, $field): Response {
-            global $db, $log;
-            
+        public static function UpdateField($username, $value, $field): Response {            
             $response = new Response();
             
             try {
@@ -354,10 +338,10 @@
                     $value = password_hash($value, PASSWORD_DEFAULT);
                 }
                 $sql = "UPDATE " . $table . " SET " . $field . " = ? WHERE Username = ?";
-                $stmt = $db->prepare($sql);
+                $stmt = Database::Get()->prepare($sql);
                 $stmt->execute(array($value, $username));
             } catch(PDOException $ex) {
-                $log->error("Database error in Authentication.php updateField" . $field, $ex->getMessage());
+                Log::Error("Database error in Authentication.php updateField" . $field, $ex->getMessage());
                 $response->data["Error"] = "Error handling request.";
                 $response->valid = false;
                 return $response;
@@ -367,7 +351,5 @@
             return $response;
         }
     }
-    
-    $authentication = new myAuthentication();
     
 ?>

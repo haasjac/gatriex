@@ -1,9 +1,9 @@
 <?php
     require_once($_SERVER['DOCUMENT_ROOT'] . '/library/libraries.php');
     
-    $username = $input->getPost("username");
-    $value = $input->getPost("value");
-    $field = $input->getPost("field");
+    $username = Input::GetPost("username");
+    $value = Input::GetPost("value");
+    $field = Input::GetPost("field");
     
     if ($username === "RiotTest") {
         $result = new Response();
@@ -13,30 +13,30 @@
         return;
     }
     
-    $result = $authentication->validateUserFromToken($input->getCookie("Auth_Id"), $input->getCookie("Auth_Token"));
+    $result = Authentication::ValidateUserFromToken();
     if (!$result->valid) {
         echo json_encode($result);
         return;
     }
     
     if ($field === "Password") {
-        $result = $validation->validatePassword($value);
+        $result = Validation::ValidatePassword($value);
     
         if (!$result->valid) {
             echo json_encode($result);
             return;
         }
 
-        $confirmPassword = $input->getPost("confirmValue");
+        $confirmPassword = Input::GetPost("confirmValue");
         
-        $result = $validation->confirmPassword($value, $confirmPassword);
+        $result = Validation::ConfirmPassword($value, $confirmPassword);
 
         if (!$result->valid) {
             echo json_encode($result);
             return;
         }
     } else if ($field === "Email") {
-        $result = $validation->validateEmail($value);
+        $result = Validation::ValidateEmail($value);
     
         if (!$result->valid) {
             echo json_encode($result);
@@ -44,7 +44,7 @@
         }
     }
     
-    $result = $authentication->updateField($username, $value, $field);
+    $result = Authentication::UpdateField($username, $value, $field);
     
     echo json_encode($result);
 ?>

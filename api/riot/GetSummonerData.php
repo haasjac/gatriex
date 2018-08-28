@@ -3,8 +3,8 @@
     require_once ($_SERVER['DOCUMENT_ROOT'] . '/library/libraries.php');
     
     $response = new Response();
-    $summonerName = $input->getGet("summonerName");
-    $region = $input->getGet("region");
+    $summonerName = Input::GetGet("summonerName");
+    $region = Input::GetGet("region");
     
     if ($summonerName === "") {
         $response->data["Error"] = "Summoner name cannot be empty.";
@@ -13,7 +13,7 @@
         return;
     }
     
-    if ($region=== "") {
+    if ($region === "") {
         $response->data["Error"] = "Region cannot be empty.";
         $response->valid = false;
         echo json_encode($response);
@@ -55,7 +55,7 @@
     
     $response->data["Champions"] = array();
     for ($i = 0; $i < sizeof($response->data["Mastery"]); $i++) {
-        $result = getChampion($response->data["Mastery"][$i]->championId);
+        $result = getChampion($region, $response->data["Mastery"][$i]->championId);
     
         if (!$result->valid) {
             echo json_encode($result);
@@ -65,7 +65,7 @@
         }
     }    
     
-    $result = getVersion();
+    $result = getVersion($region);
     
     if (!$result->valid) {
         echo json_encode($result);
@@ -77,12 +77,10 @@
     $response->valid = true;
     echo json_encode($response);
        
-    function getVersion(): Response {
-        global $db, $log, $region;
-
+    function getVersion($region): Response {
         $response = new Response();
         $sql = "SELECT * FROM Version WHERE Region = ? AND Time >= DATE_SUB(NOW(), INTERVAL 10 MINUTE)";
-        $stmt = $db->prepare($sql);
+        $stmt = Database::Get()->prepare($sql);
         $stmt->execute(array($region));
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -102,32 +100,30 @@
             $response->valid = true;
             
             try {
-                $db->beginTransaction();
+                Database::Get()->beginTransaction();
                 $sql = "UPDATE Version SET Version = ?, Time = CURRENT_TIMESTAMP WHERE Region = ?";
-                $stmt = $db->prepare($sql);
+                $stmt = Database::Get()->prepare($sql);
                 $stmt->execute(array($response->data["Version"], $region));
                 if ($stmt->rowCount() <= 0) {
-                    $stmt = $db->prepare("INSERT INTO Version (Version, Region) VALUES (?,?)");
+                    $stmt = Database::Get()->prepare("INSERT INTO Version (Version, Region) VALUES (?,?)");
                     $stmt->execute(array($response->data["Version"], $region));
                 }
-                $db->commit();
+                Database::Get()->commit();
             } catch (PDOException $ex) {
-                $log->error("Database error in GetSummonerData.php", $ex->getMessage());
+                Log::Error("Database error in GetSummonerData.php", $ex->getMessage());
                 $response->data["Error"] = "Error handling request";
                 $response->valid = false;
-                $db->rollBack();
+                Database::Get()->rollBack();
                 return $response;
             }
             return $response;
         }
     }
     
-    function getChampion($id): Response {
-        global $db, $log, $region;
-
+    function getChampion($region, $id): Response {
         $response = new Response();
         $sql = "SELECT * FROM Champions WHERE id = ?";
-        $stmt = $db->prepare($sql);
+        $stmt = Database::Get()->prepare($sql);
         $stmt->execute(array($id));
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -147,10 +143,10 @@
             $response->valid = true;
             
             try {
-                $stmt = $db->prepare("INSERT INTO Champions (id, ChampKey) VALUES (?,?)");
+                $stmt = Database::Get()->prepare("INSERT INTO Champions (id, ChampKey) VALUES (?,?)");
                 $stmt->execute(array($id, $result->data["Response"]->key));
             } catch (PDOException $ex) {
-                $log->error("Database error in GetSummonerData.php", $ex->getMessage());
+                Log::Error("Database error in GetSummonerData.php", $ex->getMessage());
                 $response->data["Error"] = "Error handling request";
                 $response->valid = false;
                 return $response;

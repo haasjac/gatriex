@@ -7,7 +7,7 @@
     
     if ($twig_options["Username"] !== "") {
         try {
-            $stmt = $db->prepare("SELECT Summoner_Name, Region FROM User_Info WHERE Username = ?");
+            $stmt = Database::Get()->prepare("SELECT Summoner_Name, Region FROM User_Info WHERE Username = ?");
             $stmt->execute(array($twig_options["Username"]));
             $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
             
@@ -16,13 +16,13 @@
                 $twig_options["Region"] = $rows[0]["Region"];
             }
         } catch(PDOException $ex) {
-            $log->error("Database error in index.php", $ex->getMessage());
+            Log::Error("Database error in index.php", $ex->getMessage());
         }
     } else {
         $twig_options["Region"] = "North America";
     }
     
-    $twig_options["RegionList"] = $riot->getRegionArray();
+    $twig_options["RegionList"] = Riot::GetRegionArray();
     
     echo $template->render($twig_options);
 ?>

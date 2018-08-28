@@ -1,9 +1,9 @@
 <?php
     require_once($_SERVER['DOCUMENT_ROOT'] . '/library/libraries.php');
     
-    $username = $input->getPost("username");
+    $username = Input::GetPost("username");
     
-    $result = $validation->validateUsername($username);
+    $result = Validation::ValidateUsername($username);
     
     echo $result->valid ? "true" : "false";
 ?>

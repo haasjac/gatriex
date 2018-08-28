@@ -5,14 +5,14 @@
     
     $headers = array();
     
-    $user = $authentication->getCurrentUser();
+    $user = Authentication::GetCurrentUser();
     if ($user === "") {
         $user = "admin";
     }
     
     try {
     
-        $result = $db->prepare("SELECT text, link, header FROM Links WHERE Username = ?");
+        $result = Database::Get()->prepare("SELECT text, link, header FROM Links WHERE Username = ?");
         $result->execute(array($user));
         while($row = $result->fetch(PDO::FETCH_ASSOC)) {
             if (!isset($headers[$row["header"]])) {
@@ -37,7 +37,7 @@
     
     } catch(PDOException $ex) {
         http_response_code(500);
-        $log->error("Database error in GetLinks.php", $ex->getMessage());
+        Log::Error("Database error in GetLinks.php", $ex->getMessage());
         echo "Error handling request.";
     }
 ?>

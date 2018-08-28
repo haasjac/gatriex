@@ -1,8 +1,10 @@
 <?php
+
     require_once ($_SERVER['DOCUMENT_ROOT'] . '/library/errorPage.php');
 
-    class myRedirect {
-        function redirect($url, $status_code = 302, $replace = true) {
+    class Redirect {
+
+        public static function RedirectURL($url, $status_code = 302, $replace = true) {
             if (headers_sent() === false)
             {
                 header('Location: ' . $url, $replace, $status_code);
@@ -10,22 +12,20 @@
             exit();
         }
         
-        function requireUser($user) {
-            global $errorPage;
-            
+        public static function RequireUser($user) {            
             if ($user === "") {
-                $errorPage->render(403);
+                ErrorPage::Render(403);
                 exit();
             }
         }
         
-        function requireNoUser($user) {  
+        public static function RequireNoUser($user) {  
             if ($user !== "") {
-                $this->redirect("/");
+                Redirect::RedirectURL("/");
                 exit();
             }
         }
+
     }
-    
-    $redirect = new myRedirect();
+
 ?>

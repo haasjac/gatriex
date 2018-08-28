@@ -2,10 +2,10 @@
     require_once('Call.php');
     require_once ($_SERVER['DOCUMENT_ROOT'] . '/library/libraries.php');
     
-    $region = $input->getGet("region");
-    $id = $input->getGet("id");
+    $region = Input::GetGet("region");
+    $id = Input::GetGet("id");
     
-    /*if ($region=== "") {
+    /*if ($region === "") {
         $response->data["Error"] = "Region cannot be empty.";
         $response->valid = false;
         echo json_encode($response);

@@ -1,11 +1,11 @@
 <?php
     require_once($_SERVER['DOCUMENT_ROOT'] . '/library/libraries.php');
     
-    $username = $input->getPost("username");
-    $password = $input->getPost("password");
-    $remember = $input->getPost("remember");
+    $username = Input::GetPost("username");
+    $password = Input::GetPost("password");
+    $remember = Input::GetPost("remember");
     
-    $result = $authentication->login($username, $password, $remember);
+    $result = Authentication::Login($username, $password, $remember);
     
     echo json_encode($result);
 ?>

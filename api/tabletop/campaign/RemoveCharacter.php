@@ -11,7 +11,7 @@
         return;
     }
 
-    $result = $authentication->validateUserFromToken($input->getCookie("Auth_Id"), $input->getCookie("Auth_Token"));
+    $result = Authentication::ValidateUserFromToken();
     if (!$result->valid) {
         echo json_encode($result);
         return;
@@ -20,7 +20,7 @@
     $User = $result->data["Username"];
     
     try {    
-        $stmt = $db->prepare("DELETE FROM Tabletop_Characters WHERE Guid = ? AND Username = ?");
+        $stmt = Database::Get()->prepare("DELETE FROM Tabletop_Characters WHERE Guid = ? AND Username = ?");
         $stmt->execute(array($data["Guid"], $User));
 
         $response = new Response();
@@ -28,7 +28,7 @@
         echo json_encode($response);
     } catch (PDOException $ex) {
         http_response_code(500);
-        $log->error("Database error in campaign/RemoveCharacter.php", $ex->getMessage());
+        Log::Error("Database error in campaign/RemoveCharacter.php", $ex->getMessage());
         echo "Error handling request.";
     }
 ?>

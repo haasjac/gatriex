@@ -74,7 +74,7 @@ $(function () {
         });
     }
 
-	function setEventHandlers() {
+    function setEventHandlers() {
         $("#addCharacterButton").click(function () {
             $("#addCharacterButton").toggle();
             $("#addSaveCharacterButton").toggle();
@@ -194,10 +194,10 @@ $(function () {
         $("#initList").on("click", ".saveCharacterButton", function () {
             var guid = $(this).attr("data-guid");
 
-            $("#characterInit_" + guid).text($("#characterInitInput_" + guid).val());
+            $("#characterInit_" + guid).text(Number($("#characterInitInput_" + guid).val()));
             $.each(CharacterInfo, function (index, character) {
-                if (character.Guid = guid) {
-                    character.Initiative = $("#characterInitInput_" + guid).val();
+                if (character.Guid === guid) {
+                    character.Initiative = Number($("#characterInitInput_" + guid).val());
                     return false;
                 }
             });
@@ -229,12 +229,12 @@ $(function () {
         }); 
 
         $("#initList").on("keydown", ".characterInit", function (e) {
-            if (e.which == 13) {
+            if (e.which === 13) {
                 var guid = $(this).attr("data-guid");
                 $("#saveCharacterButton_" + guid).click();
             }
         });  
-	}
+    }
 
     function sortList() {
         if (!CharacterInfo) {
@@ -250,13 +250,13 @@ $(function () {
 
             A.Guid = $(a).attr("data-guid");
             A.Init = Number($("#characterInitInput_" + A.Guid).val());
-            A.Faction = Number(Characters[A.Guid].FactionPrecedence);
-            A.Bonus = Number(Characters[A.Guid].InitiativeBonus);
+            A.Faction = Characters[A.Guid].FactionPrecedence;
+            A.Bonus = Characters[A.Guid].InitiativeBonus;
 
             B.Guid = $(b).attr("data-guid");
             B.Init = Number($("#characterInitInput_" + B.Guid).val());
-            B.Faction = Number(Characters[B.Guid].FactionPrecedence);
-            B.Bonus = Number(Characters[B.Guid].InitiativeBonus);
+            B.Faction = Characters[B.Guid].FactionPrecedence;
+            B.Bonus = Characters[B.Guid].InitiativeBonus;
 
             if (A.Init !== B.Init) {
                 return A.Init < B.Init ? 1 : -1;
@@ -274,7 +274,7 @@ $(function () {
         $.each(listitems, function (index, element) {
             var character = {};
             character.Guid = $(element).attr("data-guid");
-            character.Initiative = $("#characterInitInput_" + character.Guid).val();
+            character.Initiative = Number($("#characterInitInput_" + character.Guid).val());
             
             charInfo.push(character);
 
@@ -299,8 +299,8 @@ $(function () {
 
         $.each(CharacterInfo, function (index, character) {
             var roll = rollDice(20);
-            var advantage = !!Number(Characters[character.Guid].InitiativeAdvantage);
-            var bonus = Number(Characters[character.Guid].InitiativeBonus);
+            var advantage = !!Characters[character.Guid].InitiativeAdvantage;
+            var bonus = Characters[character.Guid].InitiativeBonus;
             
             if (advantage) {
                 roll = Math.max(roll, rollDice(20));
@@ -335,7 +335,7 @@ $(function () {
         var item = $('<li id="li_' + character.Guid + '" class="ui-state-default" data-guid="' + character.Guid + '"></li>');
         var div = $('<div class="characterDiv">' +
             '<span class="characterSpan">' +
-            '<i class="fas ' + character.FactionIcon + ' faction-' + character.FactionName + '"></i> ' +
+            '<i class="fas fa-fw ' + character.FactionIcon + ' faction-' + character.FactionName + '"></i> ' +
             '<span class="characterName">' + character.Name + ' </span>' +
             '</span>' +
 

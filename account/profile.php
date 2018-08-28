@@ -5,20 +5,20 @@
     $template = $twig->load('account/profile.twig');
     $twig_options = getTwigOptions();
     
-    $redirect->requireUser($twig_options["Username"]);
+    Redirect::RequireUser($twig_options["Username"]);
     
     try {
-        $stmt = $db->prepare("SELECT Email, Summoner_Name, Region FROM User_Info WHERE Username = ?");
+        $stmt = Database::Get()->prepare("SELECT Email, Summoner_Name, Region FROM User_Info WHERE Username = ?");
         $stmt->execute(array($twig_options["Username"]));
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $twig_options["Email"] = $rows[0]["Email"];
         $twig_options["Summoner"] = $rows[0]["Summoner_Name"];
         $twig_options["Region"] = $rows[0]["Region"];
     } catch(PDOException $ex) {
-        $log->error("Database error in profile.php", $ex->getMessage());
+        Log::Error("Database error in profile.php", $ex->getMessage());
     }
     
-    $twig_options["RegionList"] = $riot->getRegions();
+    $twig_options["RegionList"] = Riot::GetRegions();
     
     echo $template->render($twig_options);
 ?>

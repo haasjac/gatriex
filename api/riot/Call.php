@@ -2,23 +2,21 @@
     require_once($_SERVER['DOCUMENT_ROOT'] . '/credentials/riot.php');
     require_once($_SERVER['DOCUMENT_ROOT'] . '/library/libraries.php');
     
-    function api_call($url) {
-        global $api_token, $log;
-        
+    function api_call($url) {        
         $response = new Response();
         
-        $curl = curl_init();
+        /*$curl = curl_init();
         curl_setopt_array($curl, array(
             CURLOPT_URL => $url,
             CURLOPT_SSL_VERIFYPEER => FALSE,
             CURLOPT_RETURNTRANSFER => TRUE,
-            CURLOPT_HTTPHEADER => array('X-Riot-Token: ' . $api_token)
+            CURLOPT_HTTPHEADER => array('X-Riot-Token: ' . _Riot::ApiToken)
         ));
-        
+				        
         $result = curl_exec($curl);
         
         if (!$result) {
-            $log->error("Curl error in Call.php", curl_error($curl));
+            Log::Error("Curl error in Call.php", curl_error($curl));
             $response->data["Error"] = "Error handling request.";
             $response->valid = false;
         } else {
@@ -37,7 +35,10 @@
                 $response->data["Error"] = $response->data["Response"]->status->message;
                 $response->valid = false;
             }
-        }
+        }*/
+
+		$response->data["Error"] = "This service temporarily unavailable.";
+        $response->valid = false;
         
         return $response;
     }

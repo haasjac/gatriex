@@ -17,7 +17,7 @@
         $Characters = new stdClass();
 
         $sql = "SELECT CharacterInfo, CurrentCharacter FROM Tabletop_InitiativeTracker WHERE CampaignGuid = ?";
-        $stmt = $db->prepare($sql);
+        $stmt = Database::Get()->prepare($sql);
         $stmt->execute(array($Guid));
 
         if ($stmt->rowCount() <= 0) {
@@ -34,7 +34,7 @@
         $CurrentCharacter = $row["CurrentCharacter"];
 
         $sql = "SELECT C.Guid, C.Name, F.Id As FactionId, F.Name As FactionName, F.Icon As FactionIcon, F.Precedence As FactionPrecedence, C.InitiativeBonus, C.InitiativeAdvantage FROM Tabletop_Characters C Join Tabletop_Factions F ON C.Faction = F.Id WHERE C.CampaignGuid = ?";
-        $stmt = $db->prepare($sql);
+        $stmt = Database::Get()->prepare($sql);
         $stmt->execute(array($Guid));
 
         while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
@@ -43,11 +43,11 @@
         }
 
         $sql = "SELECT Id, Name, Precedence FROM Tabletop_Factions";
-        $stmt = $db->prepare($sql);
-        $stmt->execute(array($Guid));
+        $stmt = Database::Get()->prepare($sql);
+        $stmt->execute();
 
         $Factions = new stdClass();
-
+		
         while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $factionId = $row["Id"];
             $Factions->$factionId = $row;
@@ -62,7 +62,7 @@
         echo json_encode($response);
     } catch (PDOException $ex) {
         http_response_code(500);
-        $log->error("Database error in GetCampaign.php", $ex->getMessage());
+        Log::Error("Database error in GetCampaign.php", $ex->getMessage());
         echo "Error handling request.";
     }
 ?>

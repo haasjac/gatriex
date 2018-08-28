@@ -1,9 +1,11 @@
 <?php
+
     require_once($_SERVER['DOCUMENT_ROOT'] . '/library/database.php');
     require_once($_SERVER['DOCUMENT_ROOT'] . '/library/response.php');
     
-    class myMail {
-        function sendEmail($mail_to, $mail_subject, $mail_message): bool {
+    class Mail {
+
+        public static function SendEmail($mail_to, $mail_subject, $mail_message): bool {
             $from_name = "Gatriex";
             $from_mail = "DoNotReply@Gatriex.com";
 
@@ -20,7 +22,7 @@
             return mail($mail_to, $mail_subject, $mail_message, $header);
         }
         
-        function sendContactEmail($mail_subject, $mail_message, $from_name, $from_mail): Response {
+        public static function SendContactEmail($mail_subject, $mail_message, $from_name, $from_mail): Response {
             $response = new Response();
             
             $mail_to = "Contact@gatriex.com";
@@ -45,12 +47,12 @@
             return $response;
         }
 
-        function sendForgetUsernameEmail($email): Response {
+        public static function SendForgetUsernameEmail($email): Response {
             global $db;
             $response = new Response();
 
             try {
-                $stmt = $db->prepare("SELECT Username FROM User_Info WHERE Email = ?");
+                $stmt = Database::Get()->prepare("SELECT Username FROM User_Info WHERE Email = ?");
                 $stmt->execute(array($email));
                 $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
             } catch(PDOException $ex) {
@@ -74,7 +76,7 @@
 
             $mail_message .= "Your Username is: <b>" . $username . "</b>";
 
-            $response->valid = $this->sendEmail($mail_to, $mail_subject, $mail_message);
+            $response->valid = Mail::SendEmail($mail_to, $mail_subject, $mail_message);
 
             if (!$response->valid) {
                 $response->data["Error"] = "Email failed to send.";
@@ -83,16 +85,16 @@
             return $response;
         }
 
-        function sendForgetPasswordEmail($username, $token): Response {
+        public static function SendForgetPasswordEmail($username, $token): Response {
             global $db;
             $response = new Response();
 
             try {
-                $stmt = $db->prepare("SELECT Email FROM User_Info  WHERE Username = ?");
+                $stmt = Database::Get()->prepare("SELECT Email FROM User_Info  WHERE Username = ?");
                 $stmt->execute(array($username));
                 $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
             } catch(PDOException $ex) {
-                $log->error("Database error in mail.php", $ex->getMessage());
+                Log::Error("Database error in mail.php", $ex->getMessage());
                 $response->data["Error"] = "Error handling request.";
                 $response->valid = false;
                 return $response;
@@ -117,7 +119,7 @@
 
             $mail_message .= $url;
 
-            $response->valid = $this->sendEmail($mail_to, $mail_subject, $mail_message);
+            $response->valid = Mail::SendEmail($mail_to, $mail_subject, $mail_message);
 
             if (!$response->valid) {
                 $response->data["Error"] = "Email failed to send.";
@@ -125,7 +127,7 @@
 
             return $response;
         }
+
     }
-    
-    $mail = new myMail();
+
 ?>

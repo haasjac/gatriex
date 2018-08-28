@@ -1,7 +1,7 @@
 <?php
     require_once($_SERVER['DOCUMENT_ROOT'] . '/library/libraries.php');
         
-    $result = $authentication->validateUserFromToken($input->getCookie("Auth_Id"), $input->getCookie("Auth_Token"));
+    $result = Authentication::ValidateUserFromToken();
     if (!$result->valid) {
         echo json_encode($result);
         return;
@@ -10,7 +10,7 @@
     $User = $result->data["Username"];
     
     try {                
-        $stmt = $db->prepare("SELECT Guid, CampaignName FROM Tabletop_Campaigns WHERE Username=?");
+        $stmt = Database::Get()->prepare("SELECT Guid, CampaignName FROM Tabletop_Campaigns WHERE Username=?");
         $stmt->execute(array($User));
 
         $Campaigns = array();
@@ -25,7 +25,7 @@
         return;
     } catch (PDOException $ex) {
         http_response_code(500);
-        $log->error("Database error in AddCampaign.php", $ex->getMessage());
+        Log::Error("Database error in AddCampaign.php", $ex->getMessage());
         echo "Error handling request.";
     }
 ?>

@@ -5,7 +5,7 @@
     $template = $twig->load('tabletop/mycampaigns/mycampaigns.twig');
     $twig_options = getTwigOptions();
 
-    $redirect->requireUser($twig_options["Username"]);
+    Redirect::RequireUser($twig_options["Username"]);
     
     echo $template->render($twig_options);
 ?>

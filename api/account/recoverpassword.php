@@ -1,12 +1,12 @@
 <?php
     require_once($_SERVER['DOCUMENT_ROOT'] . '/library/libraries.php');
     
-    $username = $input->getPost("username");
+    $username = Input::GetPost("username");
     
-    $result = $authentication->generateForgetToken($username);
+    $result = Authentication::GenerateForgetToken($username);
     
     if ($result->valid) { 
-        $result = $mail->sendForgetPasswordEmail($username, $result->data["Token"]);
+        $result = Mail::SendForgetPasswordEmail($username, $result->data["Token"]);
     }
     
     echo json_encode($result);

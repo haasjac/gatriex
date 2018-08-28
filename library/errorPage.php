@@ -1,8 +1,10 @@
 <?php
+
     require_once ($_SERVER['DOCUMENT_ROOT'] . '/library/twig.php');
 
-    class myErrorPage {
-        function render($error_code) {
+    class ErrorPage {
+
+        public static function Render($error_code) {
             global $twig;
 
             $error_path = $_SERVER['DOCUMENT_ROOT'] . "/pages/error/" . $error_code . ".twig";
@@ -21,7 +23,7 @@
             http_response_code($error_code);
             echo $template->render($twig_options);
         }
+
     }
     
-    $errorPage = new myErrorPage();
 ?>

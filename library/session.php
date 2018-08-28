@@ -1,14 +1,16 @@
 <?php
-    class mySession {
-        function startSession() {
+
+    class Session {
+        
+		public static function StartSession() {
             if (session_status() === PHP_SESSION_ACTIVE) {
                 return;
             }
             session_start();
         }
 
-        function endSession() {
-            $this->startSession();
+        public static function EndSession() {
+            Session::StartSession();
 
             // Unset all of the session variables.
             $_SESSION = array();
@@ -26,7 +28,7 @@
             // Finally, destroy the session.
             session_destroy();
         }
+
     }
-    
-    $session = new mySession();
+
 ?>

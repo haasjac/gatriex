@@ -84,7 +84,7 @@ $(function () {
             data.Faction = $("#editAddCharacterFaction").val();
             data.Name = $("#editAddCharacterName").val();
             data.InitiativeBonus = Number($("#editAddCharacterInitBonus").val());
-            data.InitiativeAdvantage = !!$("#editAddCharacterInitAdvantage:checked").val() ? 1 : 0;
+            data.InitiativeAdvantage = $("#editAddCharacterInitAdvantage:checked").val() ? 1 : 0;
             data.CampaignGuid = TwigOptions.CampaignGuid;
 
             var postData = { "data": data };
@@ -97,6 +97,8 @@ $(function () {
                     $("#editAddCharacterName").val("Barry Bluejeans");
                     $("#editAddCharacterInitBonus").val(0);
                     $("#editAddCharacterInitAdvantage").prop("checked", false);
+                    $("#fakeeditAddCharacterInitAdvantage").addClass("fa-square");
+                    $("#fakeeditAddCharacterInitAdvantage").removeClass("fa-check-square");
 
                     $('#editAddCharacter').toggle();
 
@@ -115,6 +117,8 @@ $(function () {
             $("#editAddCharacterName").val("Barry Bluejeans");
             $("#editAddCharacterInitBonus").val(0);
             $("#editAddCharacterInitAdvantage").prop("checked", false);
+            $("#fakeeditAddCharacterInitAdvantage").addClass("fa-square");
+            $("#fakeeditAddCharacterInitAdvantage").removeClass("fa-check-square");
             
             $('#editAddCharacter').toggle();
 
@@ -186,7 +190,7 @@ $(function () {
             data.Faction = $("#editCharacterFaction_" + guid).val();
             data.Name = $("#editCharacterName_" + guid).val();
             data.InitiativeBonus = Number($("#editCharacterInitBonus_" + guid).val());
-            data.InitiativeAdvantage = !!$("#editCharacterInitAdvantage_" + guid + ':checked').val() ? 1 : 0;
+            data.InitiativeAdvantage = $("#editCharacterInitAdvantage_" + guid + ':checked').val() ? 1 : 0;
 
             var postData = { "data": data };
             dataRequester.apiCall('/api/tabletop/campaign/EditCharacter.php', "POST", postData, function (response) {
@@ -198,7 +202,7 @@ $(function () {
                     $("#characterInitBonusValue_" + guid).text(data.InitiativeBonus);
                     $("#characterInitAdvantageValue_" + guid).text(data.InitiativeAdvantage);
 
-                    if ($("#editCharacterFaction_" + guid).val() != $("#characterFaction_" + guid).text()) {
+                    if ($("#editCharacterFaction_" + guid).val() !== $("#characterFaction_" + guid).text()) {
 
                         var oldFactionName = contentData.Factions[$("#characterFaction_" + guid).text()].Name;
                         var newFactionName = contentData.Factions[$("#editCharacterFaction_" + guid).val()].Name;
@@ -244,7 +248,7 @@ $(function () {
             $("#editCharacterFaction_" + guid).val($("#characterFaction_" + guid).text());
             $("#editCharacterName_" + guid).val($("#characterName_" + guid).text());
             $("#editCharacterInitBonus_" + guid).val($("#characterInitBonusValue_" + guid).text());
-            if ($("#characterInitAdvantageValue_" + guid).text() == 0) {
+            if ($("#characterInitAdvantageValue_" + guid).text() === 0) {
                 $("#fakeeditCharacterInitAdvantage_" + guid).addClass("fa-square-o");
                 $("#fakeeditCharacterInitAdvantage_" + guid).removeClass("fa-check-square-o");
                 $("#editCharacterInitAdvantage_" + guid).prop("checked", false);
@@ -266,7 +270,7 @@ $(function () {
 
     function displayInitBonus(bonus) {
         var sign = '';
-        if (bonus == 0) {
+        if (bonus === 0) {
             sign = '\u00B1';
         } else if (bonus > 0) {
             sign = '+';
@@ -276,7 +280,7 @@ $(function () {
     }
 
     function displayInitAdvantage(advantage) {
-        if (advantage != 0) {
+        if (advantage !== 0) {
             return '<i class="far fa-fw fa-check-square"></i>';
         }
         else {
@@ -353,8 +357,8 @@ $(function () {
             '<div class="characterInitiative">' +
             '<i id="editInitAdvantageIcon_' + guid + '" class="fas fa-fw fa-chevron-double-up faction-' + character.FactionName + '"></i> ' +
                 '<span>Initiative Advantage: </span>' +
-                '<i class="far ' + (character.InitiativeAdvantage != 0 ? 'fa-check-square' : 'fa-square') + ' fakeCheck" data-realcheck="editCharacterInitAdvantage_' + guid + '" id="fakeeditCharacterInitAdvantage_' + guid + '"></i>' +
-                '<input type="checkbox" name="editCharacterInitAdvantage_' + guid + '" id="editCharacterInitAdvantage_' + guid + '" ' + (character.InitiativeAdvantage != 0 ? 'checked = "checked"' : '') + ' style = "display:none" />' +
+                '<i class="far ' + (character.InitiativeAdvantage !== 0 ? 'fa-check-square' : 'fa-square') + ' fakeCheck" data-realcheck="editCharacterInitAdvantage_' + guid + '" id="fakeeditCharacterInitAdvantage_' + guid + '"></i>' +
+                '<input type="checkbox" name="editCharacterInitAdvantage_' + guid + '" id="editCharacterInitAdvantage_' + guid + '" ' + (character.InitiativeAdvantage !== 0 ? 'checked = "checked"' : '') + ' style = "display:none" />' +
             '</div>' +
 
             '</div>');

@@ -11,7 +11,7 @@
         return;
     }
     
-    $result = $authentication->validateUserFromToken($input->getCookie("Auth_Id"), $input->getCookie("Auth_Token"));
+    $result = Authentication::ValidateUserFromToken();
     if (!$result->valid) {
         echo json_encode($result);
         return;
@@ -28,21 +28,21 @@
     }
         
     try {
-        $db->beginTransaction();
+        Database::Get()->beginTransaction();
 
         $sql = "UPDATE Tabletop_InitiativeTracker I JOIN Tabletop_Campaigns C ON I.CampaignGuid = C.Guid SET I.CurrentCharacter = ? WHERE C.Username = ? AND I.CampaignGuid = ?";
-        $stmt = $db->prepare($sql);
+        $stmt = Database::Get()->prepare($sql);
         $stmt->execute(array($CurrentCharacter, $user, $CampaignGuid));
         
-        $db->commit();
+        Database::Get()->commit();
         $response = new Response();
         $response->valid = true;
         echo json_encode($response);
         return;
     } catch (PDOException $ex) {
         http_response_code(500);
-        $log->error("Database error in SaveCurrentCharacter.php", $ex->getMessage());
+        Log::Error("Database error in SaveCurrentCharacter.php", $ex->getMessage());
         echo "Error handling request.";
-        $db->rollBack();
+        Database::Get()->rollBack();
     }
 ?>

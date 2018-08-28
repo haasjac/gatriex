@@ -1,6 +1,32 @@
 <?php
+
     require_once($_SERVER['DOCUMENT_ROOT'] . '/credentials/database.php');
     
-    $db = new PDO('mysql:host=' . $servername . ';dbname=' . $dbname . ';charset=utf8mb4', $username, $password, array(PDO::MYSQL_ATTR_FOUND_ROWS => true));
-    $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+	class Database {
+		
+		private static $db = NULL;
+
+		private static function Set() {
+		
+			Database::$db = new PDO(
+				'mysql:host=' . _Database::ServerName . ';dbname=' . _Database::DBName . ';charset=utf8mb4',
+				_Database::UserName,
+				_Database::Password,
+				array(PDO::MYSQL_ATTR_FOUND_ROWS => true)
+			);
+			Database::$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+			Database::$db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+			Database::$db->setAttribute(PDO::ATTR_STRINGIFY_FETCHES, false);
+
+		}
+
+		public static function Get() {
+			if (Database::$db === NULL) {
+				Database::Set();
+			}
+
+			return Database::$db;
+		}
+	}
+
 ?>

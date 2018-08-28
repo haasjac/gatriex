@@ -11,7 +11,7 @@
         return;
     }
 
-    $result = $authentication->validateUserFromToken($input->getCookie("Auth_Id"), $input->getCookie("Auth_Token"));
+    $result = Authentication::ValidateUserFromToken();
     if (!$result->valid) {
         echo json_encode($result);
         return;
@@ -21,7 +21,7 @@
     
     try {        
         $sql = "SELECT Id, Name, Icon FROM Tabletop_Factions";
-        $stmt = $db->prepare($sql);
+        $stmt = Database::Get()->prepare($sql);
         $stmt->execute();
 
         $Factions = new stdClass();
@@ -32,7 +32,7 @@
         }
 
         $sql = "SELECT C.Guid, C.Name, F.Id As FactionId, F.Name As FactionName, F.Icon As FactionIcon, C.InitiativeBonus, C.InitiativeAdvantage FROM Tabletop_Characters C Join Tabletop_Factions F ON C.Faction = F.Id WHERE C.CampaignGuid = ?";
-        $stmt = $db->prepare($sql);
+        $stmt = Database::Get()->prepare($sql);
         $stmt->execute(array($Guid));
 
         $Characters = new stdClass();
@@ -49,7 +49,7 @@
         echo json_encode($response);
     } catch (PDOException $ex) {
         http_response_code(500);
-        $log->error("Database error in campaign/GetCampaign.php", $ex->getMessage());
+        Log::Error("Database error in campaign/GetCampaign.php", $ex->getMessage());
         echo "Error handling request.";
     }
 ?>

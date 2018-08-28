@@ -1,9 +1,9 @@
 <?php
     require_once($_SERVER['DOCUMENT_ROOT'] . '/library/libraries.php');
     
-    $email = $input->getPost("email");
+    $email = Input::GetPost("email");
     
-    $result = $validation->validateEmail($email);
+    $result = Validation::ValidateEmail($email);
     
     echo $result->valid ? "true" : "false";
 ?>

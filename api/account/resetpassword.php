@@ -1,15 +1,15 @@
 <?php
     require_once($_SERVER['DOCUMENT_ROOT'] . '/library/libraries.php');
     
-    $username = $input->getPost("username");
-    $password = $input->getPost("password");
-    $confirmPassword = $input->getPost("confirmPassword");
-    $token = $input->getPost("token");
+    $username = Input::GetPost("username");
+    $password = Input::GetPost("password");
+    $confirmPassword = Input::GetPost("confirmPassword");
+    $token = Input::GetPost("token");
     
-    $result = $validation->confirmPassword($password, $confirmPassword);
+    $result = Validation::ConfirmPassword($password, $confirmPassword);
     
     if ($result->valid) {
-        $result = $authentication->resetPasswordFromForgetToken($username, $password, $token);
+        $result = Authentication::ResetPasswordFromForgetToken($username, $password, $token);
     }
     
     echo json_encode($result);

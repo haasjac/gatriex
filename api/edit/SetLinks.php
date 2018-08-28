@@ -11,7 +11,7 @@
         return;
     }
     
-    $result = $authentication->validateUserFromToken($input->getCookie("Auth_Id"), $input->getCookie("Auth_Token"));
+    $result = Authentication::ValidateUserFromToken();
     if (!$result->valid) {
         echo json_encode($result);
         return;
@@ -20,9 +20,9 @@
     $user = $result->data["Username"];
     
     try {
-        $db->beginTransaction();
+        Database::Get()->beginTransaction();
         
-        $result = $db->prepare("DELETE FROM `Links` WHERE Username = ?");
+        $result = Database::Get()->prepare("DELETE FROM `Links` WHERE Username = ?");
         $result->execute(array($user));
         
         $sql = "INSERT INTO Links (Text, Link, Header, Username) VALUES ";
@@ -46,19 +46,19 @@
         
         $sql .= $values;
                 
-        $stmt = $db->prepare($sql);
+        $stmt = Database::Get()->prepare($sql);
         
         $stmt->execute($value_data);
         
-        $db->commit();
+        Database::Get()->commit();
         $response = new Response();
         $response->valid = true;
         echo json_encode($response);
         return;
     } catch (PDOException $ex) {
         http_response_code(500);
-        $log->error("Database error in SetLinks.php", $ex->getMessage());
+        Log::Error("Database error in SetLinks.php", $ex->getMessage());
         echo "Error handling request.";
-        $db->rollBack();
+        Database::Get()->rollBack();
     }
 ?>

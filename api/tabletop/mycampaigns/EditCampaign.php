@@ -11,7 +11,7 @@
         return;
     }
     
-    $result = $authentication->validateUserFromToken($input->getCookie("Auth_Id"), $input->getCookie("Auth_Token"));
+    $result = Authentication::ValidateUserFromToken();
     if (!$result->valid) {
         echo json_encode($result);
         return;
@@ -25,7 +25,7 @@
 
     try {
         $sql = "SELECT Guid FROM Tabletop_Campaigns WHERE Username = ? AND CampaignName=?";
-        $stmt = $db->prepare($sql);
+        $stmt = Database::Get()->prepare($sql);
         $stmt->execute(array($User, $CampaignName));
 
         $row = $stmt->fetchColumn();
@@ -40,13 +40,13 @@
         
     } catch (PDOException $ex) {
         http_response_code(500);
-        $log->error("Database error in EditCampaign.php", $ex->getMessage());
+        Log::Error("Database error in EditCampaign.php", $ex->getMessage());
         echo "Error handling request.";
         return;
     }
     
     try {                
-        $stmt = $db->prepare("UPDATE Tabletop_Campaigns SET CampaignName=? WHERE Guid=? AND Username=?");
+        $stmt = Database::Get()->prepare("UPDATE Tabletop_Campaigns SET CampaignName=? WHERE Guid=? AND Username=?");
         $stmt->execute(array($CampaignName, $Guid, $User));
 
         $response = new Response();
@@ -55,7 +55,7 @@
         return;
     } catch (PDOException $ex) {
         http_response_code(500);
-        $log->error("Database error in EditCampaign.php", $ex->getMessage());
+        Log::Error("Database error in EditCampaign.php", $ex->getMessage());
         echo "Error handling request.";
     }
 ?>
