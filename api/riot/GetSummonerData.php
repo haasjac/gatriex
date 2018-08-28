@@ -52,10 +52,19 @@
             $response->data["Mastery"] = array_slice($result->data["Response"], 0, 3);
         }
     }
+		
+    $result = getVersion();
+
+	if (!$result->valid) {
+        echo json_encode($result);
+        return;
+    } else {
+        $response->data["Version"] = $result->data["Version"];
+    }
     
     $response->data["Champions"] = array();
     for ($i = 0; $i < sizeof($response->data["Mastery"]); $i++) {
-        $result = getChampion($region, $response->data["Mastery"][$i]->championId);
+        $result = getChampion($response->data["Version"], $response->data["Mastery"][$i]->championId);
     
         if (!$result->valid) {
             echo json_encode($result);
@@ -65,62 +74,24 @@
         }
     }    
     
-    $result = getVersion($region);
-    
-    if (!$result->valid) {
-        echo json_encode($result);
-        return;
-    } else {
-        $response->data["Version"] = $result->data["Version"];
-    }
-    
     $response->valid = true;
     echo json_encode($response);
        
-    function getVersion($region): Response {
-        $response = new Response();
-        $sql = "SELECT * FROM Version WHERE Region = ? AND Time >= DATE_SUB(NOW(), INTERVAL 10 MINUTE)";
-        $stmt = Database::Get()->prepare($sql);
-        $stmt->execute(array($region));
-        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    function getVersion(): Response {
+		$result = DataDragon("https://ddragon.leagueoflegends.com/api/versions.json");
+            
+        if (!$result->valid) {
+            return $result;
+        }
+            
+		$response = new Response();
+        $response->data["Version"] = $result->data["Response"][0];
+        $response->valid = true;
 
-        if (sizeof($result) > 0) {
-            $response->data["Version"] = $result[0]["Version"];
-            $response->valid = true;
-            return $response;
-        }
-        else {
-            $result = api_call("https://" . $region . ".api.riotgames.com/lol/static-data/v3/versions");
-            
-            if (!$result->valid) {
-                return $result;
-            }
-            
-            $response->data["Version"] = $result->data["Response"][0];
-            $response->valid = true;
-            
-            try {
-                Database::Get()->beginTransaction();
-                $sql = "UPDATE Version SET Version = ?, Time = CURRENT_TIMESTAMP WHERE Region = ?";
-                $stmt = Database::Get()->prepare($sql);
-                $stmt->execute(array($response->data["Version"], $region));
-                if ($stmt->rowCount() <= 0) {
-                    $stmt = Database::Get()->prepare("INSERT INTO Version (Version, Region) VALUES (?,?)");
-                    $stmt->execute(array($response->data["Version"], $region));
-                }
-                Database::Get()->commit();
-            } catch (PDOException $ex) {
-                Log::Error("Database error in GetSummonerData.php", $ex->getMessage());
-                $response->data["Error"] = "Error handling request";
-                $response->valid = false;
-                Database::Get()->rollBack();
-                return $response;
-            }
-            return $response;
-        }
+		return $response;
     }
     
-    function getChampion($region, $id): Response {
+    function getChampion($version, $id): Response {
         $response = new Response();
         $sql = "SELECT * FROM Champions WHERE id = ?";
         $stmt = Database::Get()->prepare($sql);
@@ -133,18 +104,35 @@
             return $response;
         }
         else {
-            $result = api_call("https://" . $region . ".api.riotgames.com/lol/static-data/v3/champions/" . $id);
+			$result = DataDragon("https://ddragon.leagueoflegends.com/cdn/" . $version . "/data/en_US/champion.json");
             
             if (!$result->valid) {
                 return $result;
             }
-            var_dump($result);
-            $response->data["Key"] = $result->data["Response"]->key;
+			
+			try {
+				foreach($result->data["Response"]->data as $name => $data) {
+					if (intval($data->key) === $id) {
+						$response->data["Key"] = $data->id;
+					}
+				}
+			}
+			catch (Exception $ex) {
+				$response->data["Key"] = "";
+			}
+
+			if (!isset($response->data["Key"])) {
+				Log::Error("Cound not find champion in GetSummonerData.php", $id);
+				$response->data["Error"] = "Error handling request";
+                $response->valid = false;
+                return $response;
+			}
+
             $response->valid = true;
             
             try {
                 $stmt = Database::Get()->prepare("INSERT INTO Champions (id, ChampKey) VALUES (?,?)");
-                $stmt->execute(array($id, $result->data["Response"]->key));
+                $stmt->execute(array($id, $response->data["Key"]));
             } catch (PDOException $ex) {
                 Log::Error("Database error in GetSummonerData.php", $ex->getMessage());
                 $response->data["Error"] = "Error handling request";
