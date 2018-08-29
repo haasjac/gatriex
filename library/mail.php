@@ -48,7 +48,6 @@
         }
 
         public static function SendForgetUsernameEmail($email): Response {
-            global $db;
             $response = new Response();
 
             try {
@@ -86,7 +85,6 @@
         }
 
         public static function SendForgetPasswordEmail($username, $token): Response {
-            global $db;
             $response = new Response();
 
             try {

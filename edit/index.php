@@ -2,8 +2,8 @@
     require_once ($_SERVER['DOCUMENT_ROOT'] . '/library/twig.php');
     require_once ($_SERVER['DOCUMENT_ROOT'] . '/library/libraries.php');
     
-    $template = $twig->load('edit/edit.twig');
-    $twigOptions = GetTwigOptions();
+    $template = Twig::GetTwig()->load('edit/edit.twig');
+    $twigOptions = Twig::GetTwigOptions();
         
     Redirect::RequireUser($twigOptions["Username"]);
     

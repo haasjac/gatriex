@@ -2,8 +2,8 @@
     require_once ($_SERVER['DOCUMENT_ROOT'] . '/library/twig.php');
     require_once ($_SERVER['DOCUMENT_ROOT'] . '/library/libraries.php');
     
-    $template = $twig->load('home/home.twig');
-    $twigOptions = GetTwigOptions();
+    $template = Twig::GetTwig()->load('home/home.twig');
+    $twigOptions = Twig::GetTwigOptions();
     
     if ($twigOptions["Username"] !== "") {
         try {

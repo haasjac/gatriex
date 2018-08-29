@@ -5,8 +5,6 @@
     class ErrorPage {
 
         public static function Render($errorCode) {
-            global $twig;
-
             $errorPath = $_SERVER['DOCUMENT_ROOT'] . "/pages/error/" . $errorCode . ".twig";
 
             if (file_exists($errorPath)) {
@@ -15,8 +13,8 @@
                 $errorPath = "error/generic.twig";
             }
 
-            $template = $twig->load($errorPath);
-            $twigOptions = GetTwigOptions();
+            $template = Twig::GetTwig()->load($errorPath);
+            $twigOptions = Twig::GetTwigOptions();
 
             $twigOptions["ErrorCode"] = $errorCode;
             

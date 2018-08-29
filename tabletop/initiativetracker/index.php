@@ -2,8 +2,8 @@
     require_once ($_SERVER['DOCUMENT_ROOT'] . '/library/twig.php');
     require_once ($_SERVER['DOCUMENT_ROOT'] . '/library/libraries.php');
     
-    $template = $twig->load('tabletop/initiativetracker/initiativetracker.twig');
-    $twigOptions = GetTwigOptions();
+    $template = Twig::GetTwig()->load('tabletop/initiativetracker/initiativetracker.twig');
+    $twigOptions = Twig::GetTwigOptions();
 
     Redirect::RequireUser($twigOptions["Username"]);
         

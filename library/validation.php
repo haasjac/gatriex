@@ -7,7 +7,6 @@
     class Validation {
 
         public static function ValidateUsername($username): Response {
-            global $db;
             $response = new Response();
 
             try {
@@ -57,7 +56,6 @@
         }
 
         public static function ValidateEmail($email): Response {
-            global $db;
             $response = new Response();
 
             $response->valid = filter_var($email, FILTER_VALIDATE_EMAIL);
