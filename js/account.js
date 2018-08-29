@@ -90,7 +90,7 @@ $(function () {
         $.ajax({
             url: "/api/account/logout.php",
             success: function () {
-                location.reload(true);
+                location.assign("/");
             },
             error: function (xhr, status, error) {
                 console.log(error);
