@@ -20,7 +20,7 @@
         return;
     }
     
-    $result = api_call("https://" . $region . ".api.riotgames.com/lol/summoner/v3/summoners/by-name/" . $summonerName);
+    $result = ApiCall("https://" . $region . ".api.riotgames.com/lol/summoner/v3/summoners/by-name/" . $summonerName);
     
     if (!$result->valid) {
         echo json_encode($result);
@@ -29,7 +29,7 @@
         $response->data["Summoner"] = $result->data["Response"];
     }
     
-    $result = api_call("https://" . $region . ".api.riotgames.com/lol/league/v3/positions/by-summoner/" . $response->data["Summoner"]->id);
+    $result = ApiCall("https://" . $region . ".api.riotgames.com/lol/league/v3/positions/by-summoner/" . $response->data["Summoner"]->id);
     
     if (!$result->valid) {
         echo json_encode($result);
@@ -38,14 +38,14 @@
         $response->data["League"] = $result->data["Response"];
     }
     
-    $result = api_call("https://" . $region . ".api.riotgames.com/lol/champion-mastery/v3/champion-masteries/by-summoner/" . $response->data["Summoner"]->id);
+    $result = ApiCall("https://" . $region . ".api.riotgames.com/lol/champion-mastery/v3/champion-masteries/by-summoner/" . $response->data["Summoner"]->id);
     
     if (!$result->valid) {
         echo json_encode($result);
         return;
     } else {
         $array = $result->data["Response"];
-        $sorted = usort($array, "sortMastery");
+        $sorted = usort($array, "SortMastery");
         if ($sorted) {
             $response->data["Mastery"] = array_slice($array, 0, 3);
         } else {
@@ -53,7 +53,7 @@
         }
     }
 		
-    $result = getVersion();
+    $result = GetVersion();
 
 	if (!$result->valid) {
         echo json_encode($result);
@@ -64,7 +64,7 @@
     
     $response->data["Champions"] = array();
     for ($i = 0; $i < sizeof($response->data["Mastery"]); $i++) {
-        $result = getChampion($response->data["Version"], $response->data["Mastery"][$i]->championId);
+        $result = GetChampion($response->data["Version"], $response->data["Mastery"][$i]->championId);
     
         if (!$result->valid) {
             echo json_encode($result);
@@ -77,7 +77,7 @@
     $response->valid = true;
     echo json_encode($response);
        
-    function getVersion(): Response {
+    function GetVersion(): Response {
 		$result = DataDragon("https://ddragon.leagueoflegends.com/api/versions.json");
             
         if (!$result->valid) {
@@ -91,7 +91,7 @@
 		return $response;
     }
     
-    function getChampion($version, $id): Response {
+    function GetChampion($version, $id): Response {
         $response = new Response();
         $sql = "SELECT * FROM Champions WHERE id = ?";
         $stmt = Database::Get()->prepare($sql);
@@ -143,7 +143,7 @@
         }
     }
     
-    function sortMastery($a, $b): int {
+    function SortMastery($a, $b): int {
         try {
             if ($a->championLevel === $b->championLevel) {
                 return $b->championPoints - $a->championPoints;

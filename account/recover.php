@@ -2,7 +2,7 @@
     require_once ($_SERVER['DOCUMENT_ROOT'] . '/library/twig.php');
     
     $template = $twig->load('account/recover.twig');
-    $twig_options = getTwigOptions();
+    $twigOptions = GetTwigOptions();
     
-    echo $template->render($twig_options);
+    echo $template->render($twigOptions);
 ?>

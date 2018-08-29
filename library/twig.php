@@ -8,13 +8,13 @@
         //'cache' => 'compilation_cache',
     ));
     
-    function getTwigOptions(): Array {        
-        $twig_options = array();
+    function GetTwigOptions(): Array {        
+        $twigOptions = array();
         $user = Authentication::GetCurrentUser();
         
-        $twig_options["Username"] = $user;
-        $twig_options["year"] = date("Y");
+        $twigOptions["Username"] = $user;
+        $twigOptions["year"] = date("Y");
         
-        return $twig_options;
+        return $twigOptions;
     }
 ?>

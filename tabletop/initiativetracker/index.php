@@ -3,25 +3,25 @@
     require_once ($_SERVER['DOCUMENT_ROOT'] . '/library/libraries.php');
     
     $template = $twig->load('tabletop/initiativetracker/initiativetracker.twig');
-    $twig_options = getTwigOptions();
+    $twigOptions = GetTwigOptions();
 
-    Redirect::RequireUser($twig_options["Username"]);
+    Redirect::RequireUser($twigOptions["Username"]);
         
     if (isset($_REQUEST["id"])) {
         try {
             $sql = "SELECT CampaignName FROM Tabletop_Campaigns WHERE Guid = ? AND Username=?";
             $stmt = Database::Get()->prepare($sql);
-            $stmt->execute(array($_REQUEST["id"], $twig_options["Username"]));
+            $stmt->execute(array($_REQUEST["id"], $twigOptions["Username"]));
 
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
             
-            $twig_options["CampaignGuid"] = $_REQUEST["id"];
-            $twig_options["CampaignName"] = $row["CampaignName"];
+            $twigOptions["CampaignGuid"] = $_REQUEST["id"];
+            $twigOptions["CampaignName"] = $row["CampaignName"];
 
         } catch (PDOException $ex) {
             Log::Error("Database error in index.php (initiativetracker)", $ex->getMessage());
         }
     }
     
-    echo $template->render($twig_options);
+    echo $template->render($twigOptions);
 ?>

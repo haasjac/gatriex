@@ -28,10 +28,10 @@
         $sql = "INSERT INTO Links (Text, Link, Header, Username) VALUES ";
         
         $values = "";
-        $value_data = array();
+        $valueData = array();
         for ($i = 0; $i < count($data); $i++) {
             for ($j = 0; $j < count($data[$i]["items"]); $j++) {
-                array_push($value_data, $data[$i]["items"][$j]["text"], $data[$i]["items"][$j]["link"], $data[$i]["header"], $user);
+                array_push($valueData, $data[$i]["items"][$j]["text"], $data[$i]["items"][$j]["link"], $data[$i]["header"], $user);
                 $values .= "(?, ?, ?, ?)";
                 if ($j != count($data[$i]["items"]) - 1) {
                     $values .= ", ";
@@ -48,7 +48,7 @@
                 
         $stmt = Database::Get()->prepare($sql);
         
-        $stmt->execute($value_data);
+        $stmt->execute($valueData);
         
         Database::Get()->commit();
         $response = new Response();

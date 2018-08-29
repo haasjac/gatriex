@@ -3,11 +3,11 @@
     require_once ($_SERVER['DOCUMENT_ROOT'] . '/library/libraries.php');
     
     $template = $twig->load('account/register.twig');
-    $twig_options = getTwigOptions();
+    $twigOptions = GetTwigOptions();
     
-    Redirect::RequireNoUser($twig_options["Username"]);
+    Redirect::RequireNoUser($twigOptions["Username"]);
     
-    $twig_options["RegionList"] = Riot::GetRegions();
+    $twigOptions["RegionList"] = Riot::GetRegions();
     
-    echo $template->render($twig_options);
+    echo $template->render($twigOptions);
 ?>

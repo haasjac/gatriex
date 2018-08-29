@@ -11,7 +11,7 @@
         return;
     }
     
-    $result = api_call("https://" . $region . ".api.riotgames.com/lol/status/v3/shard-data");
+    $result = ApiCall("https://" . $region . ".api.riotgames.com/lol/status/v3/shard-data");
     
     echo json_encode($result);
 ?>

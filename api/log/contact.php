@@ -1,12 +1,12 @@
 <?php
     require_once($_SERVER['DOCUMENT_ROOT'] . '/library/libraries.php');
     
-    $from_name = Input::GetPost("name");
-    $from_mail = Input::GetPost("email");
-    $mail_subject = Input::GetPost("subject");
-    $mail_message = Input::GetPost("message");
+    $fromName = Input::GetPost("name");
+    $fromMail = Input::GetPost("email");
+    $mailSubject = Input::GetPost("subject");
+    $mailMessage = Input::GetPost("message");
     
-    $result = Mail::SendContactEmail($mail_subject, $mail_message, $from_name, $from_mail);
+    $result = Mail::SendContactEmail($mailSubject, $mailMessage, $fromName, $fromMail);
     
     echo json_encode($result);
 ?>

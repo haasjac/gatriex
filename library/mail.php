@@ -5,40 +5,40 @@
     
     class Mail {
 
-        public static function SendEmail($mail_to, $mail_subject, $mail_message): bool {
-            $from_name = "Gatriex";
-            $from_mail = "DoNotReply@Gatriex.com";
+        public static function SendEmail($mailTo, $mailSubject, $mailMessage): bool {
+            $fromName = "Gatriex";
+            $fromMail = "DoNotReply@Gatriex.com";
 
             $encoding = "utf-8";
 
             // Mail header
             $header = "Content-type: text/html; charset=".$encoding." \r\n";
-            $header .= "From: ".$from_name." <".$from_mail."> \r\n";
+            $header .= "From: ".$fromName." <".$fromMail."> \r\n";
             $header .= "MIME-Version: 1.0 \r\n";
             $header .= "Content-Transfer-Encoding: 8bit \r\n";
             $header .= "Date: ".date("r (T)")." \r\n";
 
             // Send mail
-            return mail($mail_to, $mail_subject, $mail_message, $header);
+            return mail($mailTo, $mailSubject, $mailMessage, $header);
         }
         
-        public static function SendContactEmail($mail_subject, $mail_message, $from_name, $from_mail): Response {
+        public static function SendContactEmail($mailSubject, $mailMessage, $fromName, $fromMail): Response {
             $response = new Response();
             
-            $mail_to = "Contact@gatriex.com";
+            $mailTo = "Contact@gatriex.com";
             
             $encoding = "utf-8";
 
             // Mail header
             $header = "Content-type: text/html; charset=".$encoding." \r\n";
-            $header .= "From: ".$from_name." <".$from_mail."> \r\n";
-            $header .= "Reply-To: ".$from_name." <".$from_mail."> \r\n";
+            $header .= "From: ".$fromName." <".$fromMail."> \r\n";
+            $header .= "Reply-To: ".$fromName." <".$fromMail."> \r\n";
             $header .= "MIME-Version: 1.0 \r\n";
             $header .= "Content-Transfer-Encoding: 8bit \r\n";
             $header .= "Date: ".date("r (T)")." \r\n";
 
             // Send mail
-            $response->valid = mail($mail_to, $mail_subject, $mail_message, $header);
+            $response->valid = mail($mailTo, $mailSubject, $mailMessage, $header);
             
             if (!$response->valid) {
                 $response->data["Error"] = "Email failed to send.";
@@ -70,13 +70,13 @@
 
             $username = $rows[0]["Username"];
 
-            $mail_to = $email;
-            $mail_subject = "Account Username";
-            $mail_message = "A username reminder has been requested for the account associated with this email address. If you did not request this username reminder, please ignore this email.<br><br>";
+            $mailTo = $email;
+            $mailSubject = "Account Username";
+            $mailMessage = "A username reminder has been requested for the account associated with this email address. If you did not request this username reminder, please ignore this email.<br><br>";
 
-            $mail_message .= "Your Username is: <b>" . $username . "</b>";
+            $mailMessage .= "Your Username is: <b>" . $username . "</b>";
 
-            $response->valid = Mail::SendEmail($mail_to, $mail_subject, $mail_message);
+            $response->valid = Mail::SendEmail($mailTo, $mailSubject, $mailMessage);
 
             if (!$response->valid) {
                 $response->data["Error"] = "Email failed to send.";
@@ -106,20 +106,20 @@
                 return $response;
             }
 
-            $mail_to = $rows[0]["Email"];
+            $mailTo = $rows[0]["Email"];
 
             $url = "https://gatriex.com/account/resetpassword.php?token=" . urlencode($token);
 
-            $mail_subject = "Reset Password";
-            $mail_message = "A password reset has been requested for the account associated with this email address. If you did not request this password reset, please ignore this email.<br><br>";
+            $mailSubject = "Reset Password";
+            $mailMessage = "A password reset has been requested for the account associated with this email address. If you did not request this password reset, please ignore this email.<br><br>";
 
-            $mail_message .= "If you did request a password reset, please <a href='" . $url ."'>click here</a> to create a new password. This link will only be active for 24 hours.<br><br>";
+            $mailMessage .= "If you did request a password reset, please <a href='" . $url ."'>click here</a> to create a new password. This link will only be active for 24 hours.<br><br>";
 
-            $mail_message .= "If clicking on the link does not work, please copy and paste this link into your browser:<br><br>";
+            $mailMessage .= "If clicking on the link does not work, please copy and paste this link into your browser:<br><br>";
 
-            $mail_message .= $url;
+            $mailMessage .= $url;
 
-            $response->valid = Mail::SendEmail($mail_to, $mail_subject, $mail_message);
+            $response->valid = Mail::SendEmail($mailTo, $mailSubject, $mailMessage);
 
             if (!$response->valid) {
                 $response->data["Error"] = "Email failed to send.";

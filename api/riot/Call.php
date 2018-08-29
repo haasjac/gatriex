@@ -2,7 +2,7 @@
     require_once($_SERVER['DOCUMENT_ROOT'] . '/credentials/riot.php');
     require_once($_SERVER['DOCUMENT_ROOT'] . '/library/libraries.php');
     
-    function api_call($url) {        
+    function ApiCall($url) {        
         $response = new Response();
         
         $curl = curl_init();

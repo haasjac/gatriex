@@ -4,24 +4,24 @@
 
     class ErrorPage {
 
-        public static function Render($error_code) {
+        public static function Render($errorCode) {
             global $twig;
 
-            $error_path = $_SERVER['DOCUMENT_ROOT'] . "/pages/error/" . $error_code . ".twig";
+            $errorPath = $_SERVER['DOCUMENT_ROOT'] . "/pages/error/" . $errorCode . ".twig";
 
-            if (file_exists($error_path)) {
-                $error_path = "error/" . $error_code . ".twig";
+            if (file_exists($errorPath)) {
+                $errorPath = "error/" . $errorCode . ".twig";
             } else {
-                $error_path = "error/generic.twig";
+                $errorPath = "error/generic.twig";
             }
 
-            $template = $twig->load($error_path);
-            $twig_options = getTwigOptions();
+            $template = $twig->load($errorPath);
+            $twigOptions = GetTwigOptions();
 
-            $twig_options["ErrorCode"] = $error_code;
+            $twigOptions["ErrorCode"] = $errorCode;
             
-            http_response_code($error_code);
-            echo $template->render($twig_options);
+            http_response_code($errorCode);
+            echo $template->render($twigOptions);
         }
 
     }

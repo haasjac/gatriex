@@ -4,10 +4,10 @@
 
     class Redirect {
 
-        public static function RedirectURL($url, $status_code = 302, $replace = true) {
+        public static function RedirectURL($url, $statusCode = 302, $replace = true) {
             if (headers_sent() === false)
             {
-                header('Location: ' . $url, $replace, $status_code);
+                header('Location: ' . $url, $replace, $statusCode);
             }
             exit();
         }
