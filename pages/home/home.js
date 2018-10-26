@@ -86,7 +86,7 @@ $(function () {
         }
         
         var searchName = $("#searchSummonerName").val().split(" ").join("");
-        if (searchName === "") {
+        if (searchName === "" && TwigOptions.SummonerName) {
             searchName = TwigOptions.SummonerName.split(" ").join("");
         }
         if (searchName === "") {
