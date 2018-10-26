@@ -1,16 +1,18 @@
 <?php
     require_once($_SERVER['DOCUMENT_ROOT'] . '/library/libraries.php');
        
-    $data = $_REQUEST["data"];
-    
-    if (!isset($data)) {
-        $response = new Response();
-        $response->data["Error"] = "Error handling data.";
-        $response->valid = false;
-        echo json_encode($response);
-        return;
-    }
+	Input::CheckMethod("PUT");
 
+	$expected = array(
+		"Guid"					=> NULL,
+		"Name"					=> NULL,
+		"Faction"				=> NULL,
+		"InitiativeBonus"		=> NULL,
+		"InitiativeAdvantage"	=> NULL
+	);
+
+	$input = Input::GetDataFromBody($expected);
+    
     $result = Authentication::ValidateUserFromToken();
     if (!$result->valid) {
         echo json_encode($result);
@@ -21,7 +23,7 @@
     
     try {    
         $stmt = Database::Get()->prepare("UPDATE Tabletop_Characters SET Name = ?, Faction = ?, InitiativeBonus = ?, InitiativeAdvantage = ? WHERE Guid = ? AND Username = ?");
-        $stmt->execute(array($data["Name"], $data["Faction"], $data["InitiativeBonus"], $data["InitiativeAdvantage"], $data["Guid"], $User));
+        $stmt->execute(array($input["Name"], $input["Faction"], $input["InitiativeBonus"], $input["InitiativeAdvantage"], $input["Guid"], $User));
 
         $response = new Response();
         $response->valid = true;

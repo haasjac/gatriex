@@ -383,11 +383,7 @@ $(function () {
         data.CampaignGuid = TwigOptions.CampaignGuid;
         data.CurrentCharacter = selectedCharacter;
 
-        var postData = {
-            "data": data
-        };
-
-        dataRequester.apiCall('/api/tabletop/initiativetracker/SaveCurrentCharacter.php', "POST", postData, function (response) {
+        dataRequester.apiCall('/api/tabletop/initiativetracker/SaveCurrentCharacter.php', "PUT", JSON.stringify(data), function (response) {
             if (!response.valid) {
                 $('#dialogMessage').html('<i class="fas fa-exclamation-triangle"></i> Error: ' + response.data.Error);
             }
@@ -400,12 +396,8 @@ $(function () {
         data.CampaignGuid = TwigOptions.CampaignGuid;
         data.CharacterInfo = CharacterInfo;
         data.CurrentCharacter = selectedCharacter;
-
-        var postData = {
-            "data": data
-        };
-
-        dataRequester.apiCall('/api/tabletop/initiativetracker/SaveCampaign.php', "POST", postData, function (response) {
+        
+        dataRequester.apiCall('/api/tabletop/initiativetracker/SaveCampaign.php', "PUT", JSON.stringify(data), function (response) {
             if (response.valid) {
                 //$('#dialogMessage').html('<i class="fas fa-save"></i>');
                 //setTimeout(function () { $('#dialogMessage').html(''); }, 1000);

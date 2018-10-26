@@ -23,7 +23,7 @@ $(function () {
                     remote: {
                         url: "/api/validation/UsernameFree.php",
                         data: { username: function () { return $("#createUsername").val(); } },
-                        method: "POST"
+                        method: "GET"
                     }
                 },
                 createPassword: {
@@ -40,7 +40,7 @@ $(function () {
                     remote: {
                         url: "/api/validation/EmailFree.php",
                         data: { email: function () { return $("#createEmail").val(); } },
-                        method: "POST"
+                        method: "GET"
                     }
                 },
                 createConfirmEmail: {
@@ -98,7 +98,7 @@ $(function () {
     }
     
     function register() {
-        var data = { 
+        var data = JSON.stringify({ 
             "username": $("#createUsername").val(), 
             "password": $("#createPassword").val(),
             "confirmPassword": $("#createConfirmPassword").val(),
@@ -106,7 +106,7 @@ $(function () {
             "confirmEmail": $("#createConfirmEmail").val(),
             "summoner": $("#createSummoner").val(),
             "region": $("#createRegion").val()
-        };
+        });
         dataRequester.apiCall('/api/account/register.php', "POST", data, function (response) {
             if (response.valid) {
                 $("#createForm").hide();

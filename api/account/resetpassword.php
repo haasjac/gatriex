@@ -1,10 +1,20 @@
 <?php
     require_once($_SERVER['DOCUMENT_ROOT'] . '/library/libraries.php');
     
-    $username = Input::GetPost("username");
-    $password = Input::GetPost("password");
-    $confirmPassword = Input::GetPost("confirmPassword");
-    $token = Input::GetPost("token");
+	Input::CheckMethod("POST");
+
+	$expected = array(
+		"username" =>	NULL,
+		"password" =>	NULL,
+		"confirmPassword" =>	NULL,
+		"token" =>	NULL
+	);
+
+	$input = Input::GetDataFromBody($expected);
+    $username = $input["username"];
+    $password = $input["password"];
+    $confirmPassword = $input["confirmPassword"];
+    $token = $input["token"];
     
     $result = Validation::ConfirmPassword($password, $confirmPassword);
     

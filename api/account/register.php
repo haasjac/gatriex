@@ -1,13 +1,26 @@
 <?php
     require_once($_SERVER['DOCUMENT_ROOT'] . '/library/libraries.php');
     
-    $username = Input::GetPost("username");
-    $password = Input::GetPost("password");
-    $confirmPassword = Input::GetPost("confirmPassword");
-    $email = Input::GetPost("email");
-    $confirmEmail = Input::GetPost("confirmEmail");
-    $summoner = Input::GetPost("summoner");
-    $region = Input::GetPost("region");
+	Input::CheckMethod("POST");
+
+	$expected = array(
+		"username" =>	NULL,
+		"password" =>	NULL,
+		"confirmPassword" =>	NULL,
+		"email" =>	NULL,
+		"confirmEmail" =>	NULL,
+		"summoner" =>	NULL,
+		"region" =>	NULL,
+	);
+
+	$input = Input::GetDataFromBody($expected);
+    $username = $input["username"];
+    $password = $input["password"];
+    $confirmPassword = $input["confirmPassword"];
+    $email = $input["email"];
+    $confirmEmail = $input["confirmEmail"];
+    $summoner = $input["summoner"];
+    $region = $input["region"];
     
     $result = Validation::ValidateUsername($username);
     

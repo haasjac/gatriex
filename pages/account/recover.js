@@ -21,9 +21,9 @@ $(function () {
         
         $("#recoverUsernameButton").click(function () {
             $("#recoverUsernameMessage").html("");
-            var data = { 
+            var data = JSON.stringify({ 
                 "email": $("#recoverUsernameEmail").val()
-            };
+            });
             dataRequester.apiCall('/api/account/recoverusername.php', "POST", data, function (response) {
                 if (response.valid) {
                     $("#recoverUsernameMessage").html("<i class='fas fa-check-circle'></i> Email Sent.");
@@ -35,9 +35,9 @@ $(function () {
         
         $("#recoverPasswordButton").click(function () {
             $("#recoverPasswordMessage").html("");
-            var data = { 
+            var data = JSON.stringify({ 
                 "username": $("#recoverPasswordUsername").val()
-            };
+            });
             dataRequester.apiCall('/api/account/recoverpassword.php', "POST", data, function (response) {
                 if (response.valid) {
                     $("#recoverPasswordMessage").html("<i class='fas fa-check-circle'></i> Email Sent.");

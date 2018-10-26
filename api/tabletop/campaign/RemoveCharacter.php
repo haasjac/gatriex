@@ -1,15 +1,13 @@
 <?php
     require_once($_SERVER['DOCUMENT_ROOT'] . '/library/libraries.php');
        
-    $data = $_REQUEST["data"];
-    
-    if (!isset($data)) {
-        $response = new Response();
-        $response->data["Error"] = "Error handling data.";
-        $response->valid = false;
-        echo json_encode($response);
-        return;
-    }
+	Input::CheckMethod("DELETE");
+
+	$expected = array(
+		"Guid" => NULL
+	);
+
+	$input = Input::GetDataFromBody($expected);
 
     $result = Authentication::ValidateUserFromToken();
     if (!$result->valid) {
@@ -21,7 +19,7 @@
     
     try {    
         $stmt = Database::Get()->prepare("DELETE FROM Tabletop_Characters WHERE Guid = ? AND Username = ?");
-        $stmt->execute(array($data["Guid"], $User));
+        $stmt->execute(array($input["Guid"], $User));
 
         $response = new Response();
         $response->valid = true;

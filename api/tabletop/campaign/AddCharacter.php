@@ -1,16 +1,18 @@
 <?php
     require_once($_SERVER['DOCUMENT_ROOT'] . '/library/libraries.php');
-       
-    $data = $_REQUEST["data"];
-    
-    if (!isset($data)) {
-        $response = new Response();
-        $response->data["Error"] = "Error handling data.";
-        $response->valid = false;
-        echo json_encode($response);
-        return;
-    }
+     
+	Input::CheckMethod("POST");
 
+	$expected = array(
+		"CampaignGuid"			=> NULL,
+		"Name"					=> NULL,
+		"Faction"				=> NULL,
+		"InitiativeBonus"		=> NULL,
+		"InitiativeAdvantage"	=> NULL
+	);
+
+	$input = Input::GetDataFromBody($expected); 
+    
     $result = Authentication::ValidateUserFromToken();
     if (!$result->valid) {
         echo json_encode($result);
@@ -22,7 +24,7 @@
     
     try {    
         $stmt = Database::Get()->prepare("INSERT INTO Tabletop_Characters (Guid, Name, Username, CampaignGuid, Faction, InitiativeBonus, InitiativeAdvantage) VALUES (?,?,?,?,?,?,?)");
-        $stmt->execute(array($Guid, $data["Name"], $User, $data["CampaignGuid"], $data["Faction"], $data["InitiativeBonus"], $data["InitiativeAdvantage"]));
+        $stmt->execute(array($Guid, $input["Name"], $User, $input["CampaignGuid"], $input["Faction"], $input["InitiativeBonus"], $input["InitiativeAdvantage"]));
 
         $stmt = Database::Get()->prepare("SELECT C.Guid, C.Name, F.Id As FactionId, F.Name As FactionName, F.Icon As FactionIcon, C.InitiativeBonus, C.InitiativeAdvantage FROM Tabletop_Characters C Join Tabletop_Factions F ON C.Faction = F.Id WHERE C.Guid = ?");
         $stmt->execute(array($Guid));

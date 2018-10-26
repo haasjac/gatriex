@@ -1,16 +1,24 @@
 <?php
     require_once($_SERVER['DOCUMENT_ROOT'] . '/library/libraries.php');
     
-    $data = $_REQUEST["data"];
-    
-    if (!isset($data)) {
-        $response = new Response();
-        $response->data["Error"] = "Error handling data.";
-        $response->valid = false;
-        echo json_encode($response);
-        return;
-    }
-    
+	Input::CheckMethod("PUT");
+
+	$expected = array(
+		"CampaignGuid"		=>  NULL,
+		"CharacterInfo"		=>	NULL,
+		"CurrentCharacter"	=>	NULL
+	);
+
+	$optional = array(
+		"CharacterInfo",
+		"CurrentCharacter"
+	);
+	
+	$input = Input::GetDataFromBody($expected, $optional);
+	$CampaignGuid = $input["CampaignGuid"];
+	$CharacterInfo = json_encode($input["CharacterInfo"]);
+	$CurrentCharacter = $input["CurrentCharacter"];
+	    
     $result = Authentication::ValidateUserFromToken();
     if (!$result->valid) {
         echo json_encode($result);
@@ -18,20 +26,7 @@
     }
 
     $user = $result->data["Username"];
-        
-    $CampaignGuid = $data["CampaignGuid"];
-    if (isset($data["CharacterInfo"])) {
-        $CharacterInfo = json_encode($data["CharacterInfo"]);
-    } else {
-        $CharacterInfo = NULL;
-    }
-
-    if (isset($data["CurrentCharacter"])) {
-        $CurrentCharacter = $data["CurrentCharacter"];
-    } else {
-        $CurrentCharacter = NULL;
-    }
-    
+            
     try {
         Database::Get()->beginTransaction();
 

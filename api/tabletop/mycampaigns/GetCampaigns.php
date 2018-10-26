@@ -1,6 +1,8 @@
 <?php
     require_once($_SERVER['DOCUMENT_ROOT'] . '/library/libraries.php');
-        
+      
+	 Input::CheckMethod("GET");
+
     $result = Authentication::ValidateUserFromToken();
     if (!$result->valid) {
         echo json_encode($result);

@@ -63,11 +63,11 @@ $(function () {
     
     function login() {
         $("#loginDialogMessage").html("");
-        var data = { 
+        var data = JSON.stringify({ 
             "username": $("#loginUsername").val(), 
             "password": $("#loginPassword").val(),
-            "remember": $("#loginRemember:checked").val() 
-        };
+            "remember": !!$("#loginRemember:checked").val() 
+        });
         $.ajax({
             url: "/api/account/login.php",
             method: "POST",

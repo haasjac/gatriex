@@ -1,9 +1,24 @@
 <?php
     require_once($_SERVER['DOCUMENT_ROOT'] . '/library/libraries.php');
     
-    $username = Input::GetPost("username");
-    $value = Input::GetPost("value");
-    $field = Input::GetPost("field");
+	Input::CheckMethod("POST");
+
+	$expected = array(
+		"username"		=> NULL,
+		"value"			=> NULL,
+		"field"			=> NULL,
+		"confirmValue"	=> NULL
+	);
+
+	$optional = array(
+		"confirmValue"
+	);
+
+	$input = Input::GetDataFromBody($expected, $optional);
+    $username = $input["username"];
+    $value = $input["value"];
+    $field = $input["field"];
+	$confirmValue = $input["confirmValue"];
     
     if ($username === "RiotTest") {
         $result = new Response();
@@ -26,10 +41,8 @@
             echo json_encode($result);
             return;
         }
-
-        $confirmPassword = Input::GetPost("confirmValue");
-        
-        $result = Validation::ConfirmPassword($value, $confirmPassword);
+		        
+        $result = Validation::ConfirmPassword($value, $confirmValue);
 
         if (!$result->valid) {
             echo json_encode($result);

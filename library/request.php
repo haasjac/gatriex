@@ -19,7 +19,7 @@
 		}
 
 		public static function GetDataFromURL() : Array {
-			return $_GET;
+			return $_REQUEST;
 		}
 
 		public static function GetDataFromBody() : Array {

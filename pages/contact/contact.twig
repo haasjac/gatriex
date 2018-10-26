@@ -24,7 +24,7 @@
                     {{ flexForm.input('Remain anonymous', 'contactAnon', 'checkbox', null, null, "If you chose to remain anonymous, you will not be able to receive a reply.") }}
                     {% set options = ["Comment", "Question", "Concern", "Report a Bug", "Other"] %}
                     {{ flexForm.input('Subject', 'contactSubjectSelect', 'select', null, null, null, options) }}
-                    {{ flexForm.input('Subject', 'contactSubject', 'text', 'Subject') }}
+                    {{ flexForm.input('Subject', 'contactSubject', 'text', 'Subject', 'Comment') }}
                     {{ flexForm.input('Message', 'contactMessage', 'textarea', 'Message') }}
                     {{ flexForm.button('Send Email', 'contactButton') }}
                 </form>

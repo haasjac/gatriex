@@ -70,6 +70,17 @@ $(function () {
             e.preventDefault();
             return false;
         });
+
+        $("#removeCampaignDialogBox").dialog({
+            autoOpen: false,
+            modal: true,
+            width: 500,
+            buttons: {
+                Close: function () {
+                    $(this).dialog("close");
+                }
+            }
+        });
         
         $(".addCampaignButton").click(function () {
             var data = {};
@@ -79,9 +90,7 @@ $(function () {
                 return;
             }
 
-            var postData = { "data": data };
-            
-            dataRequester.apiCall('/api/tabletop/mycampaigns/AddCampaign.php', "POST", postData, function (response) {
+            dataRequester.apiCall('/api/tabletop/mycampaigns/AddCampaign.php', "POST", JSON.stringify(data), function (response) {
                 if (response.valid) {
                     $("#addCampaignName").val("");
                     getContent(function () {
@@ -119,9 +128,8 @@ $(function () {
                         var data = {};
                         data.CampaignName = $('#campaignName_' + index).val();
                         data.Guid = $('#campaignGuid_' + index).val();
-
-                        var postData = { "data": data };
-                        dataRequester.apiCall('/api/tabletop/mycampaigns/RemoveCampaign.php', "POST", postData, function (response) {
+                        
+                        dataRequester.apiCall('/api/tabletop/mycampaigns/RemoveCampaign.php', "DELETE", JSON.stringify(data), function (response) {
                             if (response.valid) {
                                 $('#campaign_' + index).remove();
                                 $('#dialogMessage').html('<i class="fas fa-check-circle"></i> Changes saved.');
@@ -138,17 +146,6 @@ $(function () {
             });
 
             $("#removeCampaignDialogBox").dialog("open");
-            
-            var postData = { "data": data };
-            dataRequester.apiCall('/api/tabletop/mycampaigns/RemoveCampaign.php', "POST", postData, function (response) {
-                if (response.valid) {
-                    $('#campaign_' + index).remove();
-                    $('#dialogMessage').html('<i class="fas fa-check-circle"></i> Changes saved.');
-                } else {
-                    $('#dialogMessage').html('<i class="fas fa-exclamation-triangle"></i> Error: ' + response.data.Error);
-                }
-            });
-
         });
 
         $("#campaignList").on("click", ".saveEditButton", function () {
@@ -158,8 +155,7 @@ $(function () {
             data.CampaignName = $('#campaignName_' + index).val();
             data.Guid = $('#campaignGuid_' + index).val();
 
-            var postData = { "data": data };
-            dataRequester.apiCall('/api/tabletop/mycampaigns/EditCampaign.php', "POST", postData, function (response) {
+            dataRequester.apiCall('/api/tabletop/mycampaigns/EditCampaign.php', "PUT", JSON.stringify(data), function (response) {
                 if (response.valid) {
                     $('#campaignName_' + index).attr("type", "hidden");
                     $('#campaignDisplay_' + index).text($('#campaignName_' + index).val());

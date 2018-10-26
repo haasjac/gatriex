@@ -87,8 +87,7 @@ $(function () {
             data.InitiativeAdvantage = $("#editAddCharacterInitAdvantage:checked").val() ? 1 : 0;
             data.CampaignGuid = TwigOptions.CampaignGuid;
 
-            var postData = { "data": data };
-            dataRequester.apiCall('/api/tabletop/campaign/AddCharacter.php', "POST", postData, function (response) {
+            dataRequester.apiCall('/api/tabletop/campaign/AddCharacter.php', "POST", JSON.stringify(data), function (response) {
                 if (response.valid) {
                     var character = response.data.Character;
                     displayCharacter(character.Guid, character);
@@ -157,9 +156,8 @@ $(function () {
                     Remove: function () {
                         var data = {};
                         data.Guid = guid;
-
-                        var postData = { "data": data };
-                        dataRequester.apiCall('/api/tabletop/campaign/RemoveCharacter.php', "POST", postData, function (response) {
+                        
+                        dataRequester.apiCall('/api/tabletop/campaign/RemoveCharacter.php', "DELETE", JSON.stringify(data), function (response) {
                             if (response.valid) {
                                 $('#character_' + guid).remove();
                                 $('#editCharacter_' + guid).remove();
@@ -191,9 +189,8 @@ $(function () {
             data.Name = $("#editCharacterName_" + guid).val();
             data.InitiativeBonus = Number($("#editCharacterInitBonus_" + guid).val());
             data.InitiativeAdvantage = $("#editCharacterInitAdvantage_" + guid + ':checked').val() ? 1 : 0;
-
-            var postData = { "data": data };
-            dataRequester.apiCall('/api/tabletop/campaign/EditCharacter.php', "POST", postData, function (response) {
+            
+            dataRequester.apiCall('/api/tabletop/campaign/EditCharacter.php', "PUT", JSON.stringify(data), function (response) {
                 if (response.valid) {
 
                     $("#characterName_" + guid).text($("#editCharacterName_" + guid).val());

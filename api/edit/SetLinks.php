@@ -1,15 +1,14 @@
 <?php
     require_once($_SERVER['DOCUMENT_ROOT'] . '/library/libraries.php');
     
-    $data = $_REQUEST["data"];
-    
-    if (!isset($data)) {
-        $response = new Response();
-        $response->data["Error"] = "Error handling data.";
-        $response->valid = false;
-        echo json_encode($response);
-        return;
-    }
+	Input::CheckMethod("PUT");
+
+	$expected = array(
+		"data" => NULL
+	);
+
+	$input = Input::GetDataFromBody($expected);
+	$data = $input["data"];
     
     $result = Authentication::ValidateUserFromToken();
     if (!$result->valid) {

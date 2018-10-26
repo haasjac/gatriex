@@ -1,16 +1,15 @@
 <?php
     require_once($_SERVER['DOCUMENT_ROOT'] . '/library/libraries.php');
        
-    $Guid = $_REQUEST["CampaignGuid"];
-    
-    if (!isset($Guid)) {
-        $response = new Response();
-        $response->data["Error"] = "Campaign not found.";
-        $response->valid = false;
-        echo json_encode($response);
-        return;
-    }
+	Input::CheckMethod("GET");
 
+	$expected = array(
+		"CampaignGuid" =>	NULL
+	);
+
+	$input = Input::GetDataFromURL($expected);
+	$Guid = $input["CampaignGuid"];
+    
     $result = Authentication::ValidateUserFromToken();
     if (!$result->valid) {
         echo json_encode($result);

@@ -1,15 +1,20 @@
 <?php
     require_once($_SERVER['DOCUMENT_ROOT'] . '/library/libraries.php');
     
-    $data = $_REQUEST["data"];
-    
-    if (!isset($data)) {
-        $response = new Response();
-        $response->data["Error"] = "Error handling data.";
-        $response->valid = false;
-        echo json_encode($response);
-        return;
-    }
+	Input::CheckMethod("PUT");
+
+	$expected = array(
+		"CampaignGuid"		=> NULL,
+		"CurrentCharacter"	=> NULL
+	);
+
+	$optional = array(
+		"CurrentCharacter"
+	);
+
+	$input = Input::GetDataFromBody($expected, $optional);
+	$CampaignGuid = $input["CampaignGuid"];
+	$CurrentCharacter = $input["CurrentCharacter"];
     
     $result = Authentication::ValidateUserFromToken();
     if (!$result->valid) {
@@ -18,14 +23,6 @@
     }
 
     $user = $result->data["Username"];
-        
-    $CampaignGuid = $data["CampaignGuid"];
-
-    if (isset($data["CurrentCharacter"])) {
-        $CurrentCharacter = $data["CurrentCharacter"];
-    } else {
-        $CurrentCharacter = NULL;
-    }
         
     try {
         Database::Get()->beginTransaction();
@@ -37,6 +34,8 @@
         Database::Get()->commit();
         $response = new Response();
         $response->valid = true;
+		$response->data["cc"] = $CurrentCharacter;
+		$response->data["i"] = $input;
         echo json_encode($response);
         return;
     } catch (PDOException $ex) {

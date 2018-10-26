@@ -87,6 +87,7 @@ $(function () {
             message: $("#contactMessage").val()
         };
         data.message = data.message.replace(/(?:\r\n|\r|\n)/g, '<br />');
+        data = JSON.stringify(data);
         dataRequester.apiCall("/api/log/contact.php", "POST", data, function (response) {
             if (response.valid) {
                 var message = '<i class="fas fa-check-circle"></i> Thank you for the feedback!';

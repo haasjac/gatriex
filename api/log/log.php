@@ -1,6 +1,17 @@
 <?php
     require_once($_SERVER['DOCUMENT_ROOT'] . '/library/libraries.php');
     
+	Input::CheckMethod("POST");
+    
+	$expected = array(
+		"message"		=>	FILTER_SANITIZE_STRING,
+		"error"		=>	FILTER_VALIDATE_EMAIL,
+		"subject"	=>	FILTER_SANITIZE_STRING,
+		"message"	=>	FILTER_UNSAFE_RAW
+	);
+
+	$input = Input::GetDataFromBody($expected);
+
     http_response_code(200);
     try {
         $data = $_REQUEST["data"];

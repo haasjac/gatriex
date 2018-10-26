@@ -2,76 +2,46 @@
     require_once('Call.php');
     require_once ($_SERVER['DOCUMENT_ROOT'] . '/library/libraries.php');
     
+	Input::CheckMethod("GET");
+
+	$expected = array(
+		"summonerName" => FILTER_SANITIZE_ENCODED,
+		"region" => FILTER_SANITIZE_ENCODED
+	);
+
+	$input = Input::GetDataFromUrl($expected);
+
     $response = new Response();
-    $summonerName = Input::GetGet("summonerName");
-    $region = Input::GetGet("region");
+    $summonerName = $input["summonerName"];
+    $region = $input["region"];
     
-    if ($summonerName === "") {
-        $response->data["Error"] = "Summoner name cannot be empty.";
-        $response->valid = false;
-        echo json_encode($response);
-        return;
-    }
-    
-    if ($region === "") {
-        $response->data["Error"] = "Region cannot be empty.";
-        $response->valid = false;
-        echo json_encode($response);
-        return;
-    }
-    
+	
     $result = ApiCall("https://" . $region . ".api.riotgames.com/lol/summoner/v3/summoners/by-name/" . $summonerName);
     
-    if (!$result->valid) {
-        echo json_encode($result);
-        return;
-    } else {
-        $response->data["Summoner"] = $result->data["Response"];
-    }
+    $response->data["Summoner"] = $result->data["Response"];
     
     $result = ApiCall("https://" . $region . ".api.riotgames.com/lol/league/v3/positions/by-summoner/" . $response->data["Summoner"]->id);
     
-    if (!$result->valid) {
-        echo json_encode($result);
-        return;
-    } else {
-        $response->data["League"] = $result->data["Response"];
-    }
+    $response->data["League"] = $result->data["Response"];
     
     $result = ApiCall("https://" . $region . ".api.riotgames.com/lol/champion-mastery/v3/champion-masteries/by-summoner/" . $response->data["Summoner"]->id);
     
-    if (!$result->valid) {
-        echo json_encode($result);
-        return;
+    $array = $result->data["Response"];
+    $sorted = usort($array, "SortMastery");
+    if ($sorted) {
+        $response->data["Mastery"] = array_slice($array, 0, 3);
     } else {
-        $array = $result->data["Response"];
-        $sorted = usort($array, "SortMastery");
-        if ($sorted) {
-            $response->data["Mastery"] = array_slice($array, 0, 3);
-        } else {
-            $response->data["Mastery"] = array_slice($result->data["Response"], 0, 3);
-        }
+        $response->data["Mastery"] = array_slice($result->data["Response"], 0, 3);
     }
 		
     $result = GetVersion();
 
-	if (!$result->valid) {
-        echo json_encode($result);
-        return;
-    } else {
-        $response->data["Version"] = $result->data["Version"];
-    }
+	$response->data["Version"] = $result->data["Version"];
     
     $response->data["Champions"] = array();
     for ($i = 0; $i < sizeof($response->data["Mastery"]); $i++) {
         $result = GetChampion($response->data["Version"], $response->data["Mastery"][$i]->championId);
-    
-        if (!$result->valid) {
-            echo json_encode($result);
-            return;
-        } else {
-            $response->data["Champions"][$i] = $result->data["Key"];
-        }
+		$response->data["Champions"][$i] = $result->data["Key"];
     }    
     
     $response->valid = true;

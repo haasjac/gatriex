@@ -8,7 +8,6 @@
         $curl = curl_init();
         curl_setopt_array($curl, array(
             CURLOPT_URL => $url,
-            CURLOPT_SSL_VERIFYPEER => FALSE,
             CURLOPT_RETURNTRANSFER => TRUE,
             CURLOPT_HTTPHEADER => array('X-Riot-Token: ' . _Riot::ApiToken)
         ));
@@ -36,6 +35,11 @@
                 $response->valid = false;
             }
         }
+
+		if (!$response->valid) {
+			echo json_encode($response);
+			die();
+		}
 		        
         return $response;
     }
@@ -46,7 +50,6 @@
         $curl = curl_init();
         curl_setopt_array($curl, array(
             CURLOPT_URL => $url,
-            CURLOPT_SSL_VERIFYPEER => FALSE,
             CURLOPT_RETURNTRANSFER => TRUE
         ));
 				        
@@ -73,6 +76,11 @@
                 $response->valid = false;
             }
         }
+
+		if (!$response->valid) {
+			echo json_encode($response);
+			die();
+		}
 		        
         return $response;
     }

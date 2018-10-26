@@ -1,15 +1,16 @@
 <?php
     require_once($_SERVER['DOCUMENT_ROOT'] . '/library/libraries.php');
     
-    $data = $_REQUEST["data"];
-    
-    if (!isset($data)) {
-        $response = new Response();
-        $response->data["Error"] = "Error handling data.";
-        $response->valid = false;
-        echo json_encode($response);
-        return;
-    }
+	Input::CheckMethod("DELETE");
+
+	$expected = array(
+		"Guid"			=> NULL,
+		"CampaignName"	=> NULL
+	);
+
+	$input = Input::GetDataFromBody($expected);
+    $CampaignName = $input["CampaignName"];    
+    $Guid = $input["Guid"];
     
     $result = Authentication::ValidateUserFromToken();
     if (!$result->valid) {
@@ -19,9 +20,7 @@
 
     $User = $result->data["Username"];
     
-    $CampaignName = $data["CampaignName"];
     
-    $Guid = $data["Guid"];
 
     try {
         $sql = "SELECT COUNT(*) FROM Tabletop_Campaigns WHERE Username=? AND Guid=?";

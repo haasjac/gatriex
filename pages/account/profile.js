@@ -30,7 +30,7 @@ $(function () {
                     remote: {
                         url: "/api/validation/EmailFree.php",
                         data: { email: function () { return $("#profileEmailInput").val(); } },
-                        method: "POST"
+                        method: "GET"
                     }
                 },
                 profileSummonerInput: {
@@ -101,12 +101,12 @@ $(function () {
     }
     
     function updateField(id) {
-        var data = {
+        var data = JSON.stringify({
             username: TwigOptions.Username,
             value: $("#" + id + "Input").val(),
             field: $("#" + id + "Field").val(),
             confirmValue: $("#" + id + "Confirm").val()
-        };
+        });
         
         dataRequester.apiCall("/api/account/profile.php", "POST", data, function (response) {
             if (response.valid) {

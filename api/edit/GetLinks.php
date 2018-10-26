@@ -1,5 +1,8 @@
 <?php
     require_once($_SERVER['DOCUMENT_ROOT'] . '/library/libraries.php');
+
+	Input::CheckMethod("GET");
+
     $response = new Response();
     $response->data["Links"] = array();
     

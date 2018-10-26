@@ -221,11 +221,11 @@ $(function () {
             data.push(category);
         }
 
-        var postData = { 
+        var putData = JSON.stringify({ 
             "data" : data
-        };
+        });
         
-        dataRequester.apiCall('/api/edit/SetLinks.php', "POST", postData, function (response) {
+        dataRequester.apiCall('/api/edit/SetLinks.php', "PUT", putData, function (response) {
             if (response.valid) {
                 $('#dialogMessage').html('<i class="fas fa-check-circle"></i> Changes saved.');
             } else {

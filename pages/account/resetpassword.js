@@ -52,12 +52,12 @@ $(function () {
         $("#resetForm").submit(function () {
             $("#resetMessage").html("");
             if (validator.form()) {
-                var data = { 
+                var data = JSON.stringify({ 
                     "username": $("#resetUsername").val(),
                     "password": $("#resetPassword").val(),
                     "confirmPassword": $("#resetConfirmPassword").val(),
                     "token": $("#resetToken").val()
-                };
+                });
                 dataRequester.apiCall('/api/account/resetpassword.php', "POST", data, function (response) {
                     if (response.valid) {
                         $("#resetMessage").html("<i class='fas fa-check-circle'></i> Password Reset.");

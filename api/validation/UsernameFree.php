@@ -1,7 +1,14 @@
 <?php
     require_once($_SERVER['DOCUMENT_ROOT'] . '/library/libraries.php');
     
-    $username = Input::GetPost("username");
+	Input::CheckMethod("GET");
+
+	$expected = array(
+		"username" =>	NULL
+	);
+
+	$input = Input::GetDataFromURL($expected);
+	$username = $input["username"];
     
     $result = Validation::ValidateUsername($username);
     

@@ -1,15 +1,14 @@
 <?php
     require_once($_SERVER['DOCUMENT_ROOT'] . '/library/libraries.php');
     
-    $data = $_REQUEST["data"];
-    
-    if (!isset($data)) {
-        $response = new Response();
-        $response->data["Error"] = "Error handling data.";
-        $response->valid = false;
-        echo json_encode($response);
-        return;
-    }
+	Input::CheckMethod("POST");
+
+	$expected = array(
+		"CampaignName" => NULL
+	);
+
+	$input = Input::GetDataFromBody($expected);
+    $CampaignName = $input["CampaignName"];
     
     $result = Authentication::ValidateUserFromToken();
     if (!$result->valid) {
@@ -17,9 +16,7 @@
         return;
     }
 
-    $User = $result->data["Username"];
-    
-    $CampaignName = $data["CampaignName"];
+    $User = $result->data["Username"];    
 
     $Guid = Authentication::GenerateGuid();
 
