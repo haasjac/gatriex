@@ -4,26 +4,23 @@
 	Input::CheckMethod("POST");
     
 	$expected = array(
-		"message"		=>	FILTER_SANITIZE_STRING,
-		"error"		=>	FILTER_VALIDATE_EMAIL,
-		"subject"	=>	FILTER_SANITIZE_STRING,
-		"message"	=>	FILTER_UNSAFE_RAW
+		"message"	=>	NULL,
+		"error"		=>	NULL,
 	);
 
 	$input = Input::GetDataFromBody($expected);
 
     http_response_code(200);
     try {
-        $data = $_REQUEST["data"];
     
-        $result = Log::Error($data["message"], $data["error"]);
+        $result = Log::Error($input["message"], $input["error"]);
         
-        if (!isset($data["message"]) || !isset($data["error"]) || !$result) {
+        if (!isset($input["message"]) || !isset($input["error"]) || !$result) {
             throw new Exception("error failed to log.");
         }
     } catch (Exception $ex) {
         http_response_code(500);
-        Log::Error("Error writing to log", "Data: " . var_export($data, true) . "\r\n" . "Exception" . $ex);
+        Log::Error("Error writing to log", "Data: " . var_export(Input::GetDataFromBody(), true) . "\r\n" . "Exception" . $ex);
     }
 ?>
 

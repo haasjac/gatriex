@@ -36,7 +36,7 @@ $(function() {
                         "valid": false,
                         "data": { "Error": "Error handling request." }
                     };
-                    dataRequester.log({ "data": { "message": "Error in dataRequester: " + ex, "error": data } });
+                    dataRequester.log(JSON.stringify({ "message": "Error in dataRequester: " + ex, "error": data }));
                 }
                 callback(result);
             },
