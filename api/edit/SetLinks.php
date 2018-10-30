@@ -10,13 +10,7 @@
 	$input = Input::GetDataFromBody($expected);
 	$data = $input["data"];
     
-    $result = Authentication::ValidateUserFromToken();
-    if (!$result->valid) {
-        echo json_encode($result);
-        return;
-    }
-    
-    $user = $result->data["Username"];
+    $user = Authentication::GetCurrentUserOrDie();
     
     try {
         Database::Get()->beginTransaction();

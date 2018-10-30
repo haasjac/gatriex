@@ -102,7 +102,6 @@ $(function () {
     
     function updateField(id) {
         var data = JSON.stringify({
-            username: TwigOptions.Username,
             value: $("#" + id + "Input").val(),
             field: $("#" + id + "Field").val(),
             confirmValue: $("#" + id + "Confirm").val()

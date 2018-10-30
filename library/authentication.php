@@ -140,7 +140,7 @@
             return $response;
         }
 
-        public static function ValidateUserFromToken(): Response {
+        private static function ValidateUserFromToken(): Response {
 			$username = Input::GetCookie("Auth_Id");
 			$token = Input::GetCookie("Auth_Token");
 
@@ -201,14 +201,23 @@
 
         public static function GetCurrentUser(): String {            
             Session::StartSession();
-            $user = "";
             
             $result = Authentication::ValidateUserFromToken();
-            if ($result->valid) {
-                $user = $result->data["Username"];
-            }
 
-            return $user;
+            return $result->valid ? $result->data["Username"] : "";
+        }
+
+		public static function GetCurrentUserOrDie(): String {       
+            $user = Authentication::GetCurrentUser();
+
+            if (empty($user)) {
+				$response = new Response();
+				$response->data["Error"] = "User required.";
+				echo json_encode($response);
+				die();
+			}
+
+			return $user;
         }
 
 

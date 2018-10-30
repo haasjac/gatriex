@@ -19,13 +19,7 @@
 	$CharacterInfo = json_encode($input["CharacterInfo"]);
 	$CurrentCharacter = $input["CurrentCharacter"];
 	    
-    $result = Authentication::ValidateUserFromToken();
-    if (!$result->valid) {
-        echo json_encode($result);
-        return;
-    }
-
-    $user = $result->data["Username"];
+    $user = Authentication::GetCurrentUserOrDie();
             
     try {
         Database::Get()->beginTransaction();

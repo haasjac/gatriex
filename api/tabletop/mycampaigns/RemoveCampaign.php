@@ -12,15 +12,7 @@
     $CampaignName = $input["CampaignName"];    
     $Guid = $input["Guid"];
     
-    $result = Authentication::ValidateUserFromToken();
-    if (!$result->valid) {
-        echo json_encode($result);
-        return;
-    }
-
-    $User = $result->data["Username"];
-    
-    
+    $User = Authentication::GetCurrentUserOrDie();  
 
     try {
         $sql = "SELECT COUNT(*) FROM Tabletop_Campaigns WHERE Username=? AND Guid=?";

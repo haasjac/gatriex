@@ -10,13 +10,7 @@
 	$input = Input::GetDataFromURL($expected);
 	$Guid = $input["CampaignGuid"];
     
-    $result = Authentication::ValidateUserFromToken();
-    if (!$result->valid) {
-        echo json_encode($result);
-        return;
-    }
-
-    $User = $result->data["Username"];
+    $User = Authentication::GetCurrentUserOrDie();
     
     try {        
         $sql = "SELECT Id, Name, Icon FROM Tabletop_Factions";

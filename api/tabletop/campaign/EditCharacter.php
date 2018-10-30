@@ -13,13 +13,7 @@
 
 	$input = Input::GetDataFromBody($expected);
     
-    $result = Authentication::ValidateUserFromToken();
-    if (!$result->valid) {
-        echo json_encode($result);
-        return;
-    }
-
-    $User = $result->data["Username"];
+    $User = Authentication::GetCurrentUserOrDie();
     
     try {    
         $stmt = Database::Get()->prepare("UPDATE Tabletop_Characters SET Name = ?, Faction = ?, InitiativeBonus = ?, InitiativeAdvantage = ? WHERE Guid = ? AND Username = ?");

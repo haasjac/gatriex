@@ -4,7 +4,6 @@
 	Input::CheckMethod("POST");
 
 	$expected = array(
-		"username"		=> NULL,
 		"value"			=> NULL,
 		"field"			=> NULL,
 		"confirmValue"	=> NULL
@@ -15,22 +14,17 @@
 	);
 
 	$input = Input::GetDataFromBody($expected, $optional);
-    $username = $input["username"];
     $value = $input["value"];
     $field = $input["field"];
 	$confirmValue = $input["confirmValue"];
+
+	$username = Authentication::GetCurrentUser(true);
     
     if ($username === "RiotTest") {
         $result = new Response();
         $result->valid = false;
         $result->data["Error"] = "Sample account. Profile cannot be changed.";
         echo json_encode($result); 
-        return;
-    }
-    
-    $result = Authentication::ValidateUserFromToken();
-    if (!$result->valid) {
-        echo json_encode($result);
         return;
     }
     
