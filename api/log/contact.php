@@ -6,7 +6,7 @@
 	$expected = array(
 		"name"		=>	FILTER_SANITIZE_STRING,
 		"email"		=>	FILTER_VALIDATE_EMAIL,
-		"subject"	=>	FILTER_SANITIZE_STRING,
+		"subject"	=>	FILTER_UNSAFE_RAW,
 		"message"	=>	FILTER_UNSAFE_RAW
 	);
 
@@ -14,10 +14,12 @@
 
     $fromName = $input["name"];
     $fromMail = $input["email"];
-    $mailSubject = $input["subject"];
-    $mailMessage = $input["message"];
+    $mailSubject = strip_tags($input["subject"]);
+    $mailMessage = strip_tags(nl2br($input["message"]), '<br>');
     
     $result = Mail::SendContactEmail($mailSubject, $mailMessage, $fromName, $fromMail);
+
+	$result->data["message"] = $mailMessage;
     
     echo json_encode($result);
 ?>

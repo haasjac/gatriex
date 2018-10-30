@@ -86,7 +86,6 @@ $(function () {
             subject: $("#contactSubject").val(),
             message: $("#contactMessage").val()
         };
-        data.message = data.message.replace(/(?:\r\n|\r|\n)/g, '<br />');
         data = JSON.stringify(data);
         dataRequester.apiCall("/api/log/contact.php", "POST", data, function (response) {
             if (response.valid) {
