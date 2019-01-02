@@ -16,15 +16,15 @@
     $region = $input["region"];
     
 	
-    $result = ApiCall("https://" . $region . ".api.riotgames.com/lol/summoner/v3/summoners/by-name/" . $summonerName);
+    $result = ApiCall("https://" . $region . ".api.riotgames.com/lol/summoner/v4/summoners/by-name/" . $summonerName);
     
     $response->data["Summoner"] = $result->data["Response"];
     
-    $result = ApiCall("https://" . $region . ".api.riotgames.com/lol/league/v3/positions/by-summoner/" . $response->data["Summoner"]->id);
+    $result = ApiCall("https://" . $region . ".api.riotgames.com/lol/league/v4/positions/by-summoner/" . $response->data["Summoner"]->id);
     
     $response->data["League"] = $result->data["Response"];
     
-    $result = ApiCall("https://" . $region . ".api.riotgames.com/lol/champion-mastery/v3/champion-masteries/by-summoner/" . $response->data["Summoner"]->id);
+    $result = ApiCall("https://" . $region . ".api.riotgames.com/lol/champion-mastery/v4/champion-masteries/by-summoner/" . $response->data["Summoner"]->id);
     
     $array = $result->data["Response"];
     $sorted = usort($array, "SortMastery");

@@ -2,6 +2,8 @@
 
 var dataRequester = {};
 
+var baseId = 0;
+
 $(function() {
     
     $("#dataRequesterDialogBox").dialog({
@@ -19,15 +21,19 @@ $(function() {
     });
      
     dataRequester.apiCall = function (url, method, data, callback, errorCallback) {
-        //if (method.toLowerCase() === 'post') {
-        //    data = JSON.stringify(data);
-        //}
+
+        var id = 0 + baseId;
+        baseId += 1;
+
+        console.log("New Request [" + id + "]: \"" + url + "\"");        
 
         $.ajax({
             url: url,
             method: method,
             data: data,
             success: function (data) {
+                console.log("Request [" + id + "] succeeded: \"" + url + "\"");
+
                 var result;
                 try {
                     result = JSON.parse(data);
@@ -41,6 +47,8 @@ $(function() {
                 callback(result);
             },
             error: function (xhr) {
+                console.log("Request [" + id + "] failed: \"" + url + "\"");
+
                 if (errorCallback) {
                     errorCallback();
                 }
@@ -68,5 +76,5 @@ $(function() {
             }
         });
     };
-   
+
 });
