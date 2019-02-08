@@ -7,6 +7,26 @@ $(function () {
     var fetchingSummoner = false;
     var fetchingStatus = false;
 
+    var TierENUM = {
+        "IRON": 1,
+        "BRONZE": 2,
+        "SILVER": 3,
+        "GOLD": 4,
+        "PLATINUM": 5,
+        "DIAMOND": 6,
+        "MASTER": 7,
+        "GRANDMASTER": 8,
+        "CHALLENGER": 9
+    };
+
+    var RankENUM = {
+        "IV": 1,
+        "III": 2,
+        "II": 3,
+        "I": 4
+    };
+
+
     function init() {
         getNavigation();
         setEventHandlers();
@@ -210,25 +230,44 @@ $(function () {
         
         var mini = "";
         var league = "";
-        var leagueIndex = -1;
-        for (var i = 0; i < data.League.length; i += 1) {
-            if (data.League[i].queueType === "RANKED_SOLO_5x5") {
-                leagueIndex = i;
-                break;
+
+        data.League.sort(function (a, b) {
+            if (a.queueType === "RANKED_SOLO_5x5" && b.queueType === "RANKED_SOLO_5x5") {
+                if (TierENUM[a.tier] === TierENUM[b.tier]) {
+                    if (RankENUM[a.tier] === RankENUM[b.tier]) {
+                        return b.leaguePoints - a.leaguePoints;
+                    }
+                    else {
+                        return RankENUM[b.tier] - RankENUM[a.tier];
+                    }
+                }
+                else {
+                    return TierENUM[b.tier] - TierENUM[a.tier];
+                }
             }
-        }
-        
-        if (leagueIndex >= 0) {
-            if (data.League[leagueIndex].miniSeries) {
-                mini = data.League[leagueIndex].miniSeries.progress;
+            else if (a.queueType === "RANKED_SOLO_5x5") {
+                // a is ranked, b is not
+                return -1;
+            }
+            else {
+                // b is ranked, a is not
+                return 1;
+            }
+        });
+
+        console.log(data.League);
+
+        if (data.League.length > 0 && data.League[0].queueType === "RANKED_SOLO_5x5") {
+            if (data.League[0].miniSeries) {
+                mini = data.League[0].miniSeries.progress;
                 mini = mini.replace(/W/g, "<i class='fas fa-check-circle'></i> ");
                 mini = mini.replace(/N/g, "<i class='fas fa-minus-circle'></i> ");
                 mini = mini.replace(/L/g, "<i class='fas fa-times-circle'></i> ");
                 mini = mini.trim();
             } else {
-                mini = data.League[leagueIndex].leaguePoints + " LP";
+                mini = data.League[0].leaguePoints + " LP";
             }
-            league = capitalize(data.League[leagueIndex].tier) + " " + data.League[leagueIndex].rank;
+            league = capitalize(data.League[0].tier) + " " + data.League[0].rank;
         } else {
             mini = "";
             league = "";
@@ -238,7 +277,7 @@ $(function () {
         $("#SummonerName").html(data.Summoner.name);
         $("#League").html(league);
         
-        for (i = 0; i < data.Mastery.length; i += 1) {
+        for (var i = 0; i < data.Mastery.length; i += 1) {
             url =  "https://ddragon.leagueoflegends.com/cdn/" + data.Version + "/img/champion/" + data.Champions[i] + ".png";
             $("#champ" + i).attr("src", url);
             $("#champ" + i).show();
