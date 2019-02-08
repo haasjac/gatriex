@@ -255,8 +255,6 @@ $(function () {
             }
         });
 
-        console.log(data.League);
-
         if (data.League.length > 0 && data.League[0].queueType === "RANKED_SOLO_5x5") {
             if (data.League[0].miniSeries) {
                 mini = data.League[0].miniSeries.progress;
