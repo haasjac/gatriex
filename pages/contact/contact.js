@@ -70,7 +70,7 @@ $(function () {
             if (!$("#contactAnon").prop("checked")) {
                 lastName = $("#contactName").val();
                 lastEmail = $("#contactEmail").val();
-                $("#contactName").val("Annonymous");
+                $("#contactName").val("Anonymous");
                 $("#contactEmail").val("DoNotReply@gatriex.com");
             } else {
                 $("#contactName").val(lastName);
