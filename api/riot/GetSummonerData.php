@@ -20,7 +20,7 @@
     
     $response->data["Summoner"] = $result->data["Response"];
     
-    $result = ApiCall("https://" . $region . ".api.riotgames.com/lol/league/v4/positions/by-summoner/" . $response->data["Summoner"]->id);
+    $result = ApiCall("https://" . $region . ".api.riotgames.com/lol/league/v4/entries/by-summoner/" . $response->data["Summoner"]->id);
     
     $response->data["League"] = $result->data["Response"];
     
