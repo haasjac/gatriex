@@ -32,7 +32,7 @@
         $CharacterInfo = json_decode($row["CharacterInfo"]);
         $CurrentCharacter = $row["CurrentCharacter"];
 
-        $sql = "SELECT C.Guid, C.Name, F.Id As FactionId, F.Name As FactionName, F.Icon As FactionIcon, F.Precedence As FactionPrecedence, C.InitiativeBonus, C.InitiativeAdvantage FROM Tabletop_Characters C Join Tabletop_Factions F ON C.Faction = F.Id WHERE C.CampaignGuid = ?";
+        $sql = "SELECT C.Guid, C.Name, F.Id As FactionId, F.Name As FactionName, F.Icon As FactionIcon, F.Precedence As FactionPrecedence, C.InitiativeBonus, C.InitiativeAdvantage, C.Portrait FROM Tabletop_Characters C Join Tabletop_Factions F ON C.Faction = F.Id WHERE C.CampaignGuid = ?";
         $stmt = Database::Get()->prepare($sql);
         $stmt->execute(array($Guid));
 

@@ -80,14 +80,16 @@ $(function () {
         });
 
         $("#saveAddCharacterButton").click(function () {
-            var data = {};
-            data.Faction = $("#editAddCharacterFaction").val();
-            data.Name = $("#editAddCharacterName").val();
-            data.InitiativeBonus = Number($("#editAddCharacterInitBonus").val());
-            data.InitiativeAdvantage = $("#editAddCharacterInitAdvantage:checked").val() ? 1 : 0;
-            data.CampaignGuid = TwigOptions.CampaignGuid;
 
-            dataRequester.apiCall('/api/tabletop/campaign/AddCharacter.php', "POST", JSON.stringify(data), function (response) {
+            var formData = new FormData();
+            formData.set('Faction', $("#editAddCharacterFaction").val());
+            formData.set('Name', $("#editAddCharacterName").val());
+            formData.set('InitiativeBonus', Number($("#editAddCharacterInitBonus").val()));
+            formData.set('InitiativeAdvantage', $("#editAddCharacterInitAdvantage:checked").val() ? 1 : 0);
+            formData.set('CampaignGuid', TwigOptions.CampaignGuid);
+            formData.set('file', $("#editAddCharacterPortrait")[0].files[0]);
+
+            dataRequester.apiCallFormData('/api/tabletop/campaign/AddCharacter.php', "POST", formData, function (response) {
                 if (response.valid) {
                     var character = response.data.Character;
                     displayCharacter(character.Guid, character);
@@ -98,6 +100,7 @@ $(function () {
                     $("#editAddCharacterInitAdvantage").prop("checked", false);
                     $("#fakeeditAddCharacterInitAdvantage").addClass("fa-square");
                     $("#fakeeditAddCharacterInitAdvantage").removeClass("fa-check-square");
+                    $("#editAddCharacterPortrait").val(null);
 
                     $('#editAddCharacter').toggle();
 
@@ -118,6 +121,7 @@ $(function () {
             $("#editAddCharacterInitAdvantage").prop("checked", false);
             $("#fakeeditAddCharacterInitAdvantage").addClass("fa-square");
             $("#fakeeditAddCharacterInitAdvantage").removeClass("fa-check-square");
+            $("#editAddCharacterPortrait").val(null);
             
             $('#editAddCharacter').toggle();
 
@@ -288,12 +292,20 @@ $(function () {
     function displayCharacter(guid, character) {
         var characterli = $('<li id="character_' + guid + '" class="ui-state-default character"></li>');
         var editcharacterli = $('<li id="editCharacter_' + guid + '" class="ui-state-default editCharacter hide"></li>');
-            
+
+        var portrait;
+        if (character.Portrait) {
+            portrait = '<span><img id="factionIcon_' + guid + '" class="characterPortrait" src="/userdata/tabletop/characters/' + character.Guid + '/' + character.Portrait + '" /> </span>';
+        }
+        else {
+            portrait = '<i id="factionIcon_' + guid + '" class="fas fa-fw ' + character.FactionIcon + ' faction-' + character.FactionName + '"></i> ';
+        }
+
         var div = $('<div class="characterInfo">' +
 
             '<span class="characterName">' +
                 '<span id="characterFaction_' + guid + '" class="hide">' + character.FactionId + '</span>' +
-                '<i id="factionIcon_' + guid + '" class="fas fa-fw ' + character.FactionIcon + ' faction-' + character.FactionName + '"></i> ' +
+                portrait +
                 '<span id="characterName_' + guid + '">' + character.Name + '</span>' +
             '</span>' +
 
@@ -330,6 +342,12 @@ $(function () {
             '</div>');
 
         var editDiv = $('<div class="editCharacterInfo">' +
+
+            /*'<div class="characterPortrait">' +
+                '<i id="editPortraitIcon_' + guid + '" class="fas fa-fw fa-portrait faction-' + character.FactionName + '"></i>' +
+                '<span>Portrait: </span>' +
+                '<input name="editCharacterPortrait_' + guid + '" id="editCharacterPortrait_' + guid + '" type="file" accept="image/*" />' +
+            '</div>' +*/
 
             '<div class="characterName">' +
                 '<i id="editFactionIcon_' + guid + '" class="fas fa-fw fa-users faction-' + character.FactionName + '"></i> ' +

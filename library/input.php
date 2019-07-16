@@ -1,5 +1,6 @@
 <?php
 
+	require_once($_SERVER['DOCUMENT_ROOT'] . '/credentials/upload.php');
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/library/response.php');
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/library/log.php');
 
@@ -131,6 +132,79 @@
 			return $response->data;
 		}
 
+		public static function GetFile($name, $optional = true) {
+			if (isset($_FILES[$name])) {
+				if($_FILES[$name]['error'] == UPLOAD_ERR_OK) {
+					return $_FILES[$name];
+				}
+				else {
+					$response = new Response();
+					$response->valid = false;
+					$response->data["Error"] = "Error uploading file.";
+					echo json_encode($response);
+					die();
+				}	
+			}
+
+			if ($optional == false)
+			{
+				$response = new Response();
+				$response->valid = false;
+				$response->data["Error"] = "Error uploading file.";
+				echo json_encode($response);
+				die();
+			}
+
+			return NULL;
+		}
+
+		public static function UploadFile($path, $file) : bool {
+			$fullPath = _Upload::UserdataPath . $path;
+			
+			if (is_dir($fullPath) === false) {
+				if (mkdir($fullPath, 0777, true) === false) {
+					return false;
+				}
+			}
+
+			return move_uploaded_file($file['tmp_name'], $fullPath . "/" . $file['name']);
+		}
+
+		public static function DeleteDirectory($path) : bool {
+			$directory = _Upload::UserdataPath . $path;
+
+			if ($directory === '/' || $directory === "." || $directory == "..")
+			{
+				return false;
+			}
+
+			if (strpos($directory, '../') !== false)
+			{
+				return false;
+			}
+
+			if (is_dir($directory) === false)
+			{
+				return true;
+			}
+
+			return Input::_DeleteDirectory($directory);
+		}
+
+		private static function _DeleteDirectory($directory) : bool {
+			$files = array_diff(scandir($directory), array('.', '..')); 
+
+			foreach ($files as $file) { 
+				if (is_dir("$directory/$file")) {
+					Input::_DeleteDirectory("$directory/$file");
+				}
+				else {
+					unlink("$directory/$file"); 
+				}
+			}
+
+			return rmdir($directory); 
+		}
     }
     
 ?>

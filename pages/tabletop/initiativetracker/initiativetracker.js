@@ -333,9 +333,18 @@ $(function () {
         $("#addCharacterSelect option[value='']").prop("selected", true);
 
         var item = $('<li id="li_' + character.Guid + '" class="ui-state-default" data-guid="' + character.Guid + '"></li>');
+
+        var portrait;
+        if (character.Portrait) {
+            portrait = '<span><img class="characterPortrait" src="/userdata/tabletop/characters/' + character.Guid + '/' + character.Portrait + '" /> </span>';
+        }
+        else {
+            portrait = '<i class="fas fa-fw ' + character.FactionIcon + ' faction-' + character.FactionName + '"></i> ';
+        }
+
         var div = $('<div class="characterDiv">' +
             '<span class="characterSpan">' +
-            '<i class="fas fa-fw ' + character.FactionIcon + ' faction-' + character.FactionName + '"></i> ' +
+            portrait +
             '<span class="characterName">' + character.Name + ' </span>' +
             '</span>' +
 
