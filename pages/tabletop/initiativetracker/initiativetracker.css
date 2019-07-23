@@ -69,12 +69,23 @@
     flex: 2;
 }
 
+.initSelected .characterSelectedSpan {
+    flex: 0.25;
+    text-align: center;
+}
+
+.characterSelectedSpan {
+    flex: 0;
+}
+
 .characterInitSpan {
     flex: 1;
 }
 
 .characterButtonSpan {
     font-size: 28px;
+    margin-top: auto;
+    margin-bottom: auto;
 }
 
 .characterPortrait {
@@ -97,8 +108,18 @@
 }
 
 .initSelected .characterDiv {
-    border: 5px solid #D0904C;
+    border-width: 5px;
+    border-style: solid;
     padding: 5px;
+    font-size: 2.25em;
+}
+
+.initSelected .selectedIcon {
+    display: initial;
+}
+
+.selectedIcon {
+    display: none;
 }
 
 .greenButton {
@@ -119,12 +140,15 @@
 
 .faction-Player {
     color: #3383bb;
+    border-color: #3383bb;
 }
 
 .faction-Enemy {
     color: #8b0000;
+    border-color: #8b0000;
 }
 
 .faction-NPC {
     color: #D0904C;
+    border-color: #D0904C;
 }

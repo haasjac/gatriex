@@ -20,6 +20,7 @@ $(function () {
                     if (response.data.CurrentCharacter !== null) {
                         selectedCharacter = Number(response.data.CurrentCharacter);
                     }
+                    validateCharacterInfo();
                     createFactionList();
                     createCharacterList();
                     createInitList();
@@ -35,6 +36,47 @@ $(function () {
                     $('#dialogMessage').html('<i class="fas fa-exclamation-triangle"></i> Error: ' + response.data.Error);
                 }
             });
+        }
+    }
+
+    function validateCharacterInfo() {
+        var changeMade = false;
+
+        $.each(CharacterInfo, function (index, character) {
+            var valid = false;
+
+            if (character && character.Guid) {
+                if (Characters.hasOwnProperty(character.Guid)) {
+                    valid = true;
+
+                    if (!character.hasOwnProperty('Initiative') || !$.isNumeric(character.Initiative)) {
+                        character.Initiative = 0;
+                        changeMade = true;
+                    }
+                }
+            }
+
+            if (valid === false) {
+                CharacterInfo.splice(index, 1);
+
+                if (selectedCharacter > index) {
+                    selectedCharacter--;
+                }
+                else if (index === selectedCharacter) {
+                    selectedCharacter = undefined;
+                }
+
+                changeMade = true;
+            }
+        });
+
+        if (selectedCharacter < 0 || selectedCharacter >= CharacterInfo.length) {
+            selectedCharacter = undefined;
+            changeMade = true;
+        }
+
+        if (changeMade) {
+            saveCampaign();
         }
     }
 
@@ -339,24 +381,28 @@ $(function () {
             portrait = '<span><img class="characterPortrait" src="/userdata/tabletop/characters/' + character.Guid + '/' + character.Portrait + '" /> </span>';
         }
         else {
-            portrait = '<i class="fas fa-fw ' + character.FactionIcon + ' faction-' + character.FactionName + '"></i> ';
+            portrait = '<i class="fas fa-fw ' + character.FactionIcon + '"></i> ';
         }
 
-        var div = $('<div class="characterDiv">' +
+        var div = $('<div class="characterDiv faction-' + character.FactionName + '">' +
+            '<span class="characterSelectedSpan">' +
+            '<i class="selectedIcon fas fa-chevron-double-right"> </i>' +
+            '</span>' +
+
             '<span class="characterSpan">' +
             portrait +
             '<span class="characterName">' + character.Name + ' </span>' +
             '</span>' +
 
             '<span class="characterInitSpan">' +
-            '<i class="fas fa-dice faction-' + character.FactionName + '"></i> ' +
+            '<i class="fas fa-dice"></i> ' +
             '<span id="characterInit_' + character.Guid + '">' + initiative + '</span>' +
             '<input id="characterInitInput_' + character.Guid + '" type="number" class="characterInit hide" value="' + initiative + '" data-guid="' + character.Guid + '" />' +
             '</span>' +
 
             '<span class="characterButtonSpan">' +
             '<button id="editCharacterButton_' + character.Guid + '" class="ui-button editCharacterButton" data-guid="' + character.Guid + '">' +
-                '<i class="fas fa-pencil-alt"></i>' +
+                '<i class="fas fa-pencil-alt blueButton"></i>' +
             '</button>' +
             ' <button id="removeCharacterButton_' + character.Guid + '" class="ui-button removeCharacterButton" data-guid="' + character.Guid + '">' +
                 '<i class="fas fa-trash-alt redButton"></i>' +
