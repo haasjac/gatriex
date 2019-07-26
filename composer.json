@@ -1,5 +1,7 @@
 {
-    "require": {
-        "twig/twig": "^2.0"
-    }
+  "require": {
+    "twig/twig": "^2.0",
+    "react/zmq": "^0.4.0",
+    "voryx/thruway": "^0.5.3"
+  }
 }

@@ -1,6 +1,6 @@
 /* global dataRequester */
 
-$(function() {
+/*$(function() {
     atest("Test https://na.leagueoflegends.com/test Test");
     
     function atest(data) {
@@ -28,5 +28,60 @@ $(function() {
         
         $("#response").append("<br><br>" + hmm);
     }
+});*/
+
+/*
+// Create WebSocket connection.
+const socket = new WebSocket('ws://localhost:8888');
+
+// Connection opened
+socket.addEventListener('open', function (event) {
+    console.log(event);
+    socket.send('Hello Server!');
 });
+
+// Listen for messages
+socket.addEventListener('message', function (event) {
+    console.log('Message from server ', event.data);
+});
+
+// Listen for messages
+socket.addEventListener('error', function (event) {
+    console.log('Error from server ', event.data);
+});
+
+// Listen for messages
+socket.addEventListener('close', function (event) {
+    console.log('Close from server ', event.data);
+});
+*/
+
+/*
+var conn = new ab.Session('ws://localhost:8888',
+    function () {
+        conn.subscribe('InitiativeTracker/5', function (topic, data) {
+            // This is where you would add the new article to the DOM (beyond the scope of this tutorial)
+            console.log('New article published to category "' + topic + '" : ' + data.test);
+        });
+    },
+    function () {
+        console.warn('WebSocket connection closed');
+    },
+    { 'skipSubprotocolCheck': true }
+);
+*/
+
+$(function () {
+    var connection = new autobahn.Connection({ url: 'ws://localhost:8888', realm: 'realm1' });
+
+    connection.onopen = function (session) {
+        session.subscribe('test', onMessage);
+    };
+
+    connection.open();
+});
+
+function onMessage($message) {
+    console.log($message);
+}
 
