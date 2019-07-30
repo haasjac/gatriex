@@ -1,4 +1,5 @@
 <?php
+	require_once($_SERVER['DOCUMENT_ROOT'] . '/library/wamp.php');
     require_once($_SERVER['DOCUMENT_ROOT'] . '/library/libraries.php');
     
 	Input::CheckMethod("PUT");
@@ -26,12 +27,20 @@
         $stmt->execute(array($CurrentCharacter, $user, $CampaignGuid));
         
         Database::Get()->commit();
+
+		$wampMessage = new WampMessage();
+		$wampMessage->category = "CurrentCharacter";
+		$wampMessage->data["CurrentCharacter"] = $CurrentCharacter;
+		Wamp::SendMessage("tabletop.initiativetracker." . Wamp::EncodeGuid($CampaignGuid), $wampMessage);
+
         $response = new Response();
         $response->valid = true;
-		$response->data["cc"] = $CurrentCharacter;
-		$response->data["i"] = $input;
+		$response->data["CurrentCharacter"] = $CurrentCharacter;
+		$response->data["Input"] = $input;
         echo json_encode($response);
+		
         return;
+
     } catch (PDOException $ex) {
         http_response_code(500);
         Log::Error("Database error in SaveCurrentCharacter.php", $ex->getMessage());

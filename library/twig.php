@@ -13,6 +13,7 @@
         
 			$twigOptions["Username"] = $user;
 			$twigOptions["year"] = date("Y");
+			$twigOptions["domain"] = _Authentication::AuthDomain;
         
 			return $twigOptions;
 		}

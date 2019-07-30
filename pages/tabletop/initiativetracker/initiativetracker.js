@@ -6,11 +6,51 @@ $(function () {
     var Characters = {}, CharacterInfo = [], Factions = {}, selectedCharacter;
 
     function init() {
+        setWamp();
         setEventHandlers();
         getContent();
     }
+
+    function setWamp() {
+        if (TwigOptions.Readonly && TwigOptions.CampaignGuid) {
+            wampClient.OpenAndSubscribe('tabletop.initiativetracker.' + wampClient.EncodeGuid(TwigOptions.CampaignGuid), onWamp);
+        }
+    }
+
+    function onWamp(data) {
+        if (!data || !data[0] || !data[0].category) {
+            return;
+        }
+
+        var message = data[0];
+
+        if (message.category === "CurrentCharacter") {
+            
+            if (message.data.CurrentCharacter === null || message.data.CurrentCharacter === undefined) {
+                if (selectedCharacter >= 0 && selectedCharacter < CharacterInfo.length) {
+                    $("#li_" + CharacterInfo[selectedCharacter].Guid).removeClass("initSelected");
+                }
+                selectedCharacter = undefined;
+                return;
+            }
+
+            var currentCharacter = Number(message.data.CurrentCharacter);
+
+            if (currentCharacter >= 0 && currentCharacter < CharacterInfo.length) {
+                if (selectedCharacter >= 0 && selectedCharacter < CharacterInfo.length) {
+                    $("#li_" + CharacterInfo[selectedCharacter].Guid).removeClass("initSelected");
+                }
+                selectedCharacter = currentCharacter;
+                $("#li_" + CharacterInfo[selectedCharacter].Guid).addClass("initSelected");
+            }
+        }
+
+        else if (message.category === "Campaign") {
+            getContent(true);
+        }
+    }
     
-    function getContent() {
+    function getContent(clearContent) {
         if (TwigOptions.CampaignGuid) {
             dataRequester.apiCall('/api/tabletop/initiativetracker/GetCampaign.php', "GET", { "CampaignGuid": TwigOptions.CampaignGuid }, function (response) {
                 if (response.valid) {
@@ -20,10 +60,16 @@ $(function () {
                     if (response.data.CurrentCharacter !== null) {
                         selectedCharacter = Number(response.data.CurrentCharacter);
                     }
+
                     validateCharacterInfo();
-                    createFactionList();
-                    createCharacterList();
-                    createInitList();
+
+                    if (!TwigOptions.Readonly) {
+                        createFactionList();
+                        createCharacterList();
+                    }
+
+                    createInitList(clearContent);
+
                 } else {
                     $('#dialogMessage').html('<i class="fas fa-exclamation-triangle"></i> Error: ' + response.data.Error);
                 }
@@ -86,9 +132,13 @@ $(function () {
         });
     }
 
-    function createInitList() {
+    function createInitList(clearContent) {
         if (!CharacterInfo) {
             return;
+        }
+
+        if (clearContent) {
+            $('#initList').empty();
         }
         
         $.each(CharacterInfo, function (index, character) {
@@ -376,12 +426,32 @@ $(function () {
 
         var item = $('<li id="li_' + character.Guid + '" class="ui-state-default" data-guid="' + character.Guid + '"></li>');
 
-        var portrait;
+        var portrait, characterButtonSpan;
         if (character.Portrait) {
             portrait = '<span><img class="characterPortrait" src="/userdata/tabletop/characters/' + character.Guid + '/' + character.Portrait + '" /> </span>';
         }
         else {
             portrait = '<i class="fas fa-fw ' + character.FactionIcon + '"></i> ';
+        }
+
+        if (TwigOptions.Readonly) {
+            characterButtonSpan = "";
+        }
+        else {
+            characterButtonSpan = '<span class="characterButtonSpan">' +
+                '<button id="editCharacterButton_' + character.Guid + '" class="ui-button editCharacterButton" data-guid="' + character.Guid + '">' +
+                '<i class="fas fa-pencil-alt blueButton"></i>' +
+                '</button>' +
+                ' <button id="removeCharacterButton_' + character.Guid + '" class="ui-button removeCharacterButton" data-guid="' + character.Guid + '">' +
+                '<i class="fas fa-trash-alt redButton"></i>' +
+                '</button>' +
+                '<button id="saveCharacterButton_' + character.Guid + '" class="ui-button saveCharacterButton hide" data-guid="' + character.Guid + '">' +
+                '<i class="fas fa-save greenButton"></i>' +
+                '</button>' +
+                ' <button id="discardCharacterButton_' + character.Guid + '" class="ui-button discardCharacterButton hide" data-guid="' + character.Guid + '">' +
+                '<i class="fas fa-undo-alt redButton"></i>' +
+                '</button>' +
+                '</span>';
         }
 
         var div = $('<div class="characterDiv faction-' + character.FactionName + '">' +
@@ -400,22 +470,10 @@ $(function () {
             '<input id="characterInitInput_' + character.Guid + '" type="number" class="characterInit hide" value="' + initiative + '" data-guid="' + character.Guid + '" />' +
             '</span>' +
 
-            '<span class="characterButtonSpan">' +
-            '<button id="editCharacterButton_' + character.Guid + '" class="ui-button editCharacterButton" data-guid="' + character.Guid + '">' +
-                '<i class="fas fa-pencil-alt blueButton"></i>' +
-            '</button>' +
-            ' <button id="removeCharacterButton_' + character.Guid + '" class="ui-button removeCharacterButton" data-guid="' + character.Guid + '">' +
-                '<i class="fas fa-trash-alt redButton"></i>' +
-            '</button>' +
-            '<button id="saveCharacterButton_' + character.Guid + '" class="ui-button saveCharacterButton hide" data-guid="' + character.Guid + '">' +
-                '<i class="fas fa-save greenButton"></i>' +
-            '</button>' +
-            ' <button id="discardCharacterButton_' + character.Guid + '" class="ui-button discardCharacterButton hide" data-guid="' + character.Guid + '">' +
-                '<i class="fas fa-undo-alt redButton"></i>' +
-            '</button>' +
-            '</span>' +
+            characterButtonSpan +
 
             '</div>');
+
         $('#initList').append(item.append(div));
     }
 

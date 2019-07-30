@@ -17,6 +17,15 @@
 			$socket->send(json_encode($wampMessage));
 		}
 
+		public static function EncodeGuid($guid) {
+			return str_replace("-", ".", $guid);
+		}
+
+	}
+
+	class WampMessage {
+		public $category = "";        
+        public $data = array();
 	}
 
 ?>

@@ -36,7 +36,7 @@ $(function() {
 
                 var result;
                 try {
-                    result = JSON.parse(data);
+                    result = JSON.parse(data.trim());
                 } catch (ex) {
                     result = {
                         "valid": false,
